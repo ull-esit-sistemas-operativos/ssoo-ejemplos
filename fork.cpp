@@ -22,7 +22,7 @@ int main()
         std::cout << "HIJO: Durmiendo 1 segundo..." << std::endl;
         sleep(1);
         std::cout << "HIJO: Voy a ejecutar el comando ls..." << std::endl;
-        execlp("/bin/ls", "ls", NULL);
+        execlp("/bin/ls", "ls", "-l", NULL);
         std::cout << "HIJO: ¡Adios!" << std::endl;
         exit(1);
     }
@@ -35,7 +35,7 @@ int main()
         std::cout << "PADRE: El valor de mi copia de 'pid' es: " << pid << std::endl;
         std::cout << "PADRE: Voy a esperar a que mi hijo termine..." << std::endl;
         wait(&status);
-        std::cout << "PARENT: El valor de salida de mi hijo fue:" <<
+        std::cout << "PARENT: El valor de salida de mi hijo fue: " <<
             WEXITSTATUS(status) << std::endl;
         std::cout << "PADRE: ¡Adios!" << std::endl;
         exit(2);
