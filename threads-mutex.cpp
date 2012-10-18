@@ -1,4 +1,4 @@
-// thread-mutex.cpp - Ejemplo deluso de mutex con POSIX pthread
+// thread-mutex.cpp - Ejemplo del uso de mutex con POSIX pthread
 //
 //      g++ -o thread-mutex thread-mutex.cpp -lpthread
 
