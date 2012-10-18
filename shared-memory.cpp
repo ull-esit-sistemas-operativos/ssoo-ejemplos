@@ -25,7 +25,7 @@ int main()
     Message *shared;
 
     // pedir al sistema que asigne una zona de memoria compartida
-    shared = (Message*)mmap(NULL, sizeof(Message), PROT_READ|PROT_WRITE, MAP_ANON|MAP_SHARED, -1, 0);
+    shared = (Message*)mmap(NULL, sizeof(Message), PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
     if (shared == MAP_FAILED) { // error
         perror("fallo en mmap()");
         exit(-2);
