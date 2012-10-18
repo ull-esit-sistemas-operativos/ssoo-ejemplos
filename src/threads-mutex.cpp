@@ -18,6 +18,8 @@ void* increment_counter(void* ptr)
     }
     std::cout << "Valor del contador: " << counter << std::endl;
 //    pthread_mutex_unlock(&mutex);
+
+    return NULL;
 }
 
 int main()

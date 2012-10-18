@@ -16,6 +16,8 @@ void* print_message_function(void* ptr)
         for (int j = 0; j < 1000000; j++);
         sched_yield();  // invoca al planificador
     }
+
+    return NULL;
 }
 
 int main()

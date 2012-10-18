@@ -7,8 +7,12 @@
 //              # ltrace -S -C -n4 ./softstack
 //
 
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 int main()
 {
@@ -16,7 +20,7 @@ int main()
     mkstemp(filename);
 
     printf("antes de abrir el archivo...\n");
-    int fd = open(filename);
+    int fd = open(filename, O_RDWR | O_CREAT);
     printf("después de abrir el archivo...\n");
     close(fd);
 

@@ -16,6 +16,8 @@ void* print_message_function(std::string& message)
         for (int j = 0; j < 1000000; j++);
         sched_yield();      // Invoca al planificador
     }
+
+    return NULL;
 }
 
 int main()
