@@ -1,7 +1,5 @@
 ## Ejemplos utilizados durante las clases teóricas de Sistemas Operativos
 
-Copyright 2011-2012 Jesús Torres <jmtorres@ull.es>
-
 <a rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/deed.es"><img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/zero/1.0/88x31.png" /></a><br />Este obra de <a xmlns:cc="http://creativecommons.org/ns#" href="http://gplus.to/jmtorres" property="cc:attributionName" rel="cc:attributionURL">Jesús Torres</a> está bajo una <a rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/deed.es">Licencia Creative Commons Public Domain Dedication 1.0</a>.
 
 
@@ -30,6 +28,8 @@ Concretamente los ejemplos incluidos son:
 
 ### Requisitos
 
+Para la compilación de estos ejemplos es necesario disponer de los siguientes paquetes:
+
  * `g++`
  * `libc-dev`, `libstdc++-dev`
  * `libboost-dev`, `libboost-thread-dev`
@@ -50,4 +50,6 @@ Los ejecutables resultantes de la compilación son almacenados en la carpeta
 
 ### Autor y contacto
 
-Si tiene cualquier cuestión no dude en ponerse en contacto con el autor (@aplatanado).
+Si tiene cualquier cuestión no dude en ponerse en contacto con el autor:
+
+-- Jesús Torres <jmtorres@ull.es>.
