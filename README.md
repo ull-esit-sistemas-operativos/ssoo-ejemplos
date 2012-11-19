@@ -2,6 +2,9 @@
 
 <a rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/deed.es"><img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/zero/1.0/88x31.png" /></a><br />Este obra de <a xmlns:cc="http://creativecommons.org/ns#" href="http://gplus.to/jmtorres" property="cc:attributionName" rel="cc:attributionURL">Jesús Torres</a> está bajo una <a rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/deed.es">Licencia Creative Commons Public Domain Dedication 1.0</a>.
 
+<a href="http://flattr.com/thing/1003364/Clases-de-Sistemas-Operativos-by-aplatanado" target="_blank">
+<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a>
+
 
 ### Descripción
 
@@ -50,6 +53,4 @@ Los ejecutables resultantes de la compilación son almacenados en la carpeta
 
 ### Autor y contacto
 
-Si tiene cualquier cuestión no dude en ponerse en contacto con el autor:
-
--- Jesús Torres <jmtorres@ull.es>.
+Si tiene cualquier cuestión no dude en ponerse en contacto con el [autor](mailto:jmtorres@ull.es).
