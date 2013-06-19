@@ -1,47 +1,41 @@
-// thread.cpp - Ejemplo de creación de threads con POSIX pthread
+// threads.cpp - Ejemplo de creación de threads en C++
 //
-//      g++ -o thread thread.cpp -lpthread
+//      g++ -std=c++11 -o threads threads.cpp
+//
+//   o en versiones de GCC anteriores a 4.7
+//
+//      g++ -std=c++0x -o threads threads.cpp -lpthread
 
 #include <iostream>
+#include <string>
+#include <thread>
 
-#include <pthread.h>
 #include <sched.h>
 
-void* print_message_function(void* ptr)
+void print_message_function(std::string& message)
 {
-    char* message = (char*) ptr;
-
     for (int i = 0; i < 10; i++) {
         std::cout << message << '\n';
         for (int j = 0; j < 1000000; j++);
-        sched_yield();  // invoca al planificador
+        sched_yield();      // Invoca al planificador
     }
-
-    return NULL;
 }
 
 int main()
 {
-    pthread_t thread1, thread2;
-    const char* message1 = "Hilo 1";
-    const char* message2 = "Hilo 2";
-
+    std::string message1("Hilo 1");
+    std::string message2("Hilo 2");
+    
     // Crear algunos hilos independientes cada uno de los cuales
     // ejecutará print_message_function()
-    int ret1 = pthread_create(&thread1, NULL, print_message_function,
-                              (void*)message1);
-    if (ret1)
-        std::cout << "Error: pthread_create: " << ret1 << '\n';
-    int ret2 = pthread_create(&thread2, NULL, print_message_function,
-                              (void*)message2);
-    if (ret2)
-        std::cout << "Error: pthread_create: " << ret2 << '\n';
+    std::thread thread1(print_message_function, message1);
+    std::thread thread2(print_message_function, message2);
 
     // Esperar a que los hilos terminen antes de que main() continúe.
     // Si no esperamos, corremos el riesgo de terminar el proceso y todos
     // sus hilos antes de que los hilos hayan terminado.
-    pthread_join(thread1, NULL);
-    pthread_join(thread2, NULL); 
+    thread1.join();
+    thread2.join(); 
 
     return 0;
 }
