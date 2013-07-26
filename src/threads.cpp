@@ -12,7 +12,7 @@
 
 #include <sched.h>
 
-void print_message_function(std::string& message)
+void print_message_function(const std::string& message)
 {
     for (int i = 0; i < 10; i++) {
         std::cout << message << '\n';
