@@ -1,5 +1,5 @@
 // softstack.c - Ejemplo para mostrar la pila de software del sistema
-//                 operativo
+//               operativo
 //
 //      gcc -o softstack softstack.cpp
 //
