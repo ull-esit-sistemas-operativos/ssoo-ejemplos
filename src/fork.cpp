@@ -4,9 +4,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include <cerrno>
 #include <cstdlib>
-#include <cstdio>
 #include <iostream>
 
 int main()
@@ -41,7 +39,7 @@ int main()
         exit(2);
     }
     else {                      // error
-        perror("fallo en fork()");
+        std::cerr << "fallo en fork()" << std::endl;
         exit(-1);
     }
 }

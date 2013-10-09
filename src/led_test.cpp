@@ -9,7 +9,6 @@
 #include <termios.h>
 #include <unistd.h>
 
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
@@ -44,7 +43,7 @@ int main(int argc, char* argv[])
 
     fd = open("/dev/ttyUSB0", O_RDWR | O_NOCTTY );
     if (fd < 0) {
-        perror("/dev/ttyUSB0");
+        std::cerr << "/dev/ttyUSB0" << std::endl;
         exit(-1);
     }
 

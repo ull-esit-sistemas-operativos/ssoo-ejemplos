@@ -6,9 +6,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include <cerrno>
 #include <cstdlib>
-#include <cstdio>
 #include <iostream>
 
 int main()
@@ -19,7 +17,7 @@ int main()
     // crear una tubería
     int res = pipe(fds);
     if (res < 0) {
-        perror("fallo en el pipe()");
+        std::cerr << "fallo en el pipe()" << std::endl;
         exit(-1);
     }
  
@@ -35,7 +33,7 @@ int main()
         read(fds[0], buffer, sizeof(buffer));
         std::cout << "PADRE: ¡Soy el proceso padre!" << std::endl;
         std::cout << "PADRE: Este es mi PID: " << getpid()<< std::endl;
-        std::cout << "PADRO: Mi hijo a dicho '"<< buffer << "'" << std::endl;
+        std::cout << "PADRO: Mi hijo ha dicho '"<< buffer << "'" << std::endl;
 
         // el padre esperará a que el hijo termine
         wait(NULL);
@@ -43,7 +41,7 @@ int main()
         std::cout << "PADRE: ¡Adios!" << std::endl;
     }
     else {
-        perror("fallo en fork()");
+        std::cerr << "fallo en fork()" << std::endl;
         exit(-2);
     }
 

@@ -5,9 +5,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include <cerrno>
 #include <cstdlib>
-#include <cstdio>
 #include <cstring>
 #include <iostream>
 
@@ -27,7 +25,7 @@ int main()
     // pedir al sistema que asigne una zona de memoria compartida
     shared = (Message*)mmap(NULL, sizeof(Message), PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
     if (shared == MAP_FAILED) { // error
-        perror("fallo en mmap()");
+        std::cerr << "fallo en mmap()" << std::endl;
         exit(-2);
     }
  
@@ -74,7 +72,7 @@ int main()
         exit(2);
     }
     else {                      // error
-        perror("fallo en fork()");
+        std::cerr << "fallo en fork()" << std::endl;
         exit(-1);
     }
 }
