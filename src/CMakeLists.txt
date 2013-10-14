@@ -1,6 +1,8 @@
 # CMakeLists.txt - Archivo de proyecto CMake
 
 # Construir los programas de ejemplo
+ADD_EXECUTABLE(fifo-client fifo-client.cpp)
+ADD_EXECUTABLE(fifo-server fifo-server.cpp)
 ADD_EXECUTABLE(fork fork.cpp)
 ADD_EXECUTABLE(mmap mmap.cpp)
 ADD_EXECUTABLE(pipe pipe.cpp)
