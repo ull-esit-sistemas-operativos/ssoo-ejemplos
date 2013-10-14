@@ -25,7 +25,7 @@ Concretamente los ejemplos incluidos son:
  * `src/shared-memory-sync.cpp` - Sincronización mediante semáforos con memoria compartida entre procesos.
  * `src/shared-memory.cpp` - Comunicación mediante memoria compartida
  * `src/softstack.c` - Ejemplo básico en C para mostrar la pila de software con `strace`.
- * `src/softstack.cpp - Ejemplo básico en C++ para mostrar la pila de software con `strace`.
+ * `src/softstack.cpp` - Ejemplo básico en C++ para mostrar la pila de software con `strace`.
  * `src/threads.cpp` - Creación de hilos en C++.
  * `src/threads-mutex.cpp` - Sincronización de hilos mediante mutex.
  * `src/threads-pthread.cpp` - Creación de hilos mediante POSIX pthread.
