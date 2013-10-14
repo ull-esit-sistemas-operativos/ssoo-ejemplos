@@ -36,8 +36,8 @@ int main()
         std::cout << "PADRO: Mi hijo ha dicho '"<< buffer << "'" << std::endl;
 
         // el padre esperará a que el hijo termine
-        wait(NULL);
         std::cout << "PADRE: Voy a esperar a que mi hijo termine..." << std::endl;
+        wait(NULL);
         std::cout << "PADRE: ¡Adios!" << std::endl;
     }
     else {
