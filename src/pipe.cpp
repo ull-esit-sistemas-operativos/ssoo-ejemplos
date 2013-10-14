@@ -18,7 +18,7 @@ int main()
     int res = pipe(fds);
     if (res < 0) {
         std::cerr << "fallo en el pipe()" << std::endl;
-        exit(-1);
+        exit(3);
     }
  
     pid_t pid = fork();
@@ -42,7 +42,7 @@ int main()
     }
     else {
         std::cerr << "fallo en fork()" << std::endl;
-        exit(-2);
+        exit(4);
     }
 
     exit(0);

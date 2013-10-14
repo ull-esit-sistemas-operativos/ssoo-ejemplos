@@ -26,7 +26,7 @@ int main()
     shared = (Message*)mmap(NULL, sizeof(Message), PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
     if (shared == MAP_FAILED) { // error
         std::cerr << "fallo en mmap()" << std::endl;
-        exit(-2);
+        exit(3);
     }
  
     shared->length = 0;         // aun no hay nada en content
@@ -45,7 +45,7 @@ int main()
         shared->length = 0;
 
         std::cout << "HIJO: Mensaje recibido. El mensaje es: '" << message << "'" << std::endl;
-        exit(1);
+        exit(0);
     }
     else if (pid > 0) {         // proceso padre
         char message[] = "cadena del mensaje";
@@ -69,10 +69,10 @@ int main()
         std::cout << "PARENT: El valor de salida de mi hijo fue: " <<
             WEXITSTATUS(status) << std::endl;
         std::cout << "PADRE: ¡Adios!" << std::endl;
-        exit(2);
+        exit(0);
     }
     else {                      // error
         std::cerr << "fallo en fork()" << std::endl;
-        exit(-1);
+        exit(4);
     }
 }

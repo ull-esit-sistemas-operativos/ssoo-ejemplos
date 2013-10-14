@@ -30,14 +30,14 @@ int main()
     shared = (Shared*)mmap(NULL, sizeof(Shared), PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
     if (shared == MAP_FAILED) { // error
         std::cerr << "fallo en mmap()" << std::endl;
-        exit(-2);
+        exit(3);
     }
 
     // inicializar el semáforo de la memoria compartida
     result = sem_init(&shared->semaphore, 1, 1);
     if (result == -1) {
         std::cerr << "fallo en sem_init()" << std::endl;
-        exit(-3);
+        exit(4);
     }
 
     // inicializar el contador
@@ -79,6 +79,6 @@ int main()
     }
     else {                      // error
         std::cerr << "fallo en fork()" << std::endl;
-        exit(-1);
+        exit(5);
     }
 }

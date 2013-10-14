@@ -22,7 +22,7 @@ int main()
         std::cout << "HIJO: Voy a ejecutar el comando ls..." << std::endl;
         execlp("/bin/ls", "ls", "-l", NULL);
         std::cout << "HIJO: ¡Adios!" << std::endl;
-        exit(1);
+        exit(0);
     }
     else if (pid > 0) {         // proceso padre
         int status;
@@ -36,10 +36,10 @@ int main()
         std::cout << "PARENT: El valor de salida de mi hijo fue: " <<
             WEXITSTATUS(status) << std::endl;
         std::cout << "PADRE: ¡Adios!" << std::endl;
-        exit(2);
+        exit(0);
     }
     else {                      // error
         std::cerr << "fallo en fork()" << std::endl;
-        exit(-1);
+        exit(3);
     }
 }
