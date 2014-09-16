@@ -55,4 +55,4 @@ Los ejecutables resultantes de la compilación son almacenados en la carpeta
 
 ### Autor y contacto
 
-Si tiene cualquier cuestión no dude en ponerse en contacto con el [autor](mailto:jmtorres@ull.es).
+Si tiene cualquier cuestión no dude en ponerse en contacto con el [autor](http://jmtorres.webs.ull.es/).
