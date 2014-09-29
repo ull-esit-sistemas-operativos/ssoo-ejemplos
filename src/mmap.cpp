@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
     src = (char*)mmap(NULL, statbuf.st_size, PROT_READ, MAP_SHARED, fdin, 0);
     if (src == MAP_FAILED) {
         std::cerr << "fallo en mmap() al archivo de origen" << std::endl;
-        exit(8;
+        exit(8);
     }
 
     // mapear el archivo de destino
