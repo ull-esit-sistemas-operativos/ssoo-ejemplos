@@ -1,7 +1,7 @@
 // threads-mutex-pthread.cpp - Ejemplo del uso de mutex con la librería de
 //                             hilos del sistema (POSIX pthread)
 //
-//      g++ -o threads-mutex-pthread threads-mutex-pthread.cpp -lpthread
+//      g++ -o threads-mutex-pthread threads-mutex-pthread.cpp -pthread
 
 #include <iostream>
 

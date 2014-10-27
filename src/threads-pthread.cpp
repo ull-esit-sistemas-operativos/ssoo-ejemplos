@@ -1,7 +1,7 @@
 // threads-pthread.cpp - Ejemplo de creación de threads con la librería de
 //                       hilos del sistema (POSIX pthread)
 //
-//      g++ -o threads-pthread threads-pthread.cpp -lpthread
+//      g++ -o threads-pthread threads-pthread.cpp -pthread
 
 #include <iostream>
 

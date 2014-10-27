@@ -1,10 +1,10 @@
 // threads-mutex.cpp - Ejemplo del uso de mutex en C++
 //
-//      g++ -std=c++11 -o threads-mutex threads-mutex.cpp
+//      g++ -std=c++11 -o threads-mutex threads-mutex.cpp -pthread
 //
 //   o en versiones de GCC anteriores a 4.7
 //
-//      g++ -std=c++0x -o threads-mutex threads-mutex.cpp -lpthread
+//      g++ -std=c++0x -o threads-mutex threads-mutex.cpp -pthread
 
 #include <iostream>
 #include <mutex>

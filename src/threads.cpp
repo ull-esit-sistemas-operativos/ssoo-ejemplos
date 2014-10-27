@@ -1,10 +1,10 @@
 // threads.cpp - Ejemplo de creación de threads en C++
 //
-//      g++ -std=c++11 -o threads threads.cpp
+//      g++ -std=c++11 -o threads threads.cpp -pthread
 //
 //   o en versiones de GCC anteriores a 4.7
 //
-//      g++ -std=c++0x -o threads threads.cpp -lpthread
+//      g++ -std=c++0x -o threads threads.cpp -pthread
 
 #include <iostream>
 #include <string>
