@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head lang="es">
+    <meta charset="UTF-8">
+    <title>Hola mundo</title>
+</head>
+<body>
+<h1>¡Hola mundo!</h1>
+<p>Primero prueba como funciona un script CGI visitando
+    <a id="printenv" href="/cgi-bin/printenv"></a>
+</p>
+<p>En ese mismo directorio <code>/cgi-bin</code> puedes poner el script que estamos haciendo en las
+    clases prácticas y probar qué ocurre al acceder a él.
+</p>
+<p>Ahora, si quieres, renombra este mismo archivo <code>'holamundo.html'</code> como <code>'index.html'</code> y
+    verás que ya no ves el contenido del directorio al visitar <a id="root" href="/">http://&lt;IP del equipo&gt;:8080/</a>
+    sino esta misma página.</p>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" ></script>
+<script>
+    $('#printenv').text(window.location.origin + '/cgi-bin/printenv');
+    $('#root').text(window.location.origin + '/');
+</script>
+</body>
+</html>
