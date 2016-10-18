@@ -33,7 +33,7 @@ int main()
         read(fds[0], buffer, sizeof(buffer));
         std::cout << "PADRE: ¡Soy el proceso padre!" << std::endl;
         std::cout << "PADRE: Este es mi PID: " << getpid()<< std::endl;
-        std::cout << "PADRO: Mi hijo ha dicho '"<< buffer << "'" << std::endl;
+        std::cout << "PADRE: Mi hijo ha dicho '"<< buffer << "'" << std::endl;
 
         // el padre esperará a que el hijo termine
         std::cout << "PADRE: Voy a esperar a que mi hijo termine..." << std::endl;
