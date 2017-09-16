@@ -38,7 +38,7 @@ int main()
     thread1.join();
     thread2.join();
  
-    std::cout << "Valor final del contador: " << counter << std::endl;
+    std::cout << "Valor final del contador: " << counter << "\n";
 
     return 0;
 }

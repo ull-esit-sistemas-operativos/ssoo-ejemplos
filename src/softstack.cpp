@@ -17,9 +17,9 @@ int main()
     mkstemp(filename);
 
     std::ofstream ofs;
-    std::cout << "antes de abrir el archivo..." << std::endl;
-    ofs.open(filename);
-    std::cout << "después de abrir el archivo..." << std::endl;
+    std::cout << "antes de abrir el archivo...\n";
+    ofs.open(filename, std::ofstream::out);
+    std::cout << "después de abrir el archivo...\n";
     ofs.close();
 
     return 0;

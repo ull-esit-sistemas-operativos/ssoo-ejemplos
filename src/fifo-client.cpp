@@ -7,32 +7,35 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#include <cerrno>
 #include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <fstream>
 #include <string>
 
 int main()
 {
-    const char fifopath[] = "/tmp/ssoo-class-fifo-server";
-    std::string line;
+    const std::string fifopath = "/tmp/ssoo-class-fifo-server";
 
-    // abrir la tubería con nombre
-    // int fd = open(fifopath, O_WRONLY);
-    std::ofstream ofs(fifopath);
+    // Abrir la tubería usando su nombre, como un archivo convencional
+    //  Internamente: fd = open(fifopath, O_WRONLY);
+    std::ofstream ofs {fifopath, std::ofstream::out};
     if (ofs.fail()) {
-        std::cerr << "fallo al abrir la tubería" << std::endl;
-        exit(3);
+        std::cerr << "fallo al abrir la tubería\n";
+        return 3;
     }
 
-    std::cout << "CLIENTE: ¡Soy el proceso cliente!" << std::endl;
-    std::cout << "CLIENTE: Este es mi PID: " << getpid() << std::endl;
+    std::cout << "CLIENTE: ¡Soy el proceso cliente!\n";
+    std::cout << "CLIENTE: Este es mi PID: " << getpid() << "\n";
 
     while(std::cin.good()) {
+        std::string line;
         std::getline(std::cin, line);
-        // write(fd, line.c_str(), line.size());
+        // Enviar la línea leida de la entrada estándar por la tubería
+        //  Internamente: write(fd, line.c_str(), line.size());
         ofs << line << std::endl;
     }
 
-    exit(0);
+    return 0;
 }

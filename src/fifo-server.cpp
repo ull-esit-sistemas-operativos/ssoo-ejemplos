@@ -7,41 +7,52 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include <cerrno>
 #include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <fstream>
 #include <string>
 
 int main()
 {
-    const char fifopath[] = "/tmp/ssoo-class-fifo-server";
-    std::string buffer;
+    const std::string fifopath = "/tmp/ssoo-class-fifo-server";
 
-    // crear la tubería con nombre
-    int res = mkfifo(fifopath, 0777);
-    if (res < 0 && errno != EEXIST) {
-        std::cerr << "fallo en el mkfifo()" << std::endl;
-        exit(3);
+    // Crear la tubería con nombre.
+    //  Como no hay función en el estándar de C++, usamos directamente la función
+    //  mkfifo() de la librería de sistema
+    int result = mkfifo(fifopath.c_str(), 0777);
+    if (result < 0 && errno != EEXIST) {
+        std::cerr << "fallo en mkfifo(): " << std::strerror(errno) << "\n";
+        return 3;
     }
 
-    // abrir la tubería con nombre
-    // int fd = open(fifopath, O_RDONLY);
-    std::ifstream ifs(fifopath);
+    // Abrir la tubería usando su nombre, como un archivo convencional
+    //  Internamente: fd = open(fifopath, O_RDONLY);
+    std::ifstream ifs {fifopath, std::ifstream::in};
     if (ifs.fail()) {
-        std::cerr << "fallo al abrir la tubería" << std::endl;
-        exit(4);
+        std::cerr << "fallo al abrir la tubería\n";
+        return 4;
     }
 
-    std::cout << "SERVIDOR: ¡Soy el proceso servidor!" << std::endl;
-    std::cout << "SERVIDOR: Este es mi PID: " << getpid() << std::endl;
+    std::cout << "SERVIDOR: ¡Soy el proceso servidor!\n";
+    std::cout << "SERVIDOR: Este es mi PID: " << getpid() << "\n";
 
-    // leer de la tubería hasta que el cliente cierre la conexión
-    // u ocurra algún error
+    // Leer de la tubería hasta que el cliente cierre la conexión u ocurra algún error
     while(ifs.good()) {
-        // read(fd, buffer, sizeof(buffer));
-        ifs >> buffer;
-        std::cout << "SERVIDOR: El cliente ha dicho '"<< buffer << "'" << std::endl;
+        std::string buffer;
+        // Leer una línea de la tubería
+        //  Internamente: read(fd, buffer, sizeof(buffer));
+        std::getline(ifs, buffer);
+        std::cout << "SERVIDOR: El cliente ha dicho '"<< buffer << "'\n";
+    }
+    
+    // Eliminar la tubería con nombre.
+    result = unlink(fifopath.c_str());
+    if (result < 0) {
+        std::cerr << "fallo en unlink(): " <<  std::strerror(errno) << "\n";
+        return 5;
     }
 
-    exit(0);
+    return 0;
 }

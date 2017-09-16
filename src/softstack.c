@@ -19,9 +19,9 @@ int main()
     char filename[] = "/tmp/softstack-fileXXXXXX";
     mkstemp(filename);
 
-    printf("antes de abrir el archivo...\n");
+    puts("antes de abrir el archivo...");
     int fd = open(filename, O_RDWR | O_CREAT);
-    printf("después de abrir el archivo...\n");
+    puts("después de abrir el archivo...");
     close(fd);
 
     return 0;

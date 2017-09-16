@@ -9,6 +9,7 @@
 #include <termios.h>
 #include <unistd.h>
 
+#include <cerrno>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
@@ -38,15 +39,16 @@ void setupSerial(int fd, termios &oldtio)
 
 int main(int argc, char* argv[])
 {
-    int fd;
-    termios oldtio;
-
-    fd = open("/dev/ttyUSB0", O_RDWR | O_NOCTTY );
+    const std::string devicepath = "/dev/ttyUSB0";
+    
+    int fd = open(devicepath.c_str(), O_RDWR | O_NOCTTY);
     if (fd < 0) {
-        std::cerr << "/dev/ttyUSB0" << std::endl;
-        exit(2);
+        std::cerr << "fallo al abrir: '" << devicepath << "': " <<
+            std::strerror(errno) << "\n";
+        return 2;
     }
 
+    termios oldtio;
     setupSerial(fd, oldtio);
  
     std::string chars;
@@ -68,4 +70,6 @@ int main(int argc, char* argv[])
     }
 
     tcsetattr(fd, TCSANOW, &oldtio);
+    
+    return 0;
 }

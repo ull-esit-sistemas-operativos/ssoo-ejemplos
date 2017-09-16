@@ -5,6 +5,7 @@
 
 #include <iostream>
 
+#include <cstring>
 #include <pthread.h>
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -18,7 +19,7 @@ void* increment_counter(void* ptr)
         counter++;
 //        pthread_mutex_unlock(&mutex);
     }
-    std::cout << "Valor del contador: " << counter << std::endl;
+    std::cout << "Valor del contador: " << counter << "\n";
 //    pthread_mutex_unlock(&mutex);
 
     return NULL;
@@ -26,16 +27,17 @@ void* increment_counter(void* ptr)
 
 int main()
 {
-    pthread_t thread1, thread2;
-
     // Crear algunos hilos independientes cada uno de los cuales
     // ejecutará increment_counter()
-    int ret1 = pthread_create(&thread1, NULL, increment_counter, NULL);
-    if (ret1)
-        std::cout << "Error: pthread_create: " << ret1 << '\n';
-    int ret2 = pthread_create(&thread2, NULL, increment_counter, NULL);
-    if (ret2)
-        std::cout << "Error: pthread_create: " << ret2 << '\n';
+    pthread_t thread1;
+    int error1 = pthread_create(&thread1, NULL, increment_counter, NULL);
+    if (error1)
+        std::cerr << "Error: pthread_create: " << std::strerror(error1) << "\n";
+    
+    pthread_t thread2;
+    int error2 = pthread_create(&thread2, NULL, increment_counter, NULL);
+    if (error2)
+        std::cerr << "Error: pthread_create: " << std::strerror(error2) << "\n";
 
     // Esperar a que los hilos terminen antes de que main() continúe.
     // Si no esperamos, corremos el riesgo de terminar el proceso y todos
@@ -43,7 +45,7 @@ int main()
     pthread_join(thread1, NULL);
     pthread_join(thread2, NULL);
     
-    std::cout << "Valor final del contador: " << counter << std::endl;
+    std::cout << "Valor final del contador: " << counter << "\n";
 
     return 0;
 }
