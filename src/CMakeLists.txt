@@ -43,3 +43,6 @@ TARGET_LINK_LIBRARIES(threads-mutex-pthread pthread)
 ADD_EXECUTABLE(threads-pthread threads-pthread.cpp)
 SET_TARGET_PROPERTIES(threads-pthread PROPERTIES COMPILE_FLAGS "-pthread ${CXX11_FLAGS}")
 TARGET_LINK_LIBRARIES(threads-pthread pthread)
+
+ADD_EXECUTABLE(yash yash.cpp)
+SET_TARGET_PROPERTIES(yash PROPERTIES COMPILE_FLAGS "-pthread ${CXX11_FLAGS}")
