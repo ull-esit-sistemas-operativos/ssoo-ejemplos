@@ -6,6 +6,7 @@
 #include <sstream>
 #include <vector>
 
+#include <glob.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -65,6 +66,23 @@ void chdir(const std::vector<std::string>& words)
     chdir(words[1].c_str());
 }
 
+std::vector<std::string> expand_wildcards(const std::vector<std::string>& words)
+{
+    std::vector<std::string> expanded_words;
+    for(auto& word: words) {
+        glob_t pglob;
+        glob(word.c_str(), GLOB_TILDE | GLOB_NOCHECK, NULL, &pglob);
+        if (pglob.gl_pathc) {
+            for (char** p = pglob.gl_pathv; *p != nullptr; ++p) {
+                expanded_words.push_back(*p);
+            }
+        }
+        globfree(&pglob);
+    }
+    
+    return expanded_words;
+}
+
 int main()
 {
     while(! std::cin.eof()) {
@@ -80,7 +98,19 @@ int main()
             
         auto words = split(line);
         
-        if (words[0] == "exit") {
+        words = expand_wildcards(words);
+
+        size_t pos = words[0].find_first_of('=');
+        if (pos != std::string::npos) {
+          auto name = words[0].substr(0, pos);
+          auto value = words[0].substr(pos + 1);
+          // con putenv() nos ahorraríamos dividir words[0] pero al volver se queda
+          // con un puntero a la cadena para usarlo internamente.
+          //  => la cadena words[0] no se puede liberar
+          //  => habría que reservar un buffer dinámicamente y copiar words[0] en él.
+          setenv(name.c_str(), value.c_str(), 1/* overwrite */);
+        }
+        else if (words[0] == "exit") {
             break;
         }
         else if (words[0] == "echo") {
