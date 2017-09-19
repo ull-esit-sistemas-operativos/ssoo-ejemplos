@@ -97,7 +97,6 @@ int main()
         }
             
         auto words = split(line);
-        
         words = expand_wildcards(words);
 
         size_t pos = words[0].find_first_of('=');
