@@ -74,6 +74,10 @@ int main()
         std::string line;
         std::getline(std::cin, line);
         
+        if (line.empty()) {            
+            continue;
+        }
+            
         auto words = split(line);
         
         if (words[0] == "exit") {
