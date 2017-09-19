@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
     bool interative_mode = argc > 1 ? false : true;
     
     std::ifstream ifs;
-    if(! interative_mode) {
+    if(! interative_mode) {                             // paso 7
         ifs.open(argv[1]);
         std::cin.rdbuf(ifs.rdbuf());
     }
@@ -103,15 +103,15 @@ int main(int argc, char* argv[])
         std::string line;
         std::getline(std::cin, line);
         
-        if (line.empty() || line[0] == '#') {
+        if (line.empty() || line[0] == '#') {           // paso 4
             continue;
         }
             
-        auto words = split(line);
-        words = expand_wildcards(words);
+        auto words = split(line);                       // paso 1
+        words = expand_wildcards(words);                // paso 8
 
-        size_t pos = words[0].find_first_of('=');
-        if (pos != std::string::npos) {
+        size_t pos = words[0].find_first_of('=');         
+        if (pos != std::string::npos) {                 // paso 6
           auto name = words[0].substr(0, pos);
           auto value = words[0].substr(pos + 1);
           // con putenv() nos ahorraríamos dividir words[0] pero al volver se queda
@@ -120,17 +120,17 @@ int main(int argc, char* argv[])
           //  => habría que reservar un buffer dinámicamente y copiar words[0] en él.
           setenv(name.c_str(), value.c_str(), 1/* overwrite */);
         }
-        else if (words[0] == "exit") {
+        else if (words[0] == "exit") {                  // paso 2
             break;
         }
-        else if (words[0] == "echo") {
+        else if (words[0] == "echo") {                  // paso 3
             echo(words);
         }
-        else if (words[0] == "cd") {
+        else if (words[0] == "cd") {                    // paso 5
             chdir(words);
         }
         else {
-            run(words);
+            run(words);                                 // paso 4
         }
     }
     
