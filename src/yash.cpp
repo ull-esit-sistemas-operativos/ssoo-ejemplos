@@ -2,6 +2,7 @@
 
 #include <cerrno>
 #include <cstring>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -83,16 +84,26 @@ std::vector<std::string> expand_wildcards(const std::vector<std::string>& words)
     return expanded_words;
 }
 
-int main()
+int main(int argc, char* argv[])
 {
+    bool interative_mode = argc > 1 ? false : true;
+    
+    std::ifstream ifs;
+    if(! interative_mode) {
+        ifs.open(argv[1]);
+        std::cin.rdbuf(ifs.rdbuf());
+    }
+    
     while(! std::cin.eof()) {
         
-        std::cout << "$> ";
+        if(interative_mode) {
+            std::cout << "$> ";
+        }
         
         std::string line;
         std::getline(std::cin, line);
         
-        if (line.empty()) {            
+        if (line.empty() || line[0] == '#') {
             continue;
         }
             
