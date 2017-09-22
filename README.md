@@ -30,6 +30,7 @@ Concretamente los ejemplos incluidos son:
  * `src/threads-mutex.cpp` - Sincronización de hilos mediante mutex.
  * `src/threads-pthread.cpp` - Creación de hilos mediante POSIX pthread.
  * `src/threads-mutex-pthread.cpp` - Sincronización de hilos mediante mutex de POSIX pthread.
+ * `src/yash.cpp` - Ejemplo muy básico del funcionamiento interno de una shell.
 
 
 ### Requisitos
