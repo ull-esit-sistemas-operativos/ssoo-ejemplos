@@ -18,7 +18,7 @@ void* print_message_function(void* ptr)
         for (int j = 0; j < 1000000; j++);
 
         // Invoca al planificador de CPU para dar una oportunidad a otros hilos
-        sched_yield();
+        pthread_yield();
     }
 
     return NULL;

@@ -17,9 +17,9 @@ void print_message_function(const std::string& message)
     for (int i = 0; i < 10; i++) {
         std::cout << message << "\n";
         for (int j = 0; j < 1000000; j++);
-        
-        // Invoca al planificador de CPU para dar una oportunidad a otros hilos
-        sched_yield();
+
+        // Invoca al planificador de CPU para dar una oportunidad a otros hilos.
+        std::this_thread::yield();
     }
 }
 
@@ -29,7 +29,7 @@ int main()
     // ejecutará print_message_function()
     std::string message1 = "Hilo 1";
     std::thread thread1(print_message_function, message1);
-    
+
     std::string message2 = "Hilo 2";
     std::thread thread2(print_message_function, message2);
 
