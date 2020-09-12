@@ -1,31 +1,29 @@
-# CMakeLists.txt - Archivo de proyecto CMake
+cmake_minimum_required(VERSION 3.11)
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-PROJECT(ssoo-clases)
+project(ssoo-ejemplos LANGUAGES C CXX ASM)
 
-#
-# Configuration global
-#
-SET(EXECUTABLE_OUTPUT_PATH "${PROJECT_BINARY_DIR}/bin")
+set(CMAKE_BUILD_TYPE Debug)
 
-# Opciones del compilador
-ADD_DEFINITIONS(-O0 -g -Wall -fmessage-length=0)
+# Generar los ejecutables en el directorio 'bin' del directorio de compilación
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-#
-# Activar soporte de C++11
-#
-INCLUDE(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-if(COMPILER_SUPPORTS_CXX11)
-    SET(CXX11_FLAGS ${CXX11_FLAGS} -std=c++11)
-elseif(COMPILER_SUPPORTS_CXX0X)
-    SET(CXX11_FLAGS ${CXX11_FLAGS} -std=c++0x)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_C_EXTENSIONS OFF)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Opciones de nivel de aviso del compilador
+if(MSVC)
+    add_compile_options(/W4)
 else()
-        message(STATUS "El compilador ${CMAKE_CXX_COMPILER} no tiene soporte de C++11. Por favor, utiliza otro compilador de C++.")
+    add_compile_options(-Wall -fmessage-length=0)
 endif()
 
-#
-# Construir el proyecto
-#
-ADD_SUBDIRECTORY(src)
+set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+find_package(Threads REQUIRED)
+
+add_subdirectory(src)

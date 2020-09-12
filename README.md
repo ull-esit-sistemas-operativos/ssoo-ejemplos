@@ -1,17 +1,12 @@
-## Ejemplos utilizados durante las clases teóricas de Sistemas Operativos
+## Ejemplos utilizados durante las clases de Sistemas Operativos
 
-<a rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/deed.es"><img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/zero/1.0/88x31.png" /></a><br />Este obra de <a xmlns:cc="http://creativecommons.org/ns#" href="http://jmtorres.webs.ull.es/" property="cc:attributionName" rel="cc:attributionURL">Jesús Torres</a> está bajo una <a rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/deed.es">Licencia Creative Commons Public Domain Dedication 1.0</a>.
-
-<a href="http://flattr.com/thing/1003364/Clases-de-Sistemas-Operativos-by-aplatanado" target="_blank">
-<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a>
-
+<p xmlns:dct="http://purl.org/dc/terms/" xmlns:cc="http://creativecommons.org/ns#" class="license-text">
+Esta obra está bajo licencia <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0">CC CC0 1.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" /><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/zero.svg?ref=chooser-v1" /></a></p>
 
 ### Descripción
 
-Durante mis clases de Sistemas Operativos en 2º de Grado de Ingeniería
-Informática suelo hacer uso de algunos programas de ejemplo con el objetivo de
-ilustrar lo explicado en la teoría. Este proyecto no es más que una
-recopilación de dichos programas.
+En los apuntes de la asignatura y durante las clases de Sistemas Operativos del Grado en Ingeniería Informática, solemos hacer referencia a algunos programas de ejemplo que usamos para ilustrar lo explicado.
+Este proyecto es una recopilación de dichos programas.
 
 Concretamente los ejemplos incluidos son:
 
@@ -32,15 +27,12 @@ Concretamente los ejemplos incluidos son:
  * `src/threads-mutex-pthread.cpp` - Sincronización de hilos mediante mutex de POSIX pthread.
  * `src/yash.cpp` - Ejemplo muy básico del funcionamiento interno de una shell.
 
-
 ### Requisitos
 
 Para la compilación de estos ejemplos es necesario disponer de los siguientes paquetes:
 
- * `g++`
- * `libc-dev`, `libstdc++-dev`
- * `cmake`, `make`
-
+ * `build-essential`
+ * `cmake`
 
 ### Compilación
 
@@ -51,9 +43,8 @@ Los ejemplos se compilan de manera sencilla siguiendo estos pasos:
  3. Ejecutar `make`
 
 Los ejecutables resultantes de la compilación son almacenados en la carpeta
-`bin/`.
-
+`build/bin/`.
 
 ### Autor y contacto
 
-Si tiene cualquier cuestión no dude en ponerse en contacto con el [autor](http://jmtorres.webs.ull.es/).
+Si tienes cualquier cuestión no dudes en ponerte en contacto [conmigo](mailto:jmtorres@ull.es).

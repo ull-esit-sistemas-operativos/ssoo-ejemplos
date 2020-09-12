@@ -1,48 +1,26 @@
-# CMakeLists.txt - Archivo de proyecto CMake
+add_executable(fifo-client fifo-client.cpp)
+add_executable(fifo-server fifo-server.cpp)
+add_executable(fork fork.cpp)
+add_executable(mmap mmap.cpp)
+add_executable(pipe pipe.cpp)
+add_executable(shared-memory shared-memory.cpp)
 
-# Construir los programas de ejemplo
-ADD_EXECUTABLE(fifo-client fifo-client.cpp)
-SET_TARGET_PROPERTIES(fifo-client PROPERTIES COMPILE_FLAGS "-pthread ${CXX11_FLAGS}")
+add_executable(shared-memory-sync shared-memory-sync.cpp)
+target_link_libraries(shared-memory-sync Threads::Threads)
 
-ADD_EXECUTABLE(fifo-server fifo-server.cpp)
-SET_TARGET_PROPERTIES(fifo-server PROPERTIES COMPILE_FLAGS "-pthread ${CXX11_FLAGS}")
+add_executable(softstack-c softstack.c)
+add_executable(softstack-cpp softstack.cpp)
 
-ADD_EXECUTABLE(fork fork.cpp)
-SET_TARGET_PROPERTIES(fork PROPERTIES COMPILE_FLAGS "-pthread ${CXX11_FLAGS}")
+add_executable(threads threads.cpp)
+target_link_libraries(threads Threads::Threads)
 
-ADD_EXECUTABLE(mmap mmap.cpp)
-SET_TARGET_PROPERTIES(mmap PROPERTIES COMPILE_FLAGS "-pthread ${CXX11_FLAGS}")
+add_executable(threads-mutex threads-mutex.cpp)
+target_link_libraries(threads-mutex Threads::Threads)
 
-ADD_EXECUTABLE(pipe pipe.cpp)
-SET_TARGET_PROPERTIES(pipe PROPERTIES COMPILE_FLAGS "-pthread ${CXX11_FLAGS}")
+add_executable(threads-mutex-pthread threads-mutex-pthread.cpp)
+target_link_libraries(threads-mutex-pthread Threads::Threads)
 
-ADD_EXECUTABLE(shared-memory shared-memory.cpp)
-SET_TARGET_PROPERTIES(shared-memory PROPERTIES COMPILE_FLAGS "-pthread ${CXX11_FLAGS}")
+add_executable(threads-pthread threads-pthread.cpp)
+target_link_libraries(threads-pthread Threads::Threads)
 
-ADD_EXECUTABLE(shared-memory-sync shared-memory-sync.cpp)
-SET_TARGET_PROPERTIES(shared-memory-sync PROPERTIES COMPILE_FLAGS "-pthread ${CXX11_FLAGS}")
-TARGET_LINK_LIBRARIES(shared-memory-sync pthread)
-
-ADD_EXECUTABLE(softstack-c softstack.c)
-
-ADD_EXECUTABLE(softstack-cpp softstack.cpp)
-SET_TARGET_PROPERTIES(softstack-cpp PROPERTIES COMPILE_FLAGS "-pthread ${CXX11_FLAGS}")
-
-ADD_EXECUTABLE(threads threads.cpp)
-SET_TARGET_PROPERTIES(threads PROPERTIES COMPILE_FLAGS "-pthread ${CXX11_FLAGS}")
-TARGET_LINK_LIBRARIES(threads pthread)
-
-ADD_EXECUTABLE(threads-mutex threads-mutex.cpp)
-SET_TARGET_PROPERTIES(threads-mutex PROPERTIES COMPILE_FLAGS "-pthread ${CXX11_FLAGS}")
-TARGET_LINK_LIBRARIES(threads-mutex pthread)
-
-ADD_EXECUTABLE(threads-mutex-pthread threads-mutex-pthread.cpp)
-SET_TARGET_PROPERTIES(threads-mutex-pthread PROPERTIES COMPILE_FLAGS "-pthread ${CXX11_FLAGS}")
-TARGET_LINK_LIBRARIES(threads-mutex-pthread pthread)
-
-ADD_EXECUTABLE(threads-pthread threads-pthread.cpp)
-SET_TARGET_PROPERTIES(threads-pthread PROPERTIES COMPILE_FLAGS "-pthread ${CXX11_FLAGS}")
-TARGET_LINK_LIBRARIES(threads-pthread pthread)
-
-ADD_EXECUTABLE(yash yash.cpp)
-SET_TARGET_PROPERTIES(yash PROPERTIES COMPILE_FLAGS "-pthread ${CXX11_FLAGS}")
+add_executable(yash yash.cpp)
