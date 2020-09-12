@@ -1,1 +1,5 @@
-# add_executable(syscall syscall.s)
+if (CMAKE_ASM_COMPILER_ID STREQUAL "GNU" OR CMAKE_ASM_COMPILER_ID STREQUAL "Clang")
+    add_executable(syscall syscall.s)
+    target_compile_options(syscall PRIVATE)
+    target_link_options(syscall PRIVATE -nostdlib -no-pie)
+endif()
