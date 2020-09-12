@@ -27,3 +27,5 @@ set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 
 add_subdirectory(src)
+add_subdirectory(src/cap06)
+add_subdirectory(src/cap09)

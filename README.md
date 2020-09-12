@@ -10,10 +10,10 @@ Este proyecto es una recopilación de dichos programas.
 
 Concretamente los ejemplos incluidos son:
 
- * `mips/misp-syscall.s` - Llamadas al sistema en el simulador de MIPS SPIMi.
+ * `src/cap06/syscall.s` - Llamadas al sistema en el simulador de MIPS SPIMi.
  * `src/fifo-client.cpp` - Cliente de comunicación entre procesos mediante tuberías con nombre.
  * `src/fifo-server.cpp` - Servidor de comunicación entre procesos mediante tuberías con nombre.
- * `src/fork.cpp` - Creación de procesos mediante `fork()` y ejecución de programas con `exec()`.
+ * `src/cap09/fork.cpp` - Creación de procesos mediante `fork()` y ejecución de programas con `exec()`.
  * `src/led_test.cpp` - Acceso a la E/S serial en UNIX. Ejemplo con el control de un LED tricolor conectado a un Arduino.
  * `src/mmap.cpp` - Ficheros mapeados en memoria.
  * `src/pipe.cpp` - Comunicación entre procesos mediante tuberías.
@@ -25,7 +25,7 @@ Concretamente los ejemplos incluidos son:
  * `src/threads-mutex.cpp` - Sincronización de hilos mediante mutex.
  * `src/threads-pthread.cpp` - Creación de hilos mediante POSIX pthread.
  * `src/threads-mutex-pthread.cpp` - Sincronización de hilos mediante mutex de POSIX pthread.
- * `src/yash.cpp` - Ejemplo muy básico del funcionamiento interno de una shell.
+ * `src/otros/yash.cpp` - Ejemplo muy básico del funcionamiento interno de una shell.
 
 ### Requisitos
 

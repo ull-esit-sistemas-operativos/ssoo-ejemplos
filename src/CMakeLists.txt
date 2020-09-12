@@ -1,6 +1,5 @@
 add_executable(fifo-client fifo-client.cpp)
 add_executable(fifo-server fifo-server.cpp)
-add_executable(fork fork.cpp)
 add_executable(mmap mmap.cpp)
 add_executable(pipe pipe.cpp)
 add_executable(shared-memory shared-memory.cpp)
@@ -22,5 +21,3 @@ target_link_libraries(threads-mutex-pthread Threads::Threads)
 
 add_executable(threads-pthread threads-pthread.cpp)
 target_link_libraries(threads-pthread Threads::Threads)
-
-add_executable(yash yash.cpp)
