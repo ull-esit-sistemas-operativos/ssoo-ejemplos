@@ -43,7 +43,7 @@ Los ejemplos se compilan de manera sencilla siguiendo estos pasos:
  3. Ejecutar `make`
 
 Los ejecutables resultantes de la compilación son almacenados en la carpeta
-`build/bin/`.
+`build/Debug/`.
 
 ### Autor y contacto
 

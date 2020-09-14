@@ -2,10 +2,9 @@ cmake_minimum_required(VERSION 3.11)
 
 project(ssoo-ejemplos LANGUAGES C CXX ASM)
 
+# Generar los ejecutables en el directorio 'Debug' del directorio de compilación
 set(CMAKE_BUILD_TYPE Debug)
-
-# Generar los ejecutables en el directorio 'bin' del directorio de compilación
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
