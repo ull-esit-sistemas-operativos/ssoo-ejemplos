@@ -13,7 +13,8 @@ Concretamente los ejemplos incluidos son:
  * `src/cap06/syscall.s` - Llamadas al sistema en el simulador de MIPS SPIMi.
  * `src/fifo-client.cpp` - Cliente de comunicación entre procesos mediante tuberías con nombre.
  * `src/fifo-server.cpp` - Servidor de comunicación entre procesos mediante tuberías con nombre.
- * `src/cap09/fork.cpp` - Creación de procesos mediante `fork()` y ejecución de programas con `exec()`.
+ * `src/cap09/fork.cpp` - Creación de procesos mediante `fork().
+ * `src/cap09/fork-exec.cpp` - Ejecutar otros programas mediante `fork()` y `exec()`.
  * `src/led_test.cpp` - Acceso a la E/S serial en UNIX. Ejemplo con el control de un LED tricolor conectado a un Arduino.
  * `src/mmap.cpp` - Ficheros mapeados en memoria.
  * `src/pipe.cpp` - Comunicación entre procesos mediante tuberías.
@@ -29,19 +30,24 @@ Concretamente los ejemplos incluidos son:
 
 ### Requisitos
 
-Para la compilación de estos ejemplos es necesario disponer de los siguientes paquetes:
+Para la compilación de estos ejemplos en Linux es necesario tener instalados los siguientes paquetes:
 
  * `build-essential`
  * `cmake`
+
+Mientras que en Microsoft Windows se necesita **Visual Studio Build Tools**, que incluye una versión de **CMake**.
 
 ### Compilación
 
 Los ejemplos se compilan de manera sencilla siguiendo estos pasos:
 
- 1. Ir al subdirectorio `build/` dentro del directorio del proyecto.
- 2. Ejecutar `cmake ..`
- 3. Ejecutar `make`
+ 1. Ir al directorio del proyecto.
+ 2. Ejecutar `cmake -B build`
+ 3. Ejecutar `cmake --build build`
 
+En Microsoft Windows estos comandos deben ejecutarse desde la consola de **Developer Command Prompt**.
+
+En cada sistema solo se compilará los ejemplos compatibles.
 Los ejecutables resultantes de la compilación son almacenados en la carpeta
 `build/Debug/`.
 

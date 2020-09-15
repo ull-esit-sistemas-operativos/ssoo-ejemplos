@@ -1,4 +1,8 @@
-# syscall.s - Llamada al sistema en Linux para x86-64
+# syscall.s - Ejemplo de llamada al sistema en Linux para x86-64
+#
+#   Compilar:
+#
+#      gcc -o syscall syscall.s
 #
 #   En Linux para x86-64 los argumentos de las llamadas al sistema
 #   se mapean en registros así:
@@ -14,8 +18,8 @@
 #                   
 #       No se soportan más de 6 argumentos.
 #
-#       Ver '/usr/include/x86_64-linux-gnu/asm/unistd_64.h' para conocer
-#       el identificador de cada llamada al sistema. 
+#   Ver '/usr/include/x86_64-linux-gnu/asm/unistd_64.h' para conocer
+#   el identificador de cada llamada soportada por el sistema. 
 #
 
             .intel_syntax noprefix
