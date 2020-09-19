@@ -24,10 +24,10 @@ int main()
     {                   
         // Aquí solo entra el proceso hijo
         puts( "[HIJO] ¡Soy el proceso hijo!" );
-        printf( "[HIJO] El valor de mi variable 'pid' es: %d\n", pid );
-        printf( "[HIJO] Este es mi PID: %d\n", getpid() );
-        printf( "[HIJO] El PID de mi padre es: %d\n", getppid() );
         printf( "[HIJO] El valor de mi variable 'child' es: %d\n", child );
+        printf( "[HIJO] Este es mi PID: %d\n", getpid() );
+        printf( "[HIJO] El valor de mi variable 'pid' es: %d\n", pid );
+        printf( "[HIJO] El PID de mi padre es: %d\n", getppid() );
         
         puts( "[HIJO] Durmiendo 10 segundos..." );
         sleep(10);
@@ -40,10 +40,10 @@ int main()
     {   
         // Aquí solo entra el proceso padre
         puts( "[PADRE] ¡Soy el proceso padre!" );
-        printf( "[PADRE] El valor de mi variable 'pid' es: %d\n", pid );
-        printf( "[PADRE] Este es mi PID: %d\n", getpid() );
-        printf( "[PADRE] El PID de mi padre es: %d\n", getppid() );
         printf( "[PADRE] El valor de mi variable 'child' es: %d\n", child );
+        printf( "[PADRE] Este es mi PID: %d\n", getpid() );
+        printf( "[PADRE] El valor de mi variable 'pid' es: %d\n", pid );
+        printf( "[PADRE] El PID de mi padre es: %d\n", getppid() );
 
         puts( "[PADRE] Voy a esperar a que mi hijo termine..." );
         

@@ -15,7 +15,7 @@
 
 int main()
 {
-     // Crear un proceso hijo
+    // Crear un proceso hijo
     pid_t child = fork();
 
     if (child == 0)
@@ -23,14 +23,11 @@ int main()
         // Aquí solo entra el proceso hijo
         puts( "[HIJO] ¡Soy el proceso hijo!" );
         puts( "[HIJO] Voy a ejecutar el comando 'ls'" );
-        if ( execlp( "/bin/ls", "ls", "-l", NULL ) < 0)
-        {
-            fprintf( stderr, "Error (%d) al ejecuta el programa: %s\n", errno, strerror(errno) );
-            return 1;
-        }
-
-        puts( "[HIJO] ¡Ops! este mensaje nunca lo verás" );
-        return 0;
+        
+        execl( "/bin/ls", "ls", "-l", NULL );
+        
+        fprintf( stderr, "Error (%d) al ejecuta el programa: %s\n", errno, strerror(errno) );
+        return -1;
     }
     else if (child > 0)
     {   

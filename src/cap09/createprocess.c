@@ -30,7 +30,7 @@ int main()
         return 1;
     }
 
-    printf( "[PADRE] El PID del nuevo proceso hijo es: %d\n", GetProcessId(pi.hProcess) );
+    printf( "[PADRE] El PID del nuevo proceso hijo es: %d\n", pi.dwProcessId );
 
     // Esperar hasta que el hijo termine.
     WaitForSingleObject( pi.hProcess, INFINITE );
@@ -42,4 +42,6 @@ int main()
     // Cerrar los manejadores del proceso y del hilo principal del proceso. 
     CloseHandle( pi.hProcess );
     CloseHandle( pi.hThread );
+
+    return 0;
 }
