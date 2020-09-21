@@ -32,7 +32,7 @@ int main()
         puts( "[HIJO] Durmiendo 10 segundos..." );
         sleep(10);
 
-        int status = 56;
+        int status = 42;
         printf( "[HIJO] Salgo con %d ¡Adios!\n", status );
         return status;
     }
