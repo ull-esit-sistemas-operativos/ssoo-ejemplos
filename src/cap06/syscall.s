@@ -4,9 +4,8 @@
 #
 #      gcc -o syscall syscall.s
 #
-#   En Linux para x86-64 los argumentos de las llamadas al sistema
-#   se mapean en registros así:
-#
+#   En Linux para x86-64 los argumentos de las llamadas al sistema se mapean en registros así:
+#   
 #       Id. llamada al sistema: rax
 #       1er argumento:          rdi
 #       2º argumento:           rsi
@@ -18,8 +17,8 @@
 #                   
 #       No se soportan más de 6 argumentos.
 #
-#   Ver '/usr/include/x86_64-linux-gnu/asm/unistd_64.h' para conocer
-#   el identificador de cada llamada soportada por el sistema. 
+#   Ver '/usr/include/x86_64-linux-gnu/asm/unistd_64.h' para conocer el identificador de cada
+#   llamada soportada por el sistema. 
 #
 
             .intel_syntax noprefix
