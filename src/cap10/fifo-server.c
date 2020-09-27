@@ -6,7 +6,7 @@
 //
 //  Compilar:
 //
-//      gcc -o fifo-server fifo-server.c
+//      gcc -o fifo-server fifo-server.c common.c
 //
 
 #define _POSIX_C_SOURCE 200809L
@@ -20,74 +20,109 @@
 
 #include <errno.h>
 #include <stdbool.h>
-#include <stdatomic.h>
-#include <signal.h>
 #include <stdio.h>
 #include <string.h>
+
+#include "common.h"
 
 const char* CONTROL_FIFO_PATH = "/tmp/ssoo-class-fifo-server";
 const char* QUIT_COMMAND = "QUIT";
 
 const size_t MAX_COMMAND_SIZE = 100;
-const long CONTROL_POLLING_TIME = 500000000;    // 500 ms.
-const int ALARM_DEFAULT_TIME = 3;               // 3 seg. 
+const long CONTROL_POLLING_TIME = 500000000 /* ns. */;  // 500 ms.
 
-// Variable global para indicar que la aplicación debe terminar
-atomic_bool quit_app;
+int make_control_fifo();
+void cleanup_control_fifo();
 
-//////
-// Gestiona de la alarma
-//
-void alarm_signal_handler(int signum)
+int open_control_fifo(int* controlfd);
+int read_control_fifo(int controlfd, char* command);
+
+int main()
 {
-    time_t current_time = time(NULL);
-    
-    // Las funciones XXXX_r() son reentrantes => es seguro usarlas en manejadores de señal e hilos
-    char current_time_string[26];
-    ctime_r( &current_time, current_time_string );
-    
-    // No se puede usar printf(). Mo está dentro de las funciones seguras en manejadores de señal
-    write( STDOUT_FILENO, current_time_string, strlen(current_time_string) );
-    
-    // Programar la siguiente alarma
-    alarm( ALARM_DEFAULT_TIME );
+    int return_value = 0;
+    bool fifo_created = false;
+    bool fifo_opened = false;
+    int controlfd = -1;
+
+    // Las variables anteriores y las siguientes estructuras de if son para el manejo de errores
+    // en C. Asi liberarmos recursos y dejamos todo en su sitio al terminar, incluso si es por un
+    // error. Por ejemplo, si al salir por un error olvidamos eliminar la tubería, no podríamos
+    // volver a ejecutar el servidor hasta borrarla a mano. En C++ es mejor encapsular los recursos
+    // en clases y usar su destructor para liberarlos (RAII).
+
+    if (! return_value)
+    {
+        return_value = make_control_fifo();
+        if (return_value == 0)
+        {
+            fifo_created = true;
+        }
+    }
+
+    if (! return_value)
+    {
+        return_value = open_control_fifo(&controlfd);
+        if (return_value == 0)
+        {
+            fifo_opened = true;
+        }
+    }
+
+    if (! return_value)
+    {
+        printf( "Escuchando en la tubería de control '%s'...\n", CONTROL_FIFO_PATH);
+
+        struct timespec polling_time =
+        {
+            .tv_sec = 0,
+            .tv_nsec = CONTROL_POLLING_TIME
+        };
+          
+        setup_signals();
+        start_alarm();
+
+        // Leer de la tubería de control los comandos e interpretarlos.
+        while (!quit_app)
+        {
+            char command[MAX_COMMAND_SIZE + 1];
+
+            return_value = read_control_fifo( controlfd, command );
+            if (return_value != 0 || quit_app) break;
+
+            if (command[0] == '\0')
+            {
+                // No hay nada que leer. Dormimos un rato el proceso para no quemar CPU.
+                nanosleep(&polling_time, NULL);
+            }
+            else
+            {
+                if (strcmp(command, QUIT_COMMAND) == 0)
+                {
+                    quit_app = true;
+                }
+
+                // Aquí va código para detectar e interpretar más comandos...
+                //                
+            }
+        }
+
+        stop_alarm();
+    }
+
+    // Vamos a salir del programa...
+
+    if (fifo_created)
+    {
+        cleanup_control_fifo();
+    }
+
+    if (fifo_opened)
+    {
+        close(controlfd);
+    }
+
+    return return_value;
 }
-
-void start_alarm()
-{
-    struct sigaction alarm_action = {0};
-    alarm_action.sa_handler = &alarm_signal_handler;
-    sigaction( SIGALRM, &alarm_action, NULL );
-
-    alarm( ALARM_DEFAULT_TIME );   
-}
-
-void stop_alarm()
-{
-    alarm(0);
-}
-
-//////
-// Manejo de señales
-//
-
-void term_signal_handler(int signum)
-{
-    quit_app = true;
-}
-
-void setup_signals()
-{
-    struct sigaction term_action = {0};
-    term_action.sa_handler = &term_signal_handler;
-
-    sigaction( SIGTERM, &term_action, NULL );
-    sigaction( SIGINT, &term_action, NULL );
-}
-
-//////
-// Gestión de la tubería de control
-//
 
 int make_control_fifo()
 {
@@ -201,95 +236,4 @@ int read_control_fifo(int controlfd, char* command)
 
     *buffer = '\0';
     return 0;
-}
-
-//////
-// Programa principal
-//
-
-int main()
-{
-    int return_value = 0;
-    bool fifo_created = false;
-    bool fifo_opened = false;
-    int controlfd = -1;
-
-    // Las variables anteriores y las siguientes estructuras de if son para el manejo de errores
-    // en C. Asi liberarmos recursos y dejamos todo en su sitio al terminar, incluso si es por un
-    // error. Por ejemplo, si al salir por un error olvidamos eliminar la tubería, no podríamos
-    // volver a ejecutar el servidor hasta borrarla a mano. En C++ es mejor encapsular los recursos
-    // en clases y usar su destructor para liberarlos (RAII).
-
-    if (! return_value)
-    {
-        return_value = make_control_fifo();
-        if (return_value == 0)
-        {
-            fifo_created = true;
-        }
-    }
-
-    if (! return_value)
-    {
-        return_value = open_control_fifo(&controlfd);
-        if (return_value == 0)
-        {
-            fifo_opened = true;
-        }
-    }
-
-    if (! return_value)
-    {
-        printf( "Escuchando en la tubería de control '%s'...\n", CONTROL_FIFO_PATH);
-
-        struct timespec polling_time =
-        {
-            .tv_sec = 0,
-            .tv_nsec = CONTROL_POLLING_TIME
-        };
-          
-        setup_signals();
-        start_alarm();
-
-        // Leer de la tubería de control los comandos e interpretarlos.
-        while (!quit_app)
-        {
-            char command[MAX_COMMAND_SIZE + 1];
-
-            return_value = read_control_fifo( controlfd, command );
-            if (return_value != 0 || quit_app) break;
-
-            if (command[0] == '\0')
-            {
-                // No hay nada que leer. Dormimos un rato el proceso para no quemar CPU.
-                nanosleep(&polling_time, NULL);
-            }
-            else
-            {
-                if (strcmp(command, QUIT_COMMAND) == 0)
-                {
-                    quit_app = true;
-                }
-
-                // Aquí va código para detectar e interpretar más comandos...
-                //                
-            }
-        }
-
-        stop_alarm();
-    }
-
-    // Vamos a salir del programa...
-
-    if (fifo_created)
-    {
-        cleanup_control_fifo();
-    }
-
-    if (fifo_opened)
-    {
-        close(controlfd);
-    }
-
-    return return_value;
 }
