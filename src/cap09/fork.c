@@ -1,4 +1,4 @@
-// fork.cpp - Ejemplo del uso de fork() para crear procesos
+// fork.c - Ejemplo del uso de fork() para crear procesos
 //
 //  Compilar:
 //
