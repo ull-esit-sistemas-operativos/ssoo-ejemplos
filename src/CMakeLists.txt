@@ -4,9 +4,6 @@ if(UNIX)
 
     add_executable(shared-memory-sync shared-memory-sync.cpp)
     target_link_libraries(shared-memory-sync Threads::Threads)
-
-    add_executable(softstack-c softstack.c)
-    add_executable(softstack-cpp softstack.cpp)
 else()
     add_executable(threads threads.cpp)
     target_link_libraries(threads Threads::Threads)
