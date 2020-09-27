@@ -1,8 +1,5 @@
 if(UNIX)
-    add_executable(fifo-client fifo-client.cpp)
-    add_executable(fifo-server fifo-server.cpp)
     add_executable(mmap mmap.cpp)
-    add_executable(pipe pipe.cpp)
     add_executable(shared-memory shared-memory.cpp)
 
     add_executable(shared-memory-sync shared-memory-sync.cpp)

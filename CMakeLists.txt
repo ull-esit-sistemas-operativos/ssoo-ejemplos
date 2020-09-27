@@ -10,7 +10,7 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -25,6 +25,16 @@ set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 
+# Usar la librería {fmt} hasta std::format esté disponible (C++20)
+include(FetchContent)
+FetchContent_Declare(fmtlib
+    GIT_REPOSITORY "https://github.com/fmtlib/fmt.git"
+    GIT_TAG "7.0.3"
+)
+FetchContent_Populate(fmtlib)
+add_subdirectory(${fmtlib_SOURCE_DIR} ${fmtlib_BUILD_DIR})
+
 add_subdirectory(src)
 add_subdirectory(src/cap06)
 add_subdirectory(src/cap09)
+add_subdirectory(src/cap10)
