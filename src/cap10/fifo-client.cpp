@@ -4,9 +4,6 @@
 //  la hora. Además, crea un tubería FIFO a la que puede conectarse el programa cliente para
 //  darle órdenes.
 //
-//  Compilar:
-//
-//      g++ -o fifo-client-cpp fifo-client.cpp
 
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo 
 #include <cstring>      // <stdlib.h> como <cstdlib>. La primera es para usar con C mientras que

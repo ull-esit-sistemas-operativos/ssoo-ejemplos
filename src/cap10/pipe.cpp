@@ -3,10 +3,6 @@
 //  El programa solicita al usuario un número por la entrada estándar, lanza un proceso hijo para
 //  que calcule el factorial y lee de la tubería que los onecta el resultado para utilizarlo.
 //
-//  Compilar:
-//
-//      g++ -o pipe pipe.cpp
-//
 
 #include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo
 #include <sys/types.h>
@@ -22,35 +18,7 @@
 
 #include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
 
-int get_user_input()
-{
-    std::cout << "[PADRE] Introduzca un número: ";
-    std::cout.flush();
-    
-    int number;
-    std::cin >> number;
-    return number;
-}
-
-int calculate_factorial( int number )
-{
-    std::cout << "[HIJO] Calculando...";
-    std::cout.flush();
-
-    int factorial = 1;
-    for ( int i = 2; i < number; i++ )
-    {
-        factorial = factorial * number;
-
-        std::cout << '.';
-        std::cout.flush();
-    }
-
-    std::cout << '\n';
-    std::cout.flush();
-
-    return factorial;
-}
+#include <common/factorial.hpp>
 
 int main()
 {
@@ -62,7 +30,7 @@ int main()
     int return_code = pipe( fds.data() );
     if (return_code < 0) {
         std::cerr << fmt::format( "Error ({}) al crear la tubería: {}\n", errno, std::strerror(errno) );
-        return 3;
+        return 1;
     }
  
     // Crear el proceso hijo para el cálculo del factorial
@@ -122,7 +90,7 @@ int main()
         if (bytes_read < 0)
         {
             std::cerr << fmt::format( "Error ({}) al leer la tubería: {}\n", errno, std::strerror(errno) );
-            return 5;
+            return 3;
         }
 
         // Sabemos que el hijo ha terminado porque el otro extremo de la tubería se cerró.
@@ -137,7 +105,7 @@ int main()
         if (! (WIFEXITED(status) && WEXITSTATUS(status) == 0) )
         {
             std::cerr << "Error: La tarea terminó inesperadamente.\n";
-            return 6;
+            return 4;
         }
         
         std::string factorial(read_buffer.begin(), read_buffer_begin);
@@ -149,6 +117,6 @@ int main()
     {
         // Aquí solo entra el padre si no pudo crear el hijo
         std::cerr << fmt::format( "Error ({}) al crear el proceso: {}\n", errno, strerror(errno) );
-        return 4;
+        return 2;
     }
 }

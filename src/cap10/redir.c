@@ -91,7 +91,7 @@ int main()
         if (bytes_read < 0)
         {
             fprintf( stderr, "Error {%d} al leer la tubería: %s\n", errno, strerror(errno) );
-            return 5;
+            return 3;
         }
 
         // Sabemos que el hijo ha terminado porque el otro extremo de la tubería se cerró.
@@ -106,7 +106,7 @@ int main()
         if (! (WIFEXITED(status) && WEXITSTATUS(status) == 0) )
         {
             fputs( "Error: La tarea terminó inesperadamente.\n", stderr );
-            return 6;
+            return 4;
         }
 
         int num_of_lines = 0;
@@ -122,6 +122,6 @@ int main()
     else {
         // Aquí solo entra el padre si no pudo crear el hijo
         fprintf( stderr, "Error (%d) al crear el procesos: %s\n", errno, strerror(errno) );
-        return 3;
+        return 2;
     }
 }

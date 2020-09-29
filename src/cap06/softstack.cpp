@@ -5,7 +5,8 @@
 //      g++ -o softstack-cpp softstack.cpp
 //
 //  Uso:
-//              # ltrace -S -C -n4 ./softstack-cpp
+//
+//      # ltrace -S -C -n4 ./softstack-cpp
 //
 
 #include <cstdlib>

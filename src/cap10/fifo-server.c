@@ -4,10 +4,6 @@
 //  la hora. Además, crea un tubería FIFO a la que puede conectarse el programa cliente para
 //  darle órdenes.
 //
-//  Compilar:
-//
-//      gcc -o fifo-server fifo-server.c common.c
-//
 
 #define _POSIX_C_SOURCE 200809L
 
@@ -23,7 +19,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "common.h"
+#include <common/timeserver.h>
 
 const char* CONTROL_FIFO_PATH = "/tmp/ssoo-class-fifo-server";
 const char* QUIT_COMMAND = "QUIT";

@@ -1,4 +1,4 @@
-// common.c - Funciones comunes a los ejemplos del capítulo 10.
+// timeserver.c - Funciones comunes a los ejemplos del servidor de tiempo.
 //
 
 #define _POSIX_C_SOURCE 200809L
@@ -9,7 +9,7 @@
 #include <time.h>
 #include <unistd.h>
 
-#include "common.h"
+#include "timeserver.h"
 
 const int ALARM_DEFAULT_TIME = 3 /* seg. */; 
 
