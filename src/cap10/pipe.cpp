@@ -61,7 +61,7 @@ int main()
 
     int return_code = pipe( fds.data() );
     if (return_code < 0) {
-        std::cerr << fmt::format( "Error {} al crear la tubería: {}\n", errno, std::strerror(errno) );
+        std::cerr << fmt::format( "Error ({}) al crear la tubería: {}\n", errno, std::strerror(errno) );
         return 3;
     }
  
@@ -83,7 +83,7 @@ int main()
         ssize_t bytes_written = write( fds[1], factorial_string.c_str(), factorial_string.length() );
         if ( static_cast<size_t>(bytes_written) < factorial_string.length() )
         {
-            std::cerr << fmt::format( "Error {} al escribir en la tubería: {}\n", errno, strerror(errno) );
+            std::cerr << fmt::format( "Error ({}) al escribir en la tubería: {}\n", errno, strerror(errno) );
             return 1;
         }
 
@@ -102,13 +102,16 @@ int main()
         // Cerramos el descriptor de escritura.
         close(fds[1]);
 
+        // read() lee los bytes disponibles en la tubería. Para leer todo hay que leer hasta que
+        // devuelve 0, lo que indica un fin de archivo. Es decir, que todos los descriptores de
+        // escritura están cerrados.
         std::array<char, 255> read_buffer;
         char* read_buffer_begin = read_buffer.begin();
         ssize_t bytes_read = 1;
 
         while (bytes_read > 0)
         {
-            bytes_read = read( fds[0], read_buffer_begin, read_buffer.end() - read_buffer_begin - 1 );
+            bytes_read = read( fds[0], read_buffer_begin, read_buffer.end() - read_buffer_begin );
             if (bytes_read > 0)
             {
                 read_buffer_begin += bytes_read;
@@ -118,11 +121,13 @@ int main()
         // Aquí solo se llega si read() devuelve 0, que indica fin de archivo, o -1, que es un error.  
         if (bytes_read < 0)
         {
-            std::cerr << fmt::format( "Error {} al leer la tubería: {}\n", errno, strerror(errno) );
+            std::cerr << fmt::format( "Error ({}) al leer la tubería: {}\n", errno, std::strerror(errno) );
             return 5;
         }
 
-        // Sabemos que el hijo ha terminado. Aun así hay que llamar a wait() para:
+        // Sabemos que el hijo ha terminado porque el otro extremo de la tubería se cerró.
+        // Aun así hay que llamar a wait() para:
+        //
         //  a) Evitar que el proceso hijo se quede como proceso zombi.
         //  b) Obtener el estado de salida para saber si terminó con éxito (salió con 0) y, por tanto,
         //     que el contenido de buffer es válido.
@@ -137,13 +142,13 @@ int main()
         
         std::string factorial(read_buffer.begin(), read_buffer_begin);
         std::cout << fmt::format( "[PADRE] El factorial de {} es {}\n", number, factorial );
+
+        return 0;
     }
     else
     {
         // Aquí solo entra el padre si no pudo crear el hijo
-        std::cerr << fmt::format( "Error {} al crear el procesos: {}\n", errno, strerror(errno) );
+        std::cerr << fmt::format( "Error ({}) al crear el proceso: {}\n", errno, strerror(errno) );
         return 4;
     }
-
-    return 0;
 }

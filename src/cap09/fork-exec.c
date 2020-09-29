@@ -1,4 +1,4 @@
-// fork-exec.cpp - Ejemplo del uso de fork() para ejecutar otros programas
+// fork-exec.c - Ejemplo del uso de fork() y exec() para ejecutar otros programas
 //
 //  Compilar:
 //

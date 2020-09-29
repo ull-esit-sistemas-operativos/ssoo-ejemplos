@@ -9,4 +9,7 @@ else()
     
     add_executable(pipe pipe.cpp)
     target_link_libraries(pipe fmt::fmt)
+
+    add_executable(redir redir.c)
+    add_executable(signals signals.c)
 endif()

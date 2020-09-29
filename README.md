@@ -18,6 +18,7 @@ Concretamente los ejemplos incluidos son:
  * `src/cap10/fifo-client.cpp` - Cliente en C++ de comunicación entre procesos mediante tuberías con nombre.
  * `src/cap10/fifo-server.c` - Servidor de comunicación entre procesos mediante tuberías con nombre.
  * `src/cap10/pipe.cpp` - Comunicación entre procesos mediante tuberías.
+ * `src/cap10/redir.cpp` - Redirección de E/S estándar usando tuberías.
  * `src/led_test.cpp` - Acceso a la E/S serial en UNIX. Ejemplo con el control de un LED tricolor conectado a un Arduino.
  * `src/mmap.cpp` - Ficheros mapeados en memoria.
  * `src/shared-memory-sync.cpp` - Sincronización mediante semáforos con memoria compartida entre procesos.
