@@ -7,6 +7,7 @@
 //  Compilar:
 //
 //      gcc -o fifo-client-c fifo-client.c
+//
 
 #include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo
 #include <fcntl.h>      // Algunas operaciones del estándar POSIX con descriptores de archivo
@@ -15,9 +16,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define QUIT_COMMAND "QUIT"
-
-const char* CONTROL_FIFO_PATH = "/tmp/ssoo-class-fifo-server";
+#include "fifo-server.h"
 
 const char* make_quit_command()
 {
@@ -28,7 +27,7 @@ const char* make_quit_command()
 int main()
 {
     // Abrir la tubería usando su nombre, como un archivo convencional.
-    // También se puede abrir con fopen() o en C++ con std::ifstream.
+    // También se puede abrir con fopen() o, en C++, con std::ifstream.
     int controlfd = open( CONTROL_FIFO_PATH, O_WRONLY );
     if (controlfd < 0)
     {

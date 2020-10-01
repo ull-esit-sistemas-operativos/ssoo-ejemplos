@@ -35,7 +35,7 @@ _start:     mov rax, 1                  # Id. de write()
             mov rsi, offset message     # Dirección de la variable con el mensaje
             mov rdx, message_len        # Número de bytes del mensaje
             syscall                     # Hacer la llamada al sistema write() para
-                                        #  mostrar 'message' por la salida estándar 
+                                        # mostrar 'message' por la salida estándar 
       
             mov rax, 60                 # Id. de exit()
             mov rdi, 0                  # Valor de salida del proceso

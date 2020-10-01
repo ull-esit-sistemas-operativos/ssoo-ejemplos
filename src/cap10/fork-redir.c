@@ -1,8 +1,8 @@
-// redir.c - Ejemplo del uso de tuberías para redirigir la E/S estándar
+// fork-redir.c - Ejemplo del uso de tuberías para redirigir la E/S estándar
 //
 //  Compilar:
 //
-//      gcc -o redir redir.c
+//      gcc -o fork-redir fork-redir.c
 //
 
 #include <unistd.h>
@@ -30,8 +30,8 @@ int main()
     {                   
         // Aquí solo entra el proceso hijo
 
-        // El hijo hereda el acceso a la tubería pero de su copia de los descriptores de los dos
-        // extremos solo necesita el de escritura para escribir la salida estándar del proceso.
+        // El hijo hereda el acceso a la tubería, pero de su copia de los descriptores de los dos
+        // extremos solo necesita el de escritura, para escribir la salida estándar del proceso.
         // Cerramos el de lectura.
         close( fds[0] );
 
@@ -63,9 +63,11 @@ int main()
     {   
         // Aquí solo entra el proceso padre 
         
-        // El padre tiene acceso total a la tubería pero solo necesita el descriptor de lectura para
-        // obtener lo que escriba el hijo. Además, el descriptor de escritura del hijo debe ser el
-        // único descriptor de escritura abierto, para recibir un fin de archivo cuando el hijo muera.
+        // El padre tiene acceso total a la tubería pero solo necesita el descriptor de lectura
+        // para obtener el resultado del hijo. Además, el descriptor de escritura del hijo debe ser
+        // el único descriptor de escritura abierto, para recibir un fin de archivo cuando el hijo
+        // muera.
+        //
         // Cerramos el descriptor de escritura.
         close(fds[1]);
         
@@ -79,13 +81,17 @@ int main()
 
         while (bytes_read > 0 && total_bytes_read < sizeof(read_buffer))
         {
-            bytes_read = read( fds[0], read_buffer_begin, sizeof(read_buffer) - total_bytes_read );
+            int bytes_left = sizeof(read_buffer) - total_bytes_read;
+            bytes_read = read( fds[0], read_buffer_begin, bytes_left );
             if (bytes_read > 0)
             {
                 read_buffer_begin += bytes_read;
                 total_bytes_read += bytes_read;
             }
         }
+
+        // Hemos leido hasta el final. Ya no necesitamos el descriptor de lectura.
+        close( fds[0] );
 
         // Aquí solo se llega si read() devuelve 0, que indica fin de archivo, o -1, que es un error.  
         if (bytes_read < 0)
@@ -98,8 +104,8 @@ int main()
         // Aun así hay que llamar a wait() para:
         //
         //  a) Evitar que el proceso hijo se quede como proceso zombi.
-        //  b) Obtener el estado de salida para saber si terminó con éxito (salió con 0) y, por tanto,
-        //     que el contenido de buffer es válido.
+        //  b) Obtener el estado de salida para saber si terminó con éxito (salió con 0) y, por
+        //     tanto, que el contenido de buffer es válido.
         int status;
         wait( &status );
 
@@ -122,6 +128,9 @@ int main()
     else {
         // Aquí solo entra el padre si no pudo crear el hijo
         fprintf( stderr, "Error (%d) al crear el procesos: %s\n", errno, strerror(errno) );
+
+        close( fds[0] );
+        close( fds[1] );
         return 2;
     }
 }

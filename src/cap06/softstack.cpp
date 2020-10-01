@@ -1,4 +1,4 @@
-// softstack.cpp - Ejemplo para mostrar la pila de software del sistema operativo
+// softstack.cpp - Ejemplo en C++ para mostrar la pila de software del sistema operativo
 //
 //  Compilar:
 //

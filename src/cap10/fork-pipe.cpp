@@ -1,7 +1,11 @@
-// pipe.cpp - Ejemplo del uso de tuberías para comunicar procesos
+// fork-pipe.cpp - Ejemplo del uso de tuberías para comunicar procesos
 //
 //  El programa solicita al usuario un número por la entrada estándar, lanza un proceso hijo para
 //  que calcule el factorial y lee de la tubería que los onecta el resultado para utilizarlo.
+//
+//  Compilar:
+//
+//      g++ -I../ -lfmtlib -o fork-pipe fork-pipe.cpp ../common/factorial.cpp
 //
 
 #include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo
@@ -29,7 +33,8 @@ int main()
 
     int return_code = pipe( fds.data() );
     if (return_code < 0) {
-        std::cerr << fmt::format( "Error ({}) al crear la tubería: {}\n", errno, std::strerror(errno) );
+        std::cerr << fmt::format( "Error ({}) al crear la tubería: {}\n", errno,
+            std::strerror(errno) );
         return 1;
     }
  
@@ -48,25 +53,31 @@ int main()
         auto factorial_string = std::to_string( factorial );
 
         // Escribir en la tubería el resultado convertido a cadena sin el '\0' del final.
-        ssize_t bytes_written = write( fds[1], factorial_string.c_str(), factorial_string.length() );
+        ssize_t bytes_written = write( fds[1], factorial_string.c_str(),
+            factorial_string.length() );
         if ( static_cast<size_t>(bytes_written) < factorial_string.length() )
         {
-            std::cerr << fmt::format( "Error ({}) al escribir en la tubería: {}\n", errno, strerror(errno) );
+            std::cerr << fmt::format( "Error ({}) al escribir en la tubería: {}\n", errno,
+                strerror(errno) );
+            
+            close( fds[1] );
             return 1;
         }
 
         // Al terminar el proceso todos los recursos se liberan y la entrada de tubería del hijo
         // se cierra. Si ese es el último descriptor abierto de la entrada a la tubería, el padre
-        // recibirá un fin de archivo (EOF)) cuando no quede nada más por leer.
+        // recibirá un fin de archivo (EOF) cuando no quede nada más por leer.
         return 0;
     }
     else if (child > 0)
     {
         // Aquí solo entra el proceso padre 
         
-        // El padre tiene acceso total a la tubería pero solo necesita el descriptor de lectura para
-        // obtener el resultado del hijo. Además, el descriptor de escritura del hijo debe ser el
-        // único descriptor de escritura abierto, para recibir un fin de archivo cuando el hijo muera.
+        // El padre tiene acceso total a la tubería pero solo necesita el descriptor de lectura
+        // para obtener el resultado del hijo. Además, el descriptor de escritura del hijo debe ser
+        // el único descriptor de escritura abierto, para recibir un fin de archivo cuando el hijo
+        // muera.
+        //
         // Cerramos el descriptor de escritura.
         close(fds[1]);
 
@@ -86,10 +97,14 @@ int main()
             }
         }
 
+        // Hemos leido hasta el final. Ya no necesitamos el descriptor de lectura.
+        close( fds[0] );
+
         // Aquí solo se llega si read() devuelve 0, que indica fin de archivo, o -1, que es un error.  
         if (bytes_read < 0)
         {
-            std::cerr << fmt::format( "Error ({}) al leer la tubería: {}\n", errno, std::strerror(errno) );
+            std::cerr << fmt::format( "Error ({}) al leer la tubería: {}\n", errno,
+                std::strerror(errno) );
             return 3;
         }
 
@@ -97,8 +112,8 @@ int main()
         // Aun así hay que llamar a wait() para:
         //
         //  a) Evitar que el proceso hijo se quede como proceso zombi.
-        //  b) Obtener el estado de salida para saber si terminó con éxito (salió con 0) y, por tanto,
-        //     que el contenido de buffer es válido.
+        //  b) Obtener el estado de salida para saber si terminó con éxito (salió con 0) y, por
+        //     tanto, que el contenido de buffer es válido.
         int status;
         wait(&status);
         
@@ -116,7 +131,11 @@ int main()
     else
     {
         // Aquí solo entra el padre si no pudo crear el hijo
-        std::cerr << fmt::format( "Error ({}) al crear el proceso: {}\n", errno, strerror(errno) );
+        std::cerr << fmt::format( "Error ({}) al crear el proceso: {}\n", errno,
+            strerror(errno) );
+        
+        close( fds[0] );
+        close( fds[1] );
         return 2;
     }
 }

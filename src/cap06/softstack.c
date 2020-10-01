@@ -1,4 +1,4 @@
-// softstack.c - Ejemplo para mostrar la pila de software del sistema operativo
+// softstack.c - Ejemplo en C para mostrar la pila de software del sistema operativo
 //
 //  Compilar:
 //

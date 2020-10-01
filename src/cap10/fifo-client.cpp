@@ -4,6 +4,10 @@
 //  la hora. Además, crea un tubería FIFO a la que puede conectarse el programa cliente para
 //  darle órdenes.
 //
+//  Compilar:
+//
+//      g++ -o fifo-client-cpp fifo-client.cpp
+//
 
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo 
 #include <cstring>      // <stdlib.h> como <cstdlib>. La primera es para usar con C mientras que
@@ -11,12 +15,7 @@
 #include <fstream>      // espacio de nombres 'std', como el resto de la librería estándar de C++.
 #include <string>
 
-#include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
-
-using namespace std::string_literals;
-
-const std::string CONTROL_FIFO_PATH = "/tmp/ssoo-class-fifo-server"s;
-const std::string QUIT_COMMAND = "QUIT"s;
+#include "fifo-server.h"
 
 int main()
 {
