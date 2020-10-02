@@ -14,16 +14,9 @@
 const int ALARM_DEFAULT_TIME = 3 /* seg. */; 
 
 atomic_bool quit_app;
-bool signal_restart = true;
 
 void alarm_signal_handler(int signum);
 void term_signal_handler(int signum);
-
-
-void set_signal_restart(bool restart)
-{
-    signal_restart = restart;
-}
 
 //////
 // Control de la alarma
@@ -33,7 +26,6 @@ void start_alarm()
 {
     struct sigaction alarm_action = {0};
     alarm_action.sa_handler = &alarm_signal_handler;
-    alarm_action.sa_flags = signal_restart ? SA_RESTART : 0;
     sigaction( SIGALRM, &alarm_action, NULL );
 
     alarm( ALARM_DEFAULT_TIME );   
@@ -67,7 +59,6 @@ void setup_signals()
 {
     struct sigaction term_action = {0};
     term_action.sa_handler = &term_signal_handler;
-    term_action.sa_flags = signal_restart ? SA_RESTART : 0;
 
     sigaction( SIGTERM, &term_action, NULL );
     sigaction( SIGINT, &term_action, NULL );

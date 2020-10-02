@@ -57,16 +57,27 @@ int protected_main()
     // Leer del socket los comandos e interpretarlos.
     while (!quit_app)
     {
-        // Poner el proceso a la espera de que llegue un comando
-        auto message = sock.receive();
-
-        if (message == QUIT_COMMAND)
+        try
         {
-            quit_app = true;
-        }
+            // Poner el proceso a la espera de que llegue un comando
+            auto [message, remote_address] = sock.receive();
+ 
+            if (message == QUIT_COMMAND)
+            {
+                quit_app = true;
+            }
 
-        // Aquí va código para detectar e interpretar más comandos...
-        //                
+            // Aquí va código para detectar e interpretar más comandos...
+            //                
+
+        }
+        catch ( const std::system_error& e )
+        {
+            // El error EINTR no se debe a un error real sino a una señal que interrumpió una
+            // llamada al sistema. La ignoramos para comprobar si el manejador de señal cambió
+            // 'quit_app' y, si no, volver a intentar la lectura del mensajes.
+            if (e.code().value() != EINTR) throw;
+        }
     }
 
     stop_alarm();

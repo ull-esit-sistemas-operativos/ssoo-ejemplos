@@ -31,7 +31,8 @@ int protected_main()
     try
     {
         // Crear la cola de mensajes donde escuchar los comandos de control
-        control_queue = message_queue{ CONTROL_QUEUE_NAME, O_RDONLY, true };
+        control_queue = message_queue{ CONTROL_QUEUE_NAME, message_queue::open_mode::read_only,
+            true };
     }
     catch ( const std::system_error& e )
     {
@@ -51,16 +52,26 @@ int protected_main()
     // Leer de la cola de mensajes los comandos e interpretarlos.
     while (!quit_app)
     {
-        // Poner el proceso a la espera de que llegue un comando
-        auto message = control_queue.receive();
-
-        if (message == QUIT_COMMAND)
+        try
         {
-            quit_app = true;
-        }
+            // Poner el proceso a la espera de que llegue un comando
+            auto [message, prio] = control_queue.receive();
 
-        // Aquí va código para detectar e interpretar más comandos...
-        //                
+            if (message == QUIT_COMMAND)
+            {
+                quit_app = true;
+            }
+
+            // Aquí va código para detectar e interpretar más comandos...
+            //                
+        }
+        catch ( const std::system_error& e )
+        {
+            // El error EINTR no se debe a un error real sino a una señal que interrumpió una
+            // llamada al sistema. La ignoramos para comprobar si el manejador de señal cambió
+            // 'quit_app' y, si no, volver a intentar la lectura del mensajes.
+            if (e.code().value() != EINTR) throw;
+        }
     }
 
     stop_alarm();

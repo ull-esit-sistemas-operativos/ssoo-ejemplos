@@ -67,7 +67,6 @@ int main()
 
     if (! exit_code)
     {
-        set_signal_restart(false);
         setup_signals();
         start_alarm();
 

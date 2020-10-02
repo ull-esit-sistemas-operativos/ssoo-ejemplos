@@ -34,17 +34,18 @@ int protected_main(int argc, char* argv[])
     }
     
     // Abrir el archivo que se quiere mapear en memoria.
-    memory_map mapped_file { argv[1], O_RDONLY };
+    memory_map mapped_file { argv[1], memory_map::open_mode::read_only };
 
     // Reservar una región de la memoria virtual del proceso y mapear en ella el archivo.
-    size_t file_size = mapped_file.size();
-    auto memory_region =  mapped_file.map<uint8_t>( PROT_READ, file_size );
+    struct stat statinfo = mapped_file.status();
+    auto memory_region =  mapped_file.map<uint8_t>( PROT_READ, statinfo.st_size );
 
     const uint8_t* memory_region_begin = memory_region.get();
-    const uint8_t* memory_region_end = memory_region_begin + file_size;
+    const uint8_t* memory_region_end = memory_region_begin + statinfo.st_size;
     size_t lines = 0, words = 0, characters = 0;
     bool space_character = true;
 
+    // Contar líneas, palabras y caracteres
     for (const uint8_t* p = memory_region_begin; p < memory_region_end; ++p)
     {
         if (*p == '\n') lines++;

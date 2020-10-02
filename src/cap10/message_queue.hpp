@@ -10,40 +10,109 @@
 #include <cstring>
 #include <stdexcept>
 #include <system_error>
+#include <tuple>
 
 class message_queue
 {
 public:
 
+    static constexpr size_t MAX_MESSAGE_SIZE = 8196;
+
+    enum class open_mode
+    {
+        read_write = O_RDWR,
+        read_only = O_RDONLY,
+        write_only = O_WRONLY 
+    };
+
     message_queue() {}
 
-    message_queue(const std::string& name, int flags, bool create = false)
+    message_queue(const std::string& name, open_mode mode, bool server_mode = false)
         : name_{name}
     {
-        int flags_mask = O_RDWR | O_RDONLY |  O_WRONLY;
-        flags &= flags_mask;
-        flags |= create ? O_CREAT : 0;
+        int flags = static_cast<int>(mode);
 
-        // Abrir la cola de mensajes indicada en 'name'.
-        mqd_ = mq_open( name_.c_str(), flags, 666, nullptr );
-        if (mqd_ < 0)
+        if (server_mode)
         {
-            throw std::system_error( errno, std::system_category(), "Fallo en mqueue_open()" );
+            // En 'server_mode' somos responsable de crear la cola de mensajes y de borrarla al
+            // terminar. Usamos el flag O_EXCL para que de un error si ya existe una cola con el
+            // mismo nombre.
+            flags |= server_mode ? O_CREAT | O_EXCL : 0;
+
+            // Crear la cola de mensajes indicada en 'name'.
+            mqd_ = mq_open( name_.c_str(), flags, 666, nullptr );
+        }
+        else {
+            // Abrir la cola de mensajes indicada en 'name'.
+            mqd_ = mq_open( name_.c_str(), flags );
         }
 
-        created_ = create;
+        if (mqd_ < 0)
+        {
+            throw std::system_error( errno, std::system_category(), "Fallo en mq_open()" );
+        }
+
+        unlink_flag_ = server_mode;
     }
 
-    // Los objetos message_queue envuelven un recurso no duplicable fácilmente, el descriptor de
-    // de la cola de mensajes abierto en mqd_. Por eso estas clases no deben ser copiables.
-    // De lo contrario cada copia realmente haría referencia al mismo descriptor y eso puede dar
-    // problemas si una de las copias lo cierra.
+    // Asegurar que se liberan todos los recursos reservados en el constructor.
+    ~message_queue()
+    {
+        if (mqd_ >= 0) 
+        {
+            mq_close( mqd_ );
+        }
+
+        if (unlink_flag_)
+        {
+            mq_unlink( name_.c_str() );
+        }
+    }
+
+    // Función para recibir mensajes que hayan llegado a la cola de mensajes.
+    // Devuelve el mensaje y su prioridad.
+    std::tuple<std::string, unsigned int> receive()
+    {
+        std::array<char, MAX_MESSAGE_SIZE> buffer;
+        unsigned int prio;
+
+        ssize_t return_code = mq_receive(mqd_, buffer.data(), buffer.size(), &prio);
+        if (return_code < 0)
+        {
+            throw std::system_error( errno, std::system_category(), "Fallo en mq_receive()" );
+        }
+
+        return {
+            { buffer.data(), static_cast<size_t>(return_code) },    // Mensaje
+            prio                                                    // Prioridad
+        };
+    }
+
+    // Función para enviar mensajes a la cola de mensajes.
+    void send(const std::string& message, unsigned int priority = 0 )
+    {
+        ssize_t return_code = mq_send( mqd_, message.c_str(), message.size(), priority );
+        if (return_code < 0)
+        {
+            throw std::system_error( errno, std::system_category(), "Fallo en mq_send()" );
+        }
+    }
+
+    // Si un objeto de C++ se puede copiar es asumimos que la copia es independiente del original,
+    // que se puede destruir sin problemas. Pero cuando un objeto de C++ contiene un recurso
+    // del sistema que no se puede duplicar, es mejor hacer que el objeto de C++ tampoco sea
+    // copiable, para que imite las restricciones del recurso que abstrae. De lo contrario podemos
+    // tener problemas por tener, por ejemplo, dos objetos de C++ que hacen referencia al mismo
+    // descriptor de cola de mensajes; porque si uno de ellos es destruido, destruirá el recurso
+    // compartido por ambos.
+
+    // Borrar el constructor de copia y el operador de asignación para evitar el clonado del objeto.
 
     message_queue(const message_queue&) = delete;
     message_queue& operator=(const message_queue&) = delete;
 
-    // Pero sí podemos mover objetos, haciendo que el operador de asignación por movimiento se
-    // lleve el descriptor y lo pierda el de origen.
+    // Sí podemos mover objetos, haciendo que el operador de asignación por movimiento se
+    // lleve el descriptor al nuevo objeto y lo pierda el de origen.
 
     message_queue& operator=(message_queue&& lhs)
     {
@@ -53,47 +122,15 @@ public:
         mqd_ = lhs.mqd_;
         lhs.mqd_ = -1;
 
-        created_ = lhs.created_;
-        lhs.created_ = false;
+        // Mover el flag. Solo un objeto de C++ debe hacerse cargo de borrar la cola de mensajes.
+        unlink_flag_ = lhs.unlink_flag_;
+        lhs.unlink_flag_ = false;
 
         return *this;
     }
 
-    ~message_queue()
-    {
-        if (mqd_ >= 0) 
-        {
-            mq_close( mqd_ );
-            if (created_)
-            {
-                mq_unlink( name_.c_str() );
-            }
-        }
-    }
-
-    std::string receive()
-    {
-        std::array<char, 8196> buffer;
-        ssize_t return_code = mq_receive(mqd_, buffer.data(), buffer.size(), nullptr);
-        if (return_code < 0)
-        {
-            throw std::system_error( errno, std::system_category(), "Fallo en mq_receive()" );
-        }
-
-        return { buffer.data(), static_cast<size_t>(return_code) };
-    }
-
-    void send(const std::string& message, unsigned int priority = 0 )
-    {
-        ssize_t return_code = mq_send( mqd_, message.c_str(), message.size(), priority );
-        if (return_code < 0)
-        {
-            throw std::system_error( errno, std::system_category(), "Fallo en mqueue_send()" );
-        }
-    }
-
 private:
     std::string name_;
-    bool created_ = false;
+    bool unlink_flag_ = false;
     int mqd_ = -1;
 };

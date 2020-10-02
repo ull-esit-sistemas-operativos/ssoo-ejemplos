@@ -4,5 +4,5 @@
 
 #pragma once
 
-#define CONTROL_QUEUE_NAME "ssoo-class-queue-server"
+#define CONTROL_QUEUE_NAME "/ssoo-class-queue-server"
 #define QUIT_COMMAND "QUIT"

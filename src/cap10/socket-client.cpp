@@ -32,7 +32,7 @@
 int protected_main()
 {
     // Crear un socket local para comunicarnos con el servidor.
-    socket_t sock { SOCKET_UNNAMED };
+    socket_t sock { socket_t::SOCKET_UNNAMED };
 
     std::cout << "Cerrando el servidor...\n";
 

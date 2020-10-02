@@ -13,11 +13,6 @@ extern "C" {
 extern atomic_bool quit_app;
 #endif
 
-// Para indicar si las funciones que instalan manejadores de señal deben activar el flag
-// SA_RESTART (por defecto) o no. Es un hack para 'fifo-server.c' que necesita que no se active
-// el flag para que cuando llegue una señal la llamada al sistema en curso se interrumpa.
-void set_signal_restart(bool restart);
-
 // Control de la alarma
 void start_alarm();
 void stop_alarm();

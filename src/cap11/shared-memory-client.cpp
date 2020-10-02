@@ -50,7 +50,7 @@ int protected_main()
 
     // Reservar una región de la memoria virtual del proceso y mapear en ella el objeto de memoria
     // compartida recientemente creado.
-    auto memory_region = control_shm.map<memory_content>( PROT_READ | PROT_WRITE, 0 );
+    auto memory_region = control_shm.map<memory_content>( PROT_READ | PROT_WRITE );
 
     // Poner el proceso a la espera de que se pueda enviar un comando.
     sem_wait( &memory_region->empty );
