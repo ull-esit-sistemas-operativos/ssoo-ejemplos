@@ -1,4 +1,4 @@
-## Ejemplos utilizados durante las clases de Sistemas Operativos
+## Ejemplos de las clases de Sistemas Operativos
 
 [![CC-0 license](https://img.shields.io/badge/License-CC--0-blue.svg)](https://creativecommons.org/publicdomain/zero/1.0)
 
