@@ -1,9 +1,9 @@
 // shared-memory-client.cpp - Cliente del ejemplo del uso de memoria compartida con nombre para
 //                            comunicar procesos
 //
-//  El programa servidor utilizar alarm() y las señales del sistema para mostrar periódicamente
-//  la hora. Además, crea unq región de memoria compartia a la que peude conectarse el programa
-//  cliente para darle órdenes.
+//  El programa servidor utiliza alarm() y las señales del sistema para mostrar periódicamente
+//  la hora. Además, crea una región de memoria compartia a la que puede unirseel programa cliente
+//  para darle órdenes.
 //
 //  Los problemas de sincronización no son sencillos. Para simplicar, vamos a suponer que solo
 //  hay un cliente conectado al mismo tiempo. Así solo necesitaremos dos semáforos.
@@ -24,7 +24,7 @@
 #include "shared-memory-server.h"
 
 // Como no hay funciones para gestionar memoria compartida en C++, tenemos que usar directamente la
-// librería del sistema. Abstrayéndo su uso detrás de clases, simplificamos el resto del código del
+// librería del sistema. Abstrayendo su uso detrás de clases, simplificamos el resto del código del
 // programa, facilitamos el mamejo de errores y que todos los recursos se liberen. 
 
 #include "shared_memory.hpp"
@@ -40,11 +40,12 @@ int protected_main()
     }
     catch ( const std::system_error& e )
     {
-        if (e.code().value() == EEXIST)
+        if (e.code().value() == ENOENT)
         {
             std::cerr << "Error: El servidor no parece estar en ejecución.\n";
             return 1;
         }
+        else throw;
     }
 
     // Reservar una región de la memoria virtual del proceso y mapear en ella el objeto de memoria

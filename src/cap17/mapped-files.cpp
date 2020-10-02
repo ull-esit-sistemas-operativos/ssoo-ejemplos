@@ -17,7 +17,7 @@
 #include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
 
 // Como no hay funciones para gestionar ficheros mapeados en memoria en C++, tenemos que usar
-// directamente la librería del sistema. Abstrayéndo su uso detrás de clases, simplificamos el
+// directamente la librería del sistema. Abstrayendo su uso detrás de clases, simplificamos el
 // resto del código del programa, facilitamos el mamejo de errores y que todos los recursos se
 // liberen. 
 

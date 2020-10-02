@@ -1,7 +1,7 @@
 // fifo-client.c - Cliente del ejemplo del uso de tuberías con nombre para comunicar procesos
 //
-//  El programa servidor utilizar alarm() y las señales del sistema para mostrar periódicamente
-//  la hora. Además, crea un tubería FIFO a la que puede conectarse el programa cliente para
+//  El programa servidor utiliza alarm() y las señales del sistema para mostrar periódicamente
+//  la hora. Además, crea una tubería FIFO a la que puede conectarse el programa cliente para
 //  darle órdenes.
 //
 //  Compilar:
@@ -31,7 +31,7 @@ int main()
     int controlfd = open( CONTROL_FIFO_PATH, O_WRONLY );
     if (controlfd < 0)
     {
-        if (errno == EEXIST)
+        if (errno == ENOENT)
         {
             fputs( "Error: El servidor no parece estar en ejecución.\n", stderr);
             return 1;

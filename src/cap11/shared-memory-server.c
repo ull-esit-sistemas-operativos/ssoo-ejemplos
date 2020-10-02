@@ -1,9 +1,9 @@
 // shared-memory-server.c - Servidor del ejemplo del uso de memoria compartida con nombre para
 //                          comunicar procesos
 //
-//  El programa servidor utilizar alarm() y las señales del sistema para mostrar periódicamente
-//  la hora. Además, crea unq región de memoria compartia a la que peude conectarse el programa
-//  cliente para darle órdenes.
+//  El programa servidor utiliza alarm() y las señales del sistema para mostrar periódicamente
+//  la hora. Además, crea una región de memoria compartia a la que puede unirseel programa cliente
+//  para darle órdenes.
 //
 //  Los problemas de sincronización no son sencillos. Para simplicar, vamos a suponer que solo
 //  hay un cliente conectado al mismo tiempo. Así solo necesitaremos dos semáforos.
@@ -31,7 +31,7 @@ int create_control_shm(int* controlfd);
 void cleanup_control_shm();
 
 int init_control_memory(int controlfd, struct memory_content** memory_region);
-int free_control_memory(struct memory_content* memory_region);
+void free_control_memory(struct memory_content* memory_region);
 
 int main()
 {
@@ -182,7 +182,7 @@ int init_control_memory(int controlfd, struct memory_content** memory_region)
     return 0;
 }
 
-int free_control_memory(struct memory_content* memory_region)
+void free_control_memory(struct memory_content* memory_region)
 {
     // Liberar la región de memoria reservada para mapear el objeto de memoria compartida.
     munmap( memory_region, sizeof(struct memory_content) );

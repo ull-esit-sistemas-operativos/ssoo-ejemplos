@@ -19,12 +19,10 @@ class memory_map
 {
 public:
 
-    memory_map()
-        : fd_{-1}
-    {}
+    memory_map() {}
 
-    memory_map(const std::string pathname, int flags)
-        : pathname_{pathname}, fd_{-1}
+    memory_map(const std::string& pathname, int flags)
+        : pathname_{pathname}
     {
         int flags_mask = O_RDWR | O_RDONLY |  O_WRONLY;
         flags &= flags_mask;
@@ -39,20 +37,20 @@ public:
 
     // Los objetos memory_map envuelven un recurso no duplicable fácilmente, el descriptor de
     // archivo abierto en fd_. Por eso estas clases no deben ser copiables. De lo contrario cada
-    // copia realmente hará referencia al mismo descriptor de archivo y eso puede dar problemas si
-    // una de las copias los cierra.
+    // copia realmente haría referencia al mismo descriptor de archivo y eso puede dar problemas si
+    // una de las copia lo cierra.
 
     memory_map(const memory_map&) = delete;
     memory_map& operator=(const memory_map&) = delete;
 
-    // Pero sí podemos mover objetos, haciendo que el asignado por movimiento se lleve el
-    // descriptor y lo pierda el de origen.
+    // Pero sí podemos mover objetos, haciendo que el operador de asignación por movimiento se
+    // lleve el descriptor y lo pierda el de origen.
 
     memory_map& operator=(memory_map&& lhs)
     {
         pathname_ = std::move(lhs.pathname_);
 
-        // Mover el descriptor de archivo al objeto asignado.
+        // Mover el descriptor del socket al objeto destino.
         fd_ = lhs.fd_;
         lhs.fd_ = -1;
 
@@ -76,7 +74,7 @@ public:
         if (fd_ < 0) throw std::runtime_error( "El objeto no contiene un descriptor válido." );
 
         length = length ? length : sizeof(T);
-        void* mapped_mem = mmap( NULL, length, prot, MAP_SHARED, fd_, offset );
+        void* mapped_mem = mmap( nullptr, length, prot, MAP_SHARED, fd_, offset );
         if (mapped_mem == MAP_FAILED)
         {
             throw std::system_error( errno, std::system_category(), "Fallo en mmap()" );
@@ -107,5 +105,5 @@ public:
 
 private:
     std::string pathname_;
-    int fd_;
+    int fd_ = -1;
 };

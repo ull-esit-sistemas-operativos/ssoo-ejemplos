@@ -19,12 +19,10 @@ class shared_memory
 {
 public:
 
-    shared_memory()
-        : fd_{-1}
-    {}
+    shared_memory() {}
 
-    shared_memory(const std::string name, bool create = false, size_t size = 0 )
-        : name_{name}, created_{false}, size_{size}, fd_{-1}
+    shared_memory(const std::string& name, bool create = false, size_t size = 0 )
+        : name_{name}, size_{size}
     {
         int flags = create ? O_CREAT : 0;
         flags |= O_RDWR;
@@ -51,14 +49,14 @@ public:
 
     // Los objetos shared_memory envuelven un recurso no duplicable fácilmente, el descriptor de
     // archivo del objeto de memoria compartida abierto en fd_. Por eso estas clases no deben ser
-    // copiables. De lo contrario cada copia realmente hará referencia al mismo descriptor de
-    // archivo y eso puede dar problemas si una de las copias los cierra.
+    // copiables. De lo contrario cada copia realmente haría referencia al mismo descriptor de
+    // archivo y eso puede dar problemas si una de las copias lo cierra.
 
     shared_memory(const shared_memory&) = delete;
     shared_memory& operator=(const shared_memory&) = delete;
 
-    // Pero sí podemos mover objetos, haciendo que el asignado por movimiento se lleve el
-    // descriptor y lo pierda el de origen.
+    // Pero sí podemos mover objetos, haciendo que el operador de asignación por movimiento se
+    // lleve el descriptor y lo pierda el de origen.
 
     shared_memory& operator=(shared_memory&& lhs)
     {
@@ -68,6 +66,9 @@ public:
         // Mover el descriptor de archivo al objeto asignado.
         fd_ = lhs.fd_;
         lhs.fd_ = -1;
+
+        created_ = lhs.created_;
+        lhs.created_ = false;
 
         return *this;
     }
@@ -94,7 +95,7 @@ public:
         if (fd_ < 0) throw std::runtime_error( "El objeto no contiene un descriptor válido." );
 
         length = length ? length : sizeof(T);
-        void* shared_mem = mmap( NULL, length, prot, MAP_SHARED, fd_, offset );
+        void* shared_mem = mmap( nullptr, length, prot, MAP_SHARED, fd_, offset );
         if (shared_mem == MAP_FAILED)
         {
             throw std::system_error( errno, std::system_category(), "Fallo en mmap()" );
@@ -110,7 +111,7 @@ public:
 
 private:
     std::string name_;
-    bool created_;
+    bool created_ = false;
     size_t size_;
-    int fd_;
+    int fd_ = -1;
 };
