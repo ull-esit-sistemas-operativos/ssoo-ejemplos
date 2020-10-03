@@ -43,11 +43,10 @@ void segv_signal_handler(int signum)
     const char* message = "¡Algo ha ido mal! Señal SIGSEGV recibida.\n";
     write( STDOUT_FILENO, message, strlen(message));
 
-    // No podemos ignorar el problema porque si salimos de aquí sin hacer nada se reintentará
-    // la instrucción que causo el error, devolviéndonos aquí de nuevo, indefinidamente.
-    ///
-    // Lo interesante es que esta señal nos da la oportunidad de hacer cosas críticas antes de
-    // terminar.
+    // No podemos ignorar el problema porque si salimos de aquí sin hacer nada se reintentará la instrucción que causo
+    // el error, devolviéndonos aquí de nuevo, indefinidamente.
+    //
+    // Lo interesante es que esta señal nos da la oportunidad de hacer cosas críticas antes de terminar.
 
     exit(1);
 }

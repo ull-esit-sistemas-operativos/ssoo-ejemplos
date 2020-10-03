@@ -1,4 +1,4 @@
-// socket-server.hpp -Cliente del ejemplo del uso de socketspara comunicar procesos
+// socket-server.hpp -Cliente del ejemplo del uso de sockets para comunicar procesos
 //
 
 #pragma once

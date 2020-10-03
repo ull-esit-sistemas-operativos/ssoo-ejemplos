@@ -41,16 +41,14 @@ public:
             // Construir la dirección en el formato que necesita bind().
             sockaddr_un local_address = make_address( pathname_ );
 
-            int return_code = bind( sockfd_, reinterpret_cast<sockaddr*>(&local_address),
-                sizeof(local_address) );
+            int return_code = bind( sockfd_, reinterpret_cast<sockaddr*>(&local_address), sizeof(local_address) );
             if (return_code < 0)
             {
                 throw std::system_error( errno, std::system_category(), "Fallo en bind()" );
             }
 
-            // Recordar que somos los responsables de eliminar el archivo especial que representa
-            // a los socket de dominio UNIX en el sistema de archivos cuando llegue el momento de
-            // destruir el objeto de C++.
+            // Recordar que somos los responsables de eliminar el archivo especial que representa a los socket de
+            // dominio UNIX en el sistema de archivos cuando llegue el momento de destruir el objeto de C++.
             unlink_flag_ = true;
         }
     }
@@ -82,9 +80,8 @@ public:
         sockaddr_un remote_address;
         socklen_t address_length = sizeof(remote_address);
 
-        // Al volver de recvfrom, si todo ha ido bien, 'buffer' contiene el mensaje,
-        // 'remote_address' la dirección del socket del remitente y 'address_length' el tamaño
-        // de la estructura copiada en 'remote_address';       
+        // Al volver de recvfrom, si todo ha ido bien, 'buffer' contiene el mensaje, 'remote_address' la dirección del
+        // socket del remitente y 'address_length' el tamaño de la estructura copiada en 'remote_address';       
         ssize_t return_code = recvfrom(sockfd_, buffer.data(), buffer.size(), 0,
             reinterpret_cast<sockaddr*>(&remote_address), &address_length);
         if (return_code < 0)
@@ -112,21 +109,19 @@ public:
         }
     }
 
-    // Si un objeto de C++ se puede copiar es asumimos que la copia es independiente del original,
-    // que se puede destruir sin problemas. Pero cuando un objeto de C++ contiene un recurso
-    // del sistema que no se puede duplicar, es mejor hacer que el objeto de C++ tampoco sea
-    // copiable, para que imite las restricciones del recurso que abstrae. De lo contrario podemos
-    // tener problemas por tener, por ejemplo, dos objetos de C++ que hacen referencia al mismo
-    // descriptor de socket; porque si uno de ellos es destruido, destruirá el recurso
-    // compartido por ambos.
+    // Si un objeto de C++ se puede copiar es asumimos que la copia es independiente del original, que se puede
+    // destruir sin problemas. Pero cuando un objeto de C++ contiene un recurso del sistema que no se puede duplicar,
+    // es mejor hacer que el objeto de C++ tampoco sea copiable, para que imite las restricciones del recurso que
+    // abstrae. De lo contrario podemos tener problemas por tener, por ejemplo, dos objetos de C++ que hacen referencia
+    // al mismo descriptor de socket; porque si uno de ellos es destruido, destruirá el recurso compartido por ambos.
 
     // Borrar el constructor de copia y el operador de asignación para evitar el clonado del objeto.
 
     socket_t(const socket_t&) = delete;
     socket_t& operator=(const socket_t&) = delete;
 
-    // Sí podemos mover objetos, haciendo que el operador de asignación por movimiento se
-    // lleve el descriptor al nuevo objeto y lo pierda el de origen.
+    // Sí podemos mover objetos, haciendo que el operador de asignación por movimiento se lleve el descriptor al nuevo
+    // objeto y lo pierda el de origen.
 
     socket_t& operator=(socket_t&& lhs)
     {

@@ -24,9 +24,8 @@ public:
     shared_memory(const std::string& name, bool server_mode = false, size_t size = -1)
         : name_{name}, size_{size}
     {
-        // En 'server_mode' somos responsable de crear el objeto de memoria compartida y de
-        // borrarlo al terminar. Usamos el flag O_EXCL para que de un error si ya existe un
-        // objeto con el mismo nombre.
+        // En 'server_mode' somos responsable de crear el objeto de memoria compartida y de borrarlo al terminar.
+        // Usamos el flag O_EXCL para que de un error si ya existe un objeto con el mismo nombre.
         int flags = O_RDWR | (server_mode ? O_CREAT | O_EXCL : 0);
 
         // Abrir el objeto de memoria indicado en 'name'.
@@ -36,8 +35,8 @@ public:
             throw std::system_error( errno, std::system_category(), "Fallo en shm_open()" );
         }
 
-        // Recordar que somos los responsables de eliminar el objeto de memoria compartida
-        // para cuando llegue el momento de destruir el objeto de C++.
+        // Recordar que somos los responsables de eliminar el objeto de memoria compartida para cuando llegue el
+        // momento de destruir el objeto de C++.
         unlink_flag_ = server_mode;
 
         // Si el objeto se ha creado, su tamaño es 0. Extenderlo a la longitud indicada en 'size'.
@@ -65,14 +64,14 @@ public:
         }
     }
 
-    // Para reservar una región de la memoria virtual del proceso y mapear en ella el objeto de
-    // memoria compartida, se usa mmap(). Mientras que para liberarlo munmap().
-    // En C++ no es adecuado depender de "acordanos de liberarla" cuando ya no la necesitamos.
-    // En su lugar, debemos usar punteros inteligentes (como std::unique_ptr) para que se llame
-    // automáticamente a munmap() cuando ya no la vayamos a necesitar más.
+    // Para reservar una región de la memoria virtual del proceso y mapear en ella el objeto de memoria compartida,
+    // se usa mmap(). Mientras que para liberarlo munmap().
+    // En C++ no es adecuado depender de "acordamos de liberarla" cuando ya no la necesitamos. En su lugar, debemos
+    // usar punteros inteligentes (como std::unique_ptr) para que se llame automáticamente a munmap() cuando ya no
+    // la vayamos a necesitar más.
 
-    // Esta funcion mapea num objetos de tipo T, es decir, sizeof(T) * num bytes. Así se puede
-    // acceder a un solo elemento T o un array de T en la memoria compartida.
+    // Esta función mapea num objetos de tipo T, es decir, sizeof(T) * num bytes. Así se puede acceder a un solo
+    // elemento T o un array de T en la memoria compartida.
 
     template <typename T>
     std::unique_ptr<T, std::function<void(T*)>> map( int prot, size_t num = 1, off_t offset = 0 )
@@ -88,7 +87,7 @@ public:
         auto mmap_deleter = [num](T* addr)
         {
             munmap(
-                addr,               // Puntero a la región a liberar (devuelto por mmap)
+                addr,               // Puntero a la región a liberar (devuelto por mmap())
                 num * sizeof(T)     // Tamaño de la porción a liberar. La Liberamos toda.
             );
         };
@@ -96,21 +95,20 @@ public:
         return { static_cast<T*>(shared_mem),  mmap_deleter };
     }
 
-    // Si un objeto de C++ se puede copiar es asumimos que la copia es independiente del original,
-    // que se puede destruir sin problemas. Pero cuando un objeto de C++ contiene un recurso
-    // del sistema que no se puede duplicar, es mejor hacer que el objeto de C++ tampoco sea
-    // copiable, para que imite las restricciones del recurso que abstrae. De lo contrario podemos
-    // tener problemas por tener, por ejemplo, dos objetos de C++ que hacen referencia al mismo
-    // objeto de memoria compartida; porque si uno de ellos es destruido, destruirá el recurso
-    // compartido por ambos.
+    // Si un objeto de C++ se puede copiar es asumimos que la copia es independiente del original, que se puede
+    // destruir sin problemas. Pero cuando un objeto de C++ contiene un recurso del sistema que no se puede duplicar,
+    // es mejor hacer que el objeto de C++ tampoco sea copiable, para que imite las restricciones del recurso que
+    // abstrae. De lo contrario podemos tener problemas por tener, por ejemplo, dos objetos de C++ que hacen referencia
+    // al mismo objeto de memoria compartida; porque si uno de ellos es destruido, destruirá el recurso compartido
+    // por ambos.
 
     // Borrar el constructor de copia y el operador de asignación para evitar el clonado del objeto.
 
     shared_memory(const shared_memory&) = delete;
     shared_memory& operator=(const shared_memory&) = delete;
 
-    // Sí podemos mover objetos, haciendo que el operador de asignación por movimiento se
-    // lleve el descriptor al nuevo objeto y lo pierda el de origen.
+    // Sí podemos mover objetos, haciendo que el operador de asignación por movimiento se lleve el descriptor al nuevo
+    // objeto y lo pierda el de origen.
 
     shared_memory& operator=(shared_memory&& lhs)
     {
@@ -121,8 +119,7 @@ public:
         fd_ = lhs.fd_;
         lhs.fd_ = -1;
 
-        // Mover el flag. Solo un objeto de C++ debe hacerse cargo de borrar el objeto
-        // de memoria compartida.
+        // Mover el flag. Solo un objeto de C++ debe hacerse cargo de borrar el objeto de memoria compartida.
         unlink_flag_ = lhs.unlink_flag_;
         lhs.unlink_flag_ = false;
 

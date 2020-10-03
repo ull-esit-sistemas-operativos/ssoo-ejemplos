@@ -1,7 +1,7 @@
 // mapped-files.cpp - Ejemplo del uso de mmap() para mapear archivos
 //
-//  El programa mapea el archivo indicado por la línea de comandos en la memoria y calcula el
-//  el número de líneas, palabras y caracteres, como hace el comando wc.
+//  El programa mapea el archivo indicado por la línea de comandos en la memoria y calcula el el número de líneas,
+//  palabras y caracteres, como hace el comando wc.
 //
 //  Compilar:
 //
@@ -16,10 +16,9 @@
 
 #include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
 
-// Como no hay funciones para gestionar ficheros mapeados en memoria en C++, tenemos que usar
-// directamente la librería del sistema. Abstrayendo su uso detrás de clases, simplificamos el
-// resto del código del programa, facilitamos el mamejo de errores y que todos los recursos se
-// liberen. 
+// Como no hay funciones para gestionar ficheros mapeados en memoria en C++, tenemos que usar directamente la librería
+// del sistema. Abstrayendo su uso detrás de clases, simplificamos el resto del código del programa, facilitamos el
+// manejo de errores y que todos los recursos se liberen. 
 
 #include "memory_map.hpp"
 

@@ -1,8 +1,7 @@
 // fifo-client.c - Cliente del ejemplo del uso de tuberías con nombre para comunicar procesos
 //
-//  El programa servidor utiliza alarm() y las señales del sistema para mostrar periódicamente
-//  la hora. Además, crea una tubería FIFO a la que puede conectarse el programa cliente para
-//  darle órdenes.
+//  El programa servidor utiliza alarm() y las señales del sistema para mostrar periódicamente la hora. Además, crea
+//  una tubería FIFO a la que puede conectarse el programa cliente para darle órdenes.
 //
 //  Compilar:
 //

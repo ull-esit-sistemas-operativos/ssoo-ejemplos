@@ -1,8 +1,7 @@
-// mqueue-client.cpp - Cliente del ejemplo del uso de colas de mensajes para comunicar
-//                     procesos
+// mqueue-client.cpp - Cliente del ejemplo del uso de colas de mensajes para comunicar procesos
 //
-//  El programa servidor utiliza alarm() y las señales del sistema para mostrar periódicamente
-//  la hora. Además, crea una cola de mensajes a la que puede mandar órdenes el cliente.
+//  El programa servidor utiliza alarm() y las señales del sistema para mostrar periódicamente la hora. Además, crea
+//  una cola de mensajes a la que puede mandar órdenes el cliente.
 //
 //  Compilar:
 //
@@ -18,9 +17,9 @@
 
 #include "mqueue-server.hpp"
 
-// Como no hay funciones para usar las colas de mensajes en C++, tenemos que usar directamente la
-// librería del sistema. Abstrayendo su uso detrás de clases, simplificamos el resto del código del
-// programa, facilitamos el mamejo de errores y que todos los recursos se liberen. 
+// Como no hay funciones para usar las colas de mensajes en C++, tenemos que usar directamente la librería del sistema.
+// Abstrayendo su uso detrás de clases, simplificamos el resto del código del programa, facilitamos el manejo de
+// errores y que todos los recursos se liberen. 
 
 #include "message_queue.hpp"
 

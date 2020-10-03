@@ -18,10 +18,10 @@ int main()
     char filename[] = "/tmp/softstack-fileXXXXXX";
 
     std::ofstream ofs;
-    mkstemp(filename);
+    mkstemp( filename );
 
     std::cout << "Antes de abrir el archivo...\n";
-    ofs.open(filename, std::ofstream::out);
+    ofs.open( filename, std::ofstream::out );
     std::cout << "Después de abrir el archivo...\n";
     ofs.close();
 

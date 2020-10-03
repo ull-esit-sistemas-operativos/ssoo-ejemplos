@@ -58,4 +58,4 @@ Los ejecutables resultantes de la compilación son guardados en el directorio `b
 
 ### Autor y contacto
 
-Si tienes cualquier cuestión no dudes en ponerte en contacto con Jesus Torres <[jmtorres@ull.es](mailto:jmtorres@ull.es)>.
+Si tienes cualquier cuestión no dudes en ponerte en contacto con Jesús Torres <[jmtorres@ull.es](mailto:jmtorres@ull.es)>.

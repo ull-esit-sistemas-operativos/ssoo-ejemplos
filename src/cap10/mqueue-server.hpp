@@ -1,5 +1,4 @@
-// mqueue-server.hpp - Cabecera común del ejemplo del uso de colas de mensajes para comunicar
-//                     procesos
+// mqueue-server.hpp - Cabecera común del ejemplo del uso de colas de mensajes para comunicar procesos
 //
 
 #pragma once

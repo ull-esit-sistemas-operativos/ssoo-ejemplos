@@ -1,31 +1,29 @@
-// shared-memory-client.cpp - Cliente del ejemplo del uso de memoria compartida con nombre para
-//                            comunicar procesos
+// shared-memory-client.cpp - Cliente del ejemplo del uso de memoria compartida con nombre para comunicar procesos
 //
-//  El programa servidor utiliza alarm() y las señales del sistema para mostrar periódicamente
-//  la hora. Además, crea una región de memoria compartia a la que puede unirseel programa cliente
-//  para darle órdenes.
+//  El programa servidor utiliza alarm() y las señales del sistema para mostrar periódicamente la hora. Además, crea
+//  una región de memoria compartia a la que puede unirseel programa cliente para darle órdenes.
 //
-//  Los problemas de sincronización no son sencillos. Para simplicar, vamos a suponer que solo
-//  hay un cliente conectado al mismo tiempo. Así solo necesitaremos dos semáforos.
+//  Los problemas de sincronización no son sencillos. Para simplicar, vamos a suponer que solo hay un cliente conectado
+//  al mismo tiempo. Así solo necesitaremos dos semáforos.
 //
 //  Compilar:
 //
 //      g++ -pthread -lfmtlib -lrt -pthread -o shared-memory-client shared-memory-client.cpp
 //
 
-#include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo 
-#include <cstring>      // <stdlib.h> como <cstdlib>. La primera es para usar con C mientras que
-#include <iostream>     // la segunda es la recomendada en C++ pues mete las funciones en el
-#include <string>       // espacio de nombres 'std', como el resto de la librería estándar de C++.
+#include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo <stdlib.h> como
+#include <cstring>      // <cstdlib>. La primera es para usar con C mientras quela segunda es la recomendada en C++
+#include <iostream>     // pues mete las funciones en el espacio de nombres 'std', como el resto de la
+#include <string>       // librería estándar de C++.
 #include <system_error>
 
 #include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
 
 #include "shared-memory-server.h"
 
-// Como no hay funciones para gestionar memoria compartida en C++, tenemos que usar directamente la
-// librería del sistema. Abstrayendo su uso detrás de clases, simplificamos el resto del código del
-// programa, facilitamos el mamejo de errores y que todos los recursos se liberen. 
+// Como no hay funciones para gestionar memoria compartida en C++, tenemos que usar directamente la librería del
+// sistema. Abstrayendo su uso detrás de clases, simplificamos el resto del código del programa, facilitamos el manejo
+// de errores y que todos los recursos se liberen. 
 
 #include "shared_memory.hpp"
 
@@ -48,8 +46,8 @@ int protected_main()
         else throw;
     }
 
-    // Reservar una región de la memoria virtual del proceso y mapear en ella el objeto de memoria
-    // compartida recientemente creado.
+    // Reservar una región de la memoria virtual del proceso y mapear en ella el objeto de memoria compartida
+    // recientemente creado.
     auto memory_region = control_shm.map<memory_content>( PROT_READ | PROT_WRITE );
 
     // Poner el proceso a la espera de que se pueda enviar un comando.

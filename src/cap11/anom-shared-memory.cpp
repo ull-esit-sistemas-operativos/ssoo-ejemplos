@@ -1,7 +1,7 @@
 // anom-shared-memory.cpp - Ejemplo del uso de memoria compartida anónima para comunicar procesos
 //
-//  El programa solicita al usuario un número por la entrada estándar, lanza un proceso hijo para
-//  que calcule el factorial y lee de la región de memoria comparida el resultado para utilizarlo.
+//  El programa solicita al usuario un número por la entrada estándar, lanza un proceso hijo para que calcule el
+//  factorial y lee de la región de memoria comparida el resultado para utilizarlo.
 //
 //  Compilar:
 //
@@ -15,10 +15,10 @@
 #include <sys/wait.h>
 
 #include <iostream>
-#include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo 
-#include <cstring>      // <stdlib.h> como <cstdlib>. La primera es para usar con C mientras que
-                        // la segunda es la recomendada en C++ pues mete las funciones en el
-                        // espacio de nombres 'std', como el resto de la librería estándar de C++.
+#include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo  <stdlib.h> como
+#include <cstring>      // <cstdlib>. La primera es para usar con C mientras que la segunda es la recomendada en C++
+                        // pues mete las funciones en el espacio de nombres 'std', como el resto de la librería
+                        // estándar de C++.
 
 #include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
 
@@ -44,22 +44,21 @@ int main()
         0 );
 
     if (shared_mem == MAP_FAILED) {
-        std::cerr << fmt::format( "Error ({}) al reservar la memoria compartida: {}\n", errno,
-            std::strerror(errno) );
+        std::cerr << fmt::format( "Error ({}) al reservar la memoria compartida: {}\n", errno, std::strerror(errno) );
         return 1;
     }
 
     memory_content* memory_region = static_cast<memory_content*>(shared_mem);
 
-    // Necesitamos un mecanismo para sincronizar padre e hijo. El padre necesita esperar a que
-    // haya un resultado en 'factorial' y el hijo necesita una forma de indicarlo.
+    // Necesitamos un mecanismo para sincronizar padre e hijo. El padre necesita esperar a que haya un resultado en
+    // 'factorial' y el hijo necesita una forma de indicarlo.
     // Para esto el sistema ofrece mecanismos de sincronización, como los semáforos.
     //
-    // Incializar el semáforo.
+    // Inicializar el semáforo.
     sem_init( &memory_region->ready, 1, 0);
 
-    // Como el hijo tiene una copia de la memoria del padre antes del fork()
-    // no hace falta meter 'number' en la memoria compartida.
+    // Como el hijo tiene una copia de la memoria del padre antes del fork() no hace falta meter 'number' en la
+    // memoria compartida.
     int number = get_user_input();
 
     // Crear el proceso hijo para el cálculo del factorial
@@ -73,8 +72,8 @@ int main()
         // Indicar que ya está el resultado.
         sem_post( &memory_region->ready );
 
-        // La memoria compartida se liberará al terminar el proceso, pero la liberamos a mano
-        // por tener un ejemplo de cómo sería. 
+        // La memoria compartida se liberará al terminar el proceso, pero la liberamos a mano por tener un ejemplo
+        // de cómo sería. 
         munmap( memory_region, sizeof(memory_content) );
 
         return 0;
@@ -89,8 +88,8 @@ int main()
         std::cout << fmt::format( "[PADRE] El factorial de {} es {}\n", number,
             memory_region->factorial );
 
-        // Sabemos que el hijo ha terminado porque ya está el resultado. Aun así hay que llamar
-        // a wait() para evitar que el proceso hijo se quede como proceso zombi.
+        // Sabemos que el hijo ha terminado porque ya está el resultado. Aun así hay que llamar a wait() para evitar
+        // que el proceso hijo se quede como proceso zombi.
         wait(NULL);
     }
     else

@@ -34,9 +34,8 @@ public:
 
         if (server_mode)
         {
-            // En 'server_mode' somos responsable de crear la cola de mensajes y de borrarla al
-            // terminar. Usamos el flag O_EXCL para que de un error si ya existe una cola con el
-            // mismo nombre.
+            // En 'server_mode' somos responsable de crear la cola de mensajes y de borrarla al terminar. Usamos el
+            // flag O_EXCL para que de un error si ya existe una cola con el mismo nombre.
             flags |= server_mode ? O_CREAT | O_EXCL : 0;
 
             // Crear la cola de mensajes indicada en 'name'.
@@ -98,21 +97,20 @@ public:
         }
     }
 
-    // Si un objeto de C++ se puede copiar es asumimos que la copia es independiente del original,
-    // que se puede destruir sin problemas. Pero cuando un objeto de C++ contiene un recurso
-    // del sistema que no se puede duplicar, es mejor hacer que el objeto de C++ tampoco sea
-    // copiable, para que imite las restricciones del recurso que abstrae. De lo contrario podemos
-    // tener problemas por tener, por ejemplo, dos objetos de C++ que hacen referencia al mismo
-    // descriptor de cola de mensajes; porque si uno de ellos es destruido, destruirá el recurso
-    // compartido por ambos.
+    // Si un objeto de C++ se puede copiar es asumimos que la copia es independiente del original, que se puede
+    // destruir sin problemas. Pero cuando un objeto de C++ contiene un recurso del sistema que no se puede duplicar,
+    // es mejor hacer que el objeto de C++ tampoco sea copiable, para que imite las restricciones del recurso que
+    // abstrae. De lo contrario podemos tener problemas por tener, por ejemplo, dos objetos de C++ que hacen referencia
+    // al mismo descriptor de cola de mensajes; porque si uno de ellos es destruido, destruirá el recurso compartido
+    // por ambos.
 
     // Borrar el constructor de copia y el operador de asignación para evitar el clonado del objeto.
 
     message_queue(const message_queue&) = delete;
     message_queue& operator=(const message_queue&) = delete;
 
-    // Sí podemos mover objetos, haciendo que el operador de asignación por movimiento se
-    // lleve el descriptor al nuevo objeto y lo pierda el de origen.
+    // Sí podemos mover objetos, haciendo que el operador de asignación por movimiento se lleve el descriptor al nuevo
+    // objeto y lo pierda el de origen.
 
     message_queue& operator=(message_queue&& lhs)
     {

@@ -30,22 +30,19 @@ int main()
     {                   
         // Aquí solo entra el proceso hijo
 
-        // El hijo hereda el acceso a la tubería, pero de su copia de los descriptores de los dos
-        // extremos solo necesita el de escritura, para escribir la salida estándar del proceso.
+        // El hijo hereda el acceso a la tubería, pero de su copia de los descriptores de los dos extremos solo
+        // necesita el de escritura, para escribir la salida estándar del proceso.
         // Cerramos el de lectura.
         close( fds[0] );
 
-        // Un programa, como el que vamos a ejecutar, que quiere mostrar algo por pantalla,
-        // generalmente usa la salida estándar. La salida estándar está disponible en el
-        // descriptor de archivo STDOUT_FILENO (1), así que las funciones printf() o puts()
-        // que usan los programas lo que realmente hacen es write(STDOUT_FILENO, texto, ...)
+        // Un programa, como el que vamos a ejecutar, que quiere mostrar algo por pantalla, generalmente usa la salida
+        // estándar. La salida estándar está disponible en el descriptor de archivo STDOUT_FILENO (1), así que las
+        // funciones printf() o puts() que usan los programas lo que realmente hacen es write(STDOUT_FILENO, texto, ...)
         //
-        // Si queremos que lo que los programas escriban en su descriptor STDOUT_FILENO
-        // realmente vaya a la entrada de la tubería, lo que se puede hacer es copiar las
-        // propiedades del descriptor en fds[1] (que es el de la entrada de la tubería) en
-        // el descriptor STDOUT_FILENO. Así STDOUT_FILENO ya no sirve para mandar cosas a
-        // donde las mandaba en el padre (la terminal, por ejemplo) sino a donde también las
-        // manda fds[1].
+        // Si queremos que lo que los programas escriban en su descriptor STDOUT_FILENO realmente vaya a la entrada
+        // de la tubería, lo que se puede hacer es copiar las propiedades del descriptor en fds[1] (que es el de la
+        // entrada de la tubería) en el descriptor STDOUT_FILENO. Así STDOUT_FILENO ya no sirve para mandar cosas a
+        // donde las mandaba en el padre (la terminal, por ejemplo) sino a donde también las manda fds[1].
         //
         // Eso es lo que hace la siguiente función.
         dup2( fds[1], STDOUT_FILENO);
@@ -63,17 +60,15 @@ int main()
     {   
         // Aquí solo entra el proceso padre 
         
-        // El padre tiene acceso total a la tubería pero solo necesita el descriptor de lectura
-        // para obtener el resultado del hijo. Además, el descriptor de escritura del hijo debe ser
-        // el único descriptor de escritura abierto, para recibir un fin de archivo cuando el hijo
-        // muera.
+        // El padre tiene acceso total a la tubería pero solo necesita el descriptor de lectura para obtener el
+        // resultado del hijo. Además, el descriptor de escritura del hijo debe ser el único descriptor de escritura
+        // abierto, para recibir un fin de archivo cuando el hijo muera.
         //
         // Cerramos el descriptor de escritura.
         close(fds[1]);
         
-        // read() lee los bytes disponibles en la tubería. Para leer todo hay que leer hasta que
-        // devuelve 0, lo que indica un fin de archivo. Es decir, que todos los descriptores de
-        // escritura están cerrados.
+        // read() lee los bytes disponibles en la tubería. Para leer todo hay que leer hasta que devuelve 0, lo que
+        // indica un fin de archivo. Es decir, que todos los descriptores de escritura están cerrados.
         char read_buffer[4096];
         char* read_buffer_begin = read_buffer;
         size_t total_bytes_read = 0;
@@ -90,7 +85,7 @@ int main()
             }
         }
 
-        // Hemos leido hasta el final. Ya no necesitamos el descriptor de lectura.
+        // Hemos leído hasta el final. Ya no necesitamos el descriptor de lectura.
         close( fds[0] );
 
         // Aquí solo se llega si read() devuelve 0, que indica fin de archivo, o -1, que es un error.  
@@ -104,8 +99,8 @@ int main()
         // Aun así hay que llamar a wait() para:
         //
         //  a) Evitar que el proceso hijo se quede como proceso zombi.
-        //  b) Obtener el estado de salida para saber si terminó con éxito (salió con 0) y, por
-        //     tanto, que el contenido de buffer es válido.
+        //  b) Obtener el estado de salida para saber si terminó con éxito (salió con 0) y, por tanto, que el
+        //     contenido de buffer es válido.
         int status;
         wait( &status );
 

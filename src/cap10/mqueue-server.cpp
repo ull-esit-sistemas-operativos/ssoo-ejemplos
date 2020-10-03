@@ -1,8 +1,7 @@
-// mqueue-server.cpp - Servidor del ejemplo del uso de colas de mensajes para comunicar
-//                     procesos
+// mqueue-server.cpp - Servidor del ejemplo del uso de colas de mensajes para comunicar procesos
 //
-//  El programa servidor utiliza alarm() y las señales del sistema para mostrar periódicamente
-//  la hora. Además, crea una cola de mensajes a la que puede mandar órdenes el cliente.
+//  El programa servidor utiliza alarm() y las señales del sistema para mostrar periódicamente la hora. Además, crea
+//  una cola de mensajes a la que puede mandar órdenes el cliente.
 //
 //  Compilar:
 //
@@ -18,9 +17,9 @@
 #include "common/timeserver.h"
 #include "mqueue-server.hpp"
 
-// Como no hay funciones para usar los colas de mensajes en C++, tenemos que usar directamente la
-// librería del sistema. Abstrayendo su uso detrás de clases, simplificamos el resto del código del
-// programa, facilitamos el mamejo de errores y que todos los recursos se liberen. 
+// Como no hay funciones para usar los colas de mensajes en C++, tenemos que usar directamente la librería del sistema.
+// Abstrayendo su uso detrás de clases, simplificamos el resto del código del programa, facilitamos el manejo de
+// errores y que todos los recursos se liberen. 
 
 #include "message_queue.hpp"
 
@@ -31,8 +30,7 @@ int protected_main()
     try
     {
         // Crear la cola de mensajes donde escuchar los comandos de control
-        control_queue = message_queue{ CONTROL_QUEUE_NAME, message_queue::open_mode::read_only,
-            true };
+        control_queue = message_queue{ CONTROL_QUEUE_NAME, message_queue::open_mode::read_only, true };
     }
     catch ( const std::system_error& e )
     {
@@ -67,9 +65,9 @@ int protected_main()
         }
         catch ( const std::system_error& e )
         {
-            // El error EINTR no se debe a un error real sino a una señal que interrumpió una
-            // llamada al sistema. La ignoramos para comprobar si el manejador de señal cambió
-            // 'quit_app' y, si no, volver a intentar la lectura del mensajes.
+            // El error EINTR no se debe a un error real sino a una señal que interrumpió una llamada al sistema.
+            // La ignoramos para comprobar si el manejador de señal cambió 'quit_app' y, si no, volver a intentar la
+            // lectura del mensajes.
             if (e.code().value() != EINTR) throw;
         }
     }
@@ -77,7 +75,7 @@ int protected_main()
     stop_alarm();
     
     // Vamos a salir del programa...
-    std::cout << "Ha llegado orden de terminar ¡Adios!\n";
+    std::cout << "Ha llegado orden de terminar Adiós!\n";
 
     return 0;
 }

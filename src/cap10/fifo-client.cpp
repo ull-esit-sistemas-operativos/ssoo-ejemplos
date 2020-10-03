@@ -1,18 +1,17 @@
 // fifo-client.cpp - Cliente del ejemplo del uso de tuberías con nombre para comunicar procesos
 //
-//  El programa servidor utiliza alarm() y las señales del sistema para mostrar periódicamente
-//  la hora. Además, crea una tubería FIFO a la que puede conectarse el programa cliente para
-//  darle órdenes.
+//  El programa servidor utiliza alarm() y las señales del sistema para mostrar periódicamente la hora. Además, crea
+//  una tubería FIFO a la que puede conectarse el programa cliente para darle órdenes.
 //
 //  Compilar:
 //
 //      g++ -o fifo-client-cpp fifo-client.cpp
 //
 
-#include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo 
-#include <cstring>      // <stdlib.h> como <cstdlib>. La primera es para usar con C mientras que
-#include <iostream>     // la segunda es la recomendada en C++ pues mete las funciones en el
-#include <fstream>      // espacio de nombres 'std', como el resto de la librería estándar de C++.
+#include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo <stdlib.h> como
+#include <cstring>      // <cstdlib>. La primera es para usar con C mientras que la segunda es la recomendada en C++
+#include <iostream>     // pues mete las funciones en el espacio de nombres 'std', como el resto de la librería
+#include <fstream>      // estándar de C++.
 #include <string>
 
 #include "fifo-server.h"
@@ -27,11 +26,11 @@ int main()
         return 1;
     }
 
-    // Como los flujos de C++ son una abstracción de alto nivel de la librería estándar de C++,
-    // usándolos perdemos algunas características, como poder conocer el motivo por el que no se
-    // puedo abrir el archivo. Así se podría informar al usuario, por ejemplo, de que la tubería
-    // no existe así que, tal vez, el servidor no se está ejecutando o de que no tiene los permisos
-    // adecuados. En el ejemplo 'file-client.c' se muestra como usar 'errno' con ese fin.
+    // Como los flujos de C++ son una abstracción de alto nivel de la librería estándar de C++, usándolos perdemos
+    // algunas características, como poder conocer el motivo por el que no se puedo abrir el archivo. Así se podría
+    // informar al usuario, por ejemplo, de que la tubería no existe así que, tal vez, el servidor no se está
+    // ejecutando o de que no tiene los permisos adecuados. En el ejemplo 'file-client.c' se muestra  como usar 'errno'
+    // con ese fin.
 
     std::cout << "Cerrando el servidor...\n";
     controlfs << QUIT_COMMAND << '\n';

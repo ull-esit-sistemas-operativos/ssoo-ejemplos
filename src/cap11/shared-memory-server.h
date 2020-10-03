@@ -1,5 +1,4 @@
-// shared-memory-server.h - Cabecera común del ejemplo del uso de memoria compartida con nombre
-//                          para comunicar procesos
+// shared-memory-server.h - Cabecera común del ejemplo del uso de memoria compartida con nombre para comunicar procesos
 //
 
 #pragma once
