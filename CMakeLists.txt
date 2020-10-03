@@ -37,6 +37,7 @@ if(UNIX)
 endif()
 
 add_subdirectory(src)
+#add_subdirectory(src/cap04)
 add_subdirectory(src/cap06)
 add_subdirectory(src/cap09)
 add_subdirectory(src/cap10)
