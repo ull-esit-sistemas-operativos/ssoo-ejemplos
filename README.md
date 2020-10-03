@@ -54,7 +54,7 @@ Los ejemplos se compilan de manera sencilla siguiendo estos pasos:
 En Microsoft Windows estos comandos deben ejecutarse desde la consola de **Developer Command Prompt**.
 
 En cada sistema solo se compilarán los ejemplos compatibles.
-Los ejecutables resultantes de la compilación son guardados en la carpeta `build/bim/`.
+Los ejecutables resultantes de la compilación son guardados en el directorio `build/bin/`.
 
 ### Autor y contacto
 
