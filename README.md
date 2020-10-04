@@ -16,7 +16,7 @@ Concretamente los ejemplos incluidos son:
  * `src/cap09/fork.cpp` — Creación de procesos mediante `fork()`.
  * `src/cap09/fork-exec.cpp` — Ejecutar otros programas mediante `fork()` y `exec()`.
  * `src/cap10/fifo-client.c` — Cliente en C de comunicación entre procesos mediante tuberías con nombre.
- * `src/cap10/fifo-client.cpp` — Cliente en C++ de comunicación entre procesos mediante tuberías con nombre.
+ * `src/cap10/fifo-client.cpp` — Cliente en C++ de comunicación entre procesos mediante tuberías con nommbre.
  * `src/cap10/fifo-server.c` — Servidor de comunicación entre procesos mediante tuberías con nombre.
  * `src/cap10/fork-pipe.cpp` — Comunicación entre procesos padre e hijo mediante tuberías anónimas.
  * `src/cap10/fork-redir.cpp` — Redirección de E/S estándar usando tuberías anónimas.
