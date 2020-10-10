@@ -21,9 +21,9 @@ int calculate_factorial(int number)
     std::cout.flush();
 
     int factorial = 1;
-    for ( int i = 2; i < number; i++ )
+    for ( int i = 2; i <= number; i++ )
     {
-        factorial = factorial * number;
+        factorial = factorial * i;
 
         std::cout << '.';
         std::cout.flush();
