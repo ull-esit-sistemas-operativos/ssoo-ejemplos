@@ -58,7 +58,7 @@ void run(const std::vector<std::string>& words)
         }
     }
     else if (pid > 0) {
-        waitpid(pid, NULL, 0);
+        waitpid(pid, nullptr, 0);
     }
     else {
         std::cerr << "No se pudo ejecutar el comando: " << std::strerror(errno) << "\n";
@@ -75,7 +75,7 @@ std::vector<std::string> expand_wildcards(const std::vector<std::string>& words)
     std::vector<std::string> expanded_words;
     for(auto& word: words) {
         glob_t pglob;
-        glob(word.c_str(), GLOB_TILDE | GLOB_NOCHECK, NULL, &pglob);
+        glob(word.c_str(), GLOB_TILDE | GLOB_NOCHECK, nullptr, &pglob);
         if (pglob.gl_pathc) {
             for (char** p = pglob.gl_pathv; *p != nullptr; ++p) {
                 expanded_words.push_back(*p);

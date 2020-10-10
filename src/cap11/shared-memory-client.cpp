@@ -8,7 +8,7 @@
 //
 //  Compilar:
 //
-//      g++ -pthread -lfmtlib -lrt -pthread -o shared-memory-client shared-memory-client.cpp
+//      g++ -lfmtlib -lrt -pthread -o shared-memory-client shared-memory-client.cpp
 //
 
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo <stdlib.h> como

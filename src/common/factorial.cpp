@@ -15,7 +15,7 @@ int get_user_input()
     return number;
 }
 
-int calculate_factorial( int number )
+int calculate_factorial(int number)
 {
     std::cout << "[HIJO] Calculando...";
     std::cout.flush();

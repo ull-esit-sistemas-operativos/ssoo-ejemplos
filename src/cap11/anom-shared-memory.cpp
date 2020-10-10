@@ -36,7 +36,7 @@ int main()
 
     // Reservar la zona de memoria compartida
     void* shared_mem = mmap(
-        NULL,
+        nullptr,
         sizeof(int),
         PROT_READ | PROT_WRITE,
         MAP_ANONYMOUS | MAP_SHARED,
@@ -90,7 +90,7 @@ int main()
 
         // Sabemos que el hijo ha terminado porque ya está el resultado. Aun así hay que llamar a wait() para evitar
         // que el proceso hijo se quede como proceso zombi.
-        wait(NULL);
+        wait(nullptr);
     }
     else
     {
