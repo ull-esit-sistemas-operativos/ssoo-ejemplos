@@ -27,11 +27,11 @@ Concretamente los ejemplos incluidos son:
  * `src/cap11/anom-shared-memory.cpp` — Comunicación entre procesos padre e hijo mediante memoria compartida anónima.
  * `src/cap11/shared-memory-client.cpp` — Cliente en C++ de comunicación entre procesos mediante memoria compartida.
  * `src/cap11/shared-memory-server.c` — Servidor de comunicación entre procesos mediante memoria compartida.
+ * `src/cap12/threads.cpp` — Uso de hilos en C++.
+ * `src/cap12/pthread.cpp` — Uso de hilos mediante POSIX pthread.
+ * `src/cap13/threads-sync.cpp` — Sincronización de hilos mediante mutex en C++.
+ * `src/cap13/pthread-sync.cpp` — Sincronización de hilos mediante mutex de POSIX pthread.
  * `src/cap17/mapped-files.cpp` — Archivos mapeados en memoria con `mmap()`.
- * `src/threads.cpp` — Creación de hilos en C++.
- * `src/threads-mutex.cpp` — Sincronización de hilos mediante mutex.
- * `src/threads-pthread.cpp` — Creación de hilos mediante POSIX pthread.
- * `src/threads-mutex-pthread.cpp` — Sincronización de hilos mediante mutex de POSIX pthread.
  * `src/otros/yash.cpp` — Ejemplo muy básico del funcionamiento interno de una shell.
 
 ### Requisitos
