@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -lfmtlib -pthread -o threads pthreads.cpp
+//      g++ -I../ -I../../lib -lfmtlib -pthread -o threads threads.cpp
 //
 
 #include <iostream>

@@ -28,9 +28,9 @@ Concretamente los ejemplos incluidos son:
  * `src/cap11/shared-memory-client.cpp` — Cliente en C++ de comunicación entre procesos mediante memoria compartida.
  * `src/cap11/shared-memory-server.c` — Servidor de comunicación entre procesos mediante memoria compartida.
  * `src/cap12/threads.cpp` — Uso de hilos en C++.
- * `src/cap12/pthread.cpp` — Uso de hilos mediante POSIX pthread.
+ * `src/cap12/pthreads.cpp` — Uso de hilos mediante POSIX Threads.
  * `src/cap13/threads-sync.cpp` — Sincronización de hilos mediante mutex en C++.
- * `src/cap13/pthread-sync.cpp` — Sincronización de hilos mediante mutex de POSIX pthread.
+ * `src/cap13/pthreads-sync.cpp` — Sincronización de hilos mediante mutex de POSIX Threads.
  * `src/cap17/mapped-files.cpp` — Archivos mapeados en memoria con `mmap()`.
  * `src/otros/yash.cpp` — Ejemplo muy básico del funcionamiento interno de una shell.
 
