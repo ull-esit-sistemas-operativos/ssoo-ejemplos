@@ -19,7 +19,7 @@
 void factorial_thread (BigInt& result, BigInt number, BigInt lower_bound)
 {
     std::stringstream ss;
-    ss << std::this_thread::get_id(),
+    ss << std::this_thread::get_id();
     std::cout << fmt::format( "Hilo creado: {} (0x{:x})\n",
         ss.str(),
         pthread_self() );

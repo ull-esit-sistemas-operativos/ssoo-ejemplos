@@ -1,8 +1,9 @@
-add_executable(threads-cpp threads.cpp)
-target_link_libraries(threads-cpp fmt::fmt Threads::Threads)
-target_include_directories(threads-cpp PRIVATE ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/lib)
-
 if(CMAKE_USE_PTHREADS_INIT)
+    # Necesita POSIX Threads por llamar a pthread_self() en factorial_thread()
+    add_executable(threads-cpp threads.cpp)
+    target_link_libraries(threads-cpp fmt::fmt Threads::Threads)
+    target_include_directories(threads-cpp PRIVATE ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/lib)
+
     add_executable(pthreads pthreads.cpp)
     target_link_libraries(pthreads fmt::fmt Threads::Threads)
     target_include_directories(pthreads PRIVATE ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/lib)

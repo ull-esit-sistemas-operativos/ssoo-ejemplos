@@ -16,7 +16,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Opciones de nivel de aviso del compilador
 if(MSVC)
-    add_compile_options(/W4)
+    add_compile_options(/W4 /permissive-)
 else()
     add_compile_options(-Wall -fmessage-length=0)
 endif()
@@ -25,18 +25,16 @@ set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 
-if(UNIX)
-    # Usar la librería {fmt} hasta std::format esté disponible (C++20)
-    include(FetchContent)
-    FetchContent_Declare(fmtlib
-        GIT_REPOSITORY "https://github.com/fmtlib/fmt.git"
-        GIT_TAG "7.0.3"
-    )
-    FetchContent_Populate(fmtlib)
-    add_subdirectory(${fmtlib_SOURCE_DIR} ${fmtlib_BUILD_DIR})
-endif()
+# Usar la librería {fmt} hasta std::format esté disponible (C++20)
+include(FetchContent)
+FetchContent_Declare(fmtlib
+    GIT_REPOSITORY "https://github.com/fmtlib/fmt.git"
+    GIT_TAG "7.0.3"
+)
+FetchContent_Populate(fmtlib)
+add_subdirectory(${fmtlib_SOURCE_DIR} ${fmtlib_BUILD_DIR})
 
-#add_subdirectory(src/cap04)
+add_subdirectory(src/cap04)
 add_subdirectory(src/cap06)
 add_subdirectory(src/cap09)
 add_subdirectory(src/cap10)
