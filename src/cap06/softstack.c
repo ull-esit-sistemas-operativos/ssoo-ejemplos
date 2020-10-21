@@ -5,7 +5,7 @@
 //      gcc -o softstack-c softstack.c
 //
 //  Uso:
-//      # ltrace -S -C -n4 ./softstack-c
+//      # strace -e trace=open,openat,read,write,close ./softstack-c
 //
 
 #define _POSIX_C_SOURCE 200809L
