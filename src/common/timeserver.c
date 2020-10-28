@@ -38,7 +38,7 @@ void stop_alarm()
 
 void alarm_signal_handler(int signum)
 {
-    time_t current_time = time(NULL);
+    time_t current_time = time( NULL );
     
     // Las funciones XXXX_r() son reentrantes => es seguro usarlas en manejadores de señal e hilos
     char current_time_string[26];

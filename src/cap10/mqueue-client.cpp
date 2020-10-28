@@ -61,6 +61,11 @@ int main()
     catch(std::system_error& e)
     {
         std::cerr << fmt::format( "Error ({}): {}\n", e.code().value(), e.what() );
-	    return 2;
     }
+    catch(std::exception& e)
+    {
+        std::cerr << fmt::format( "Error: Excepción: {}\n", e.what() );
+    }
+
+	return 2;
 }
