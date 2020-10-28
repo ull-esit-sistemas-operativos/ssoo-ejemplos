@@ -32,6 +32,8 @@ Concretamente los ejemplos incluidos son:
  * `src/cap13/threads-sync.cpp` — Sincronización de hilos mediante mutex en C++.
  * `src/cap13/pthreads-sync.cpp` — Sincronización de hilos mediante mutex de POSIX Threads.
  * `src/cap17/mapped-files.cpp` — Archivos mapeados en memoria con `mmap()`.
+ * `src/cap19/filelock-client.cpp` — Cliente en C++ del ejemplo del uso de bloqueo de archivos.
+ * `src/cap19/filelock-server.c` — Servidor del ejemplo del uso de bloqueo de archivos.
  * `src/otros/yash.cpp` — Ejemplo muy básico del funcionamiento interno de una shell.
 
 ### Requisitos
