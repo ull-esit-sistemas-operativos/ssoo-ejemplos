@@ -75,7 +75,7 @@ int protected_main()
     stop_alarm();
     
     // Vamos a salir del programa...
-    std::cout << "Ha llegado orden de terminar Adiós!\n";
+    std::cout << "Ha llegado orden de terminar ¡Adiós!\n";
 
     return 0;
 }

@@ -40,7 +40,7 @@ int main()
     bool fifo_opened = false;
     int controlfd = -1;
 
-    // Las variables anteriores y las siguientes estructuras de if son para el manejo de errores en C. Así liberarnos
+    // Las variables anteriores y las siguientes estructuras de if son para el manejo de errores en C. Así liberamos
     // recursos y dejamos todo en su sitio al terminar, incluso si salimos  es por un error. Por ejemplo, si al salir
     // por un error olvidamos eliminar la tubería, no podríamos volver a ejecutar el servidor hasta borrarla a mano.
     // En C++ es mejor encapsular los recursos en clases y usar su destructor para liberarlos (RAII).
@@ -105,7 +105,7 @@ int main()
     }
 
     // Vamos a salir del programa...
-    puts( "Ha llegado orden de terminar ¡Adios!" );
+    puts( "Ha llegado orden de terminar ¡Adiós!" );
 
     if (fifo_created)
     {

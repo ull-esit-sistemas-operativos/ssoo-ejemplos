@@ -51,7 +51,7 @@ int main()
         return 3;
     }
 
-    puts( "¡Adios!" );
+    puts( "¡Adiós!" );
     close( controlfd );
 
     return 0;

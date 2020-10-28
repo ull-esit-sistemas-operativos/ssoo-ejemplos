@@ -39,7 +39,7 @@ int main()
         wait( &status );
         printf( "[PADRE] El valor de salida de mi hijo fue: %d\n", WEXITSTATUS(status) );
         
-        puts( "[PADRE] ¡Adios!" );
+        puts( "[PADRE] ¡Adiós!" );
         return 0;
     }
     else {

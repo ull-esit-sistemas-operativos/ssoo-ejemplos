@@ -61,7 +61,7 @@ int protected_main()
     // Indicar al servidor que ya se escribió el comando.
     sem_post( &memory_region->empty );
 
-    std::cout << "¡Adios!\n";
+    std::cout << "¡Adiós!\n";
 
     return 0;
 }

@@ -47,7 +47,7 @@ int protected_main()
     // Enviar el comando de terminar a la cola.
     control_queue.send( QUIT_COMMAND, 0 );
 
-    std::cout << "¡Adios!\n";
+    std::cout << "¡Adiós!\n";
 
     return 0;
 }

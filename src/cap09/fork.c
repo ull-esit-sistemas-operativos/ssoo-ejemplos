@@ -33,7 +33,7 @@ int main()
         sleep(10);
 
         int status = 42;
-        printf( "[HIJO] Salgo con %d ¡Adios!\n", status );
+        printf( "[HIJO] Salgo con %d ¡Adiós!\n", status );
         return status;
     }
     else if (child > 0)
@@ -51,7 +51,7 @@ int main()
         wait( &status );
         printf( "[PADRE] El valor de salida de mi hijo fue: %d\n", WEXITSTATUS(status) );
         
-        puts( "[PADRE] ¡Adios!" );
+        puts( "[PADRE] ¡Adiós!" );
         return 0;
     }
     else {

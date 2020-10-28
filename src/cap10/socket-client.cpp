@@ -37,7 +37,7 @@ int protected_main()
     // Enviar el comando de terminar a la cola.
     sock.send( QUIT_COMMAND, CONTROL_SOCKET_NAME );
 
-    std::cout << "¡Adios!\n";
+    std::cout << "¡Adiós!\n";
 
     return 0;
 }

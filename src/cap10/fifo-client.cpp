@@ -40,7 +40,7 @@ int main()
         return 2;
     }
 
-    std::cout << "¡Adios!\n";
+    std::cout << "¡Adiós!\n";
 
     return 0;
 }
