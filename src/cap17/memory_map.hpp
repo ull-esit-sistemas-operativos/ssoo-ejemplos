@@ -58,7 +58,7 @@ public:
     // automáticamente a munmap() cuando ya no la vayamos a necesitar más.
 
     // Esta función mapea num objetos de tipo T, es decir, sizeof(T) * num bytes. Así se puede acceder a un solo
-    // elemento T o un array de T en la memoria compartida.
+    // elemento T o un array de T en el archivo.
 
     template<typename T>
     std::unique_ptr<T, std::function<void(T*)>> map( int prot, size_t num = 1, off_t offset = 0)
