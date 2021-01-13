@@ -39,7 +39,7 @@ public:
             flags |= server_mode ? O_CREAT | O_EXCL : 0;
 
             // Crear la cola de mensajes indicada en 'name'.
-            mqd_ = mq_open( name_.c_str(), flags, 666, nullptr );
+            mqd_ = mq_open( name_.c_str(), flags, 0666, nullptr );
         }
         else {
             // Abrir la cola de mensajes indicada en 'name'.

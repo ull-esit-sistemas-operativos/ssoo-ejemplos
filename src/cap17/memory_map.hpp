@@ -33,7 +33,7 @@ public:
         int flags = static_cast<int>(mode);
 
         // Abrir el archivo indicado en 'pathname'.
-        fd_ = open( pathname.c_str(), flags, 666 );
+        fd_ = open( pathname.c_str(), flags, 0666 );
         if (fd_ < 0)
         {
             throw std::system_error( errno, std::system_category(), "Fallo en open()" );

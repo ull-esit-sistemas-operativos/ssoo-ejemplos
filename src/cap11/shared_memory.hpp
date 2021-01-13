@@ -29,7 +29,7 @@ public:
         int flags = O_RDWR | (server_mode ? O_CREAT | O_EXCL : 0);
 
         // Abrir el objeto de memoria indicado en 'name'.
-        fd_ = shm_open( name_.c_str(), flags, 666 );
+        fd_ = shm_open( name_.c_str(), flags, 0666 );
         if (fd_ < 0)
         {
             throw std::system_error( errno, std::system_category(), "Fallo en shm_open()" );
