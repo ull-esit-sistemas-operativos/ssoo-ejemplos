@@ -53,7 +53,7 @@ int main()
         // Con todo configurado, sustituimos el programa actual por el que nos interesa.
         execl( "/bin/ls", "ls", "-l", NULL );
         
-        fprintf( stderr, "Error (%d) al ejecuta el programa: %s\n", errno, strerror(errno) );
+        fprintf( stderr, "Error (%d) al ejecutar el programa: %s\n", errno, strerror(errno) );
         return -1;
     }
     else if (child > 0)
@@ -122,7 +122,7 @@ int main()
     }
     else {
         // Aquí solo entra el padre si no pudo crear el hijo
-        fprintf( stderr, "Error (%d) al crear el procesos: %s\n", errno, strerror(errno) );
+        fprintf( stderr, "Error (%d) al crear el proceso: %s\n", errno, strerror(errno) );
 
         close( fds[0] );
         close( fds[1] );

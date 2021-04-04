@@ -56,7 +56,7 @@ int main()
     }
     else {
         // Aquí solo entra el padre si no pudo crear el hijo
-        fprintf( stderr, "Error (%d) al crear el procesos: %s\n", errno, strerror(errno) );
+        fprintf( stderr, "Error (%d) al crear el proceso: %s\n", errno, strerror(errno) );
         return 1;
     }
 }
