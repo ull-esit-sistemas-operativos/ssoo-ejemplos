@@ -70,11 +70,11 @@ int main()
     try
     {
         return protected_main();
-	}	
+    }
     catch(std::exception& e)
     {
         std::cerr << fmt::format( "Error: Excepción: {}\n", e.what() );
     }
 
-	return 2;
+    return 2;
 }

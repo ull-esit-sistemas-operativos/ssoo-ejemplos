@@ -91,7 +91,7 @@ int main()
     try
     {
         return protected_main();
-	}	
+    }
     catch(std::system_error& e)
     {
         std::cerr << fmt::format( "Error ({}): {}\n", e.code().value(), e.what() );
@@ -101,5 +101,5 @@ int main()
         std::cerr << fmt::format( "Error: Excepción: {}\n", e.what() );
     }
 
-	return 2;
+    return 2;
 }

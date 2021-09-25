@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
     try
     {
         return protected_main(argc, argv);
-	}	
+    }
     catch(std::system_error& e)
     {
         std::cerr << fmt::format( "Error ({}): {}\n", e.code().value(), e.what() );
@@ -80,5 +80,5 @@ int main(int argc, char* argv[])
         std::cerr << fmt::format( "Error: Excepción: {}\n", e.what() );
     }
 
-	return 2;
+    return 2;
 }
