@@ -1,11 +1,11 @@
-// pthreads-sync.cpp - Ejemplo del uso de mutex en POSIX Threads
+// pthreads-sync-factorial.cpp - Ejemplo del uso de mutex en POSIX Threads
 //
 // El programa calcula el factorial del número indicado por el usuario. Se utilizan dos hilos para paralelizar
 // los cálculos, aprovechando mejor las CPU con varios núcleos.
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -lfmtlib -pthread -o pthreads-sync pthreads-sync.cpp
+//      g++ -I../ -I../../lib -lfmtlib -pthread -o pthreads-sync-factorial pthreads-sync-factorial.cpp
 //
 
 #include <pthread.h>
@@ -59,6 +59,7 @@ int main()
     factorial_thread_results thread_results;
     pthread_mutex_init( &thread_results.mutex, nullptr);
 
+    // Para calcular el N!, un hilo multiplica desde N a N/2 y el otro desde (N/2)-1 hasta 2
     factorial_thread_args thread1_args { number, number / 2, &thread_results };
     factorial_thread_args thread2_args { (number / 2) - 1, 2, &thread_results };
     
@@ -74,7 +75,7 @@ int main()
         return 1;
     }
 
-    return_code = pthread_create( &thread2, nullptr,  factorial_thread, &thread2_args );
+    return_code = pthread_create( &thread2, nullptr, factorial_thread, &thread2_args );
     if (return_code)
     {
         std::cerr << fmt::format( "Error ({}) al crear el hilo: {}\n", return_code, strerror(return_code) );
@@ -91,6 +92,7 @@ int main()
     pthread_join( thread1, nullptr );
     pthread_join( thread2, nullptr ); 
 
+    // Combinar ambos resultados parciales en el factorial final.
     auto result = std::reduce( thread_results.partials.begin(), thread_results.partials.end(),
         BigInt{1}, std::multiplies<BigInt>() );
 

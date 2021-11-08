@@ -41,6 +41,8 @@ int main()
 
     int return_code = 0;
     pthread_t thread1, thread2;
+
+    // Para calcular el N!, un hilo multiplica desde N a N/2 y el otro desde (N/2)-1 hasta 2
     factorial_thread_args thread1_args { number, number / 2, 0 };
     factorial_thread_args thread2_args { (number / 2) - 1, 2, 0 };
     
@@ -76,6 +78,7 @@ int main()
     pthread_join( thread2,
         reinterpret_cast<void**>(&thread2_result) ); 
 
+    // Combinar ambos resultados parciales en el factorial final.
     auto result = *thread1_result * *thread2_result;
 
     std::cout << fmt::format( "El factorial de {} es {}\n", number.to_string(), result.to_string() );

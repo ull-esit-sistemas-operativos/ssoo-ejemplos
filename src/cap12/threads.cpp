@@ -33,7 +33,8 @@ int main()
 
     BigInt thread1_result, thread2_result;
 
-    auto thread1_lower_bound = (number / 2) - 1;
+    // Para calcular el N!, un hilo multiplica desde N a N/2 y el otro desde (N/2)-1 hasta 2.
+    auto thread1_lower_bound = number / 2;
     auto thread2_number = thread1_lower_bound - 1;
 
     std::thread thread1(factorial_thread, std::ref(thread1_result), number, thread1_lower_bound);
@@ -45,6 +46,7 @@ int main()
     thread1.join();
     thread2.join(); 
 
+    // Combinar ambos resultados parciales en el factorial final.
     auto result = thread1_result * thread2_result;
 
     std::cout << fmt::format( "El factorial de {} es {}\n", number.to_string(), result.to_string() );
