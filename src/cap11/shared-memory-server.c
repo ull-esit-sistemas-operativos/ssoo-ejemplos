@@ -11,6 +11,8 @@
 //      gcc -I../ -lrt -pthread -o shared-memory-server shared-memory-server.c ../common/timeserver.c
 //
 
+#define _POSIX_C_SOURCE 200809L
+
 #include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo
 #include <fcntl.h>
 #include <sys/mman.h>   // Cabecera para mmap() y shm_open()    
