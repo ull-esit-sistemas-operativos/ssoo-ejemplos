@@ -27,7 +27,7 @@ int main()
         execl( "/bin/ls", "ls", "-l", NULL );
         
         fprintf( stderr, "Error (%d) al ejecutar el programa: %s\n", errno, strerror(errno) );
-        return -1;
+        return 1;
     }
     else if (child > 0)
     {   
