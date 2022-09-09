@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.14)
 
 project(ssoo-ejemplos LANGUAGES C CXX ASM)
 
@@ -31,8 +31,7 @@ FetchContent_Declare(fmtlib
     GIT_REPOSITORY "https://github.com/fmtlib/fmt.git"
     GIT_TAG "7.0.3"
 )
-FetchContent_Populate(fmtlib)
-add_subdirectory(${fmtlib_SOURCE_DIR} ${fmtlib_BUILD_DIR})
+FetchContent_MakeAvailable(fmtlib)
 
 add_subdirectory(src/cap04)
 add_subdirectory(src/cap06)

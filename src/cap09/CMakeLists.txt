@@ -1,4 +1,4 @@
-if(MSVC)
+if(WIN32)
     add_executable(createprocess createprocess.c)
 else()
     add_executable(fork fork.c)
