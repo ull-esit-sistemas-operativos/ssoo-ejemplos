@@ -23,7 +23,7 @@ int main()
     std::ofstream controlfs { CONTROL_FIFO_PATH, std::ifstream::out | std::ifstream::binary };
     if (controlfs.fail()) {
         std::cerr << "Error: No se pudo abrir la tubería.\n";
-        return 1;
+        return EXIT_FAILURE;
     }
 
     // Como los flujos de C++ son una abstracción de alto nivel de la librería estándar de C++, usándolos perdemos
@@ -37,10 +37,10 @@ int main()
 
     if (controlfs.bad()) {
         std::cerr << "Error: No se pudo escribir en la tubería.\n";
-        return 2;
+        return EXIT_FAILURE;
     }
 
     std::cout << "¡Adiós!\n";
 
-    return 0;
+    return EXIT_SUCCESS;
 }

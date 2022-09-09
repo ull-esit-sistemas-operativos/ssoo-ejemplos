@@ -73,5 +73,5 @@ int main()
     char *bad_ptr = NULL;
     *bad_ptr = 'a';    
 
-    return 0;
+    return EXIT_SUCCESS;
 }

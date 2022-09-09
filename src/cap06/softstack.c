@@ -29,5 +29,5 @@ int main()
     puts("Después de abrir el archivo...");
     close(fd);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

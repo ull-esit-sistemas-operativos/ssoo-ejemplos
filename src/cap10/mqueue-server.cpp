@@ -37,7 +37,7 @@ int protected_main()
         if (e.code().value() == EEXIST)
         {
             std::cerr << "Error: Hay otro servidor en ejecución.\n";
-            return 1;
+            return EXIT_FAILURE;
         }
         else throw;
     }
@@ -77,7 +77,7 @@ int protected_main()
     // Vamos a salir del programa...
     std::cout << "Ha llegado orden de terminar ¡Adiós!\n";
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int main()
@@ -95,5 +95,5 @@ int main()
         std::cerr << fmt::format( "Error: Excepción: {}\n", e.what() );
     }
 
-    return 2;
+    return EXIT_FAILURE;
 }

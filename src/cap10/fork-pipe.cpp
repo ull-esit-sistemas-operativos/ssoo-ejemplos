@@ -35,7 +35,7 @@ int main()
     if (return_code < 0) {
         std::cerr << fmt::format( "Error ({}) al crear la tubería: {}\n", errno,
             std::strerror(errno) );
-        return 1;
+        return EXIT_FAILURE;
     }
  
     // Crear el proceso hijo para el cálculo del factorial
@@ -59,13 +59,13 @@ int main()
             std::cerr << fmt::format( "Error ({}) al escribir en la tubería: {}\n", errno, strerror(errno) );
             
             close( fds[1] );
-            return 1;
+            return EXIT_FAILURE;
         }
 
         // Al terminar el proceso todos los recursos se liberan y la entrada de tubería del hijo se cierra. Si ese
         // es el último descriptor abierto de la entrada a la tubería, el padre recibirá un fin de archivo (EOF)
         // cuando no quede nada más por leer.
-        return 0;
+        return EXIT_SUCCESS;
     }
     else if (child > 0)
     {
@@ -100,7 +100,7 @@ int main()
         if (bytes_read < 0)
         {
             std::cerr << fmt::format( "Error ({}) al leer la tubería: {}\n", errno, std::strerror(errno) );
-            return 3;
+            return EXIT_FAILURE;
         }
 
         // Sabemos que el hijo ha terminado porque el otro extremo de la tubería se cerró.
@@ -115,13 +115,13 @@ int main()
         if (! (WIFEXITED(status) && WEXITSTATUS(status) == 0) )
         {
             std::cerr << "Error: La tarea terminó inesperadamente.\n";
-            return 4;
+            return EXIT_FAILURE;
         }
         
         std::string factorial(read_buffer.begin(), read_buffer_begin);
         std::cout << fmt::format( "[PADRE] El factorial de {} es {}\n", number, factorial );
 
-        return 0;
+        return EXIT_SUCCESS;
     }
     else
     {
@@ -130,6 +130,6 @@ int main()
         
         close( fds[0] );
         close( fds[1] );
-        return 2;
+        return EXIT_FAILURE;
     }
 }

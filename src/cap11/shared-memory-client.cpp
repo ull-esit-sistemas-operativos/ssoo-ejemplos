@@ -41,7 +41,7 @@ int protected_main()
         if (e.code().value() == ENOENT)
         {
             std::cerr << "Error: El servidor no parece estar en ejecución.\n";
-            return 1;
+            return EXIT_FAILURE;
         }
         else throw;
     }
@@ -63,7 +63,7 @@ int protected_main()
 
     std::cout << "¡Adiós!\n";
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int main()
@@ -81,5 +81,5 @@ int main()
         std::cerr << fmt::format( "Error: Excepción: {}\n", e.what() );
     }
 
-    return 2;
+    return EXIT_FAILURE;
 }

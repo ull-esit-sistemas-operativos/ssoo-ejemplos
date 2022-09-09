@@ -39,7 +39,7 @@ int protected_main()
 
     std::cout << "¡Adiós!\n";
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int main()
@@ -57,5 +57,5 @@ int main()
         std::cerr << fmt::format( "Error: Excepción: {}\n", e.what() );
     }
 
-    return 2;
+    return EXIT_FAILURE;
 }

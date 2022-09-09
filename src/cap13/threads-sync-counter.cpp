@@ -58,5 +58,5 @@ int main()
 
     std::cout << fmt::format( "Valor final del contador: {}\n", thread_args.counter );
 
-    return 0;
+    return EXIT_SUCCESS;
 }

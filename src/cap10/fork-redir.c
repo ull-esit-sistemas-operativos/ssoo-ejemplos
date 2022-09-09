@@ -11,6 +11,7 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 int main()
@@ -20,7 +21,7 @@ int main()
     int return_code = pipe( fds );
     if (return_code < 0) {
         fprintf( stderr, "Error (%d) al crear la tubería: %s\n", errno, strerror(errno) );
-        return 1;
+        return EXIT_FAILURE;
     }
 
     // Crear un proceso hijo
@@ -54,7 +55,7 @@ int main()
         execl( "/bin/ls", "ls", "-l", NULL );
         
         fprintf( stderr, "Error (%d) al ejecutar el programa: %s\n", errno, strerror(errno) );
-        return 1;
+        return EXIT_FAILURE;
     }
     else if (child > 0)
     {   
@@ -92,7 +93,7 @@ int main()
         if (bytes_read < 0)
         {
             fprintf( stderr, "Error {%d} al leer la tubería: %s\n", errno, strerror(errno) );
-            return 3;
+            return EXIT_FAILURE;
         }
 
         // Sabemos que el hijo ha terminado porque el otro extremo de la tubería se cerró.
@@ -107,7 +108,7 @@ int main()
         if (! (WIFEXITED(status) && WEXITSTATUS(status) == 0) )
         {
             fputs( "Error: La tarea terminó inesperadamente.\n", stderr );
-            return 4;
+            return EXIT_FAILURE;
         }
 
         int num_of_lines = 0;
@@ -118,7 +119,7 @@ int main()
 
         printf( "La salida de 'ls' tiene %d líneas\n", num_of_lines );
 
-        return 0;
+        return EXIT_SUCCESS;
     }
     else {
         // Aquí solo entra el padre si no pudo crear el hijo
@@ -126,6 +127,6 @@ int main()
 
         close( fds[0] );
         close( fds[1] );
-        return 2;
+        return EXIT_FAILURE;
     }
 }

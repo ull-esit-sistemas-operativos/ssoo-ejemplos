@@ -13,6 +13,7 @@
                         // no están en <unistd.h> sino aquí. Por ejemplo open()
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "fifo-server.h"
@@ -33,12 +34,13 @@ int main()
         if (errno == ENOENT)
         {
             fputs( "Error: El servidor no parece estar en ejecución.\n", stderr);
-            return 1;
         }
-        else {
+        else
+        {
             fprintf( stderr, "Error (%d) al abrir la tubería: %s\n", errno, strerror(errno) );
-            return 2;
         }
+
+        return EXIT_FAILURE;
     }
 
     puts( "Cerrando el servidor..." );
@@ -48,11 +50,11 @@ int main()
     if (return_code < 0)
     {
         fprintf( stderr, "Error (%d) al escribir en la tubería: %s\n", errno, strerror(errno) );
-        return 3;
+        return EXIT_FAILURE;
     }
 
     puts( "¡Adiós!" );
     close( controlfd );
 
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -22,6 +22,7 @@
 #include <errno.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "common/timeserver.h"
@@ -121,13 +122,13 @@ int create_control_shm(int* controlfd)
             // Si ya existe el objeto de memoria compartida, no deberíamos usarlo porque habrían varios servidores
             // usando el mismo canal de control y no hemos pensado en eso al diseñarlo.
             fputs( "Error: Hay otro servidor en ejecución.\n", stderr );
-            return 1;
         }
         else {
             fprintf( stderr, "Error (%d) al crear el objeto de memoria compartida: %s\n", errno,
                 strerror(errno) );
-            return 2;
         }
+
+        return EXIT_FAILURE;
     }
 
     // El objeto de memoria compartida creado tiene tamaño 0. Tenemos que extenderlo para que quepa 'memory_content'.
@@ -135,10 +136,10 @@ int create_control_shm(int* controlfd)
     if (return_code < 0) {
         fprintf( stderr, "Error (%d) al extender el objeto de memoria compartida: %s\n", errno,
             strerror(errno) );
-        return 3;
+        return EXIT_FAILURE;
     }
     
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 void cleanup_control_shm(int controlfd)
@@ -163,7 +164,7 @@ int init_control_memory(int controlfd, struct memory_content** memory_region)
     {
         fprintf( stderr, "Error (%d) al reservar la memoria compartida: %s\n", errno,
             strerror(errno) );
-        return 4;
+        return EXIT_FAILURE;
     }
 
     // Necesitamos un mecanismo para sincronizar cliente y servidor. El cliente necesita esperar a que el servidor
@@ -174,7 +175,7 @@ int init_control_memory(int controlfd, struct memory_content** memory_region)
     sem_init( &(*memory_region)->empty, 1, 1);
     sem_init( &(*memory_region)->ready, 1, 0);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 void free_control_memory(struct memory_content* memory_region)

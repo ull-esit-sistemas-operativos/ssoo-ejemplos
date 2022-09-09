@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
     int fd = open( DEVICE_PATH, O_RDWR | O_NOCTTY );
     if (fd < 0) {
         std::cerr << fmt::format( "Error ({}) al abrir '{}': {}\n", errno, DEVICE_PATH, std::strerror(errno) );
-        return 1;
+        return EXIT_FAILURE;
     }
 
     termios oldtio;
@@ -77,5 +77,5 @@ int main(int argc, char* argv[])
 
     tcsetattr( fd, TCSANOW, &oldtio );
     
-    return 0;
+    return EXIT_SUCCESS;
 }

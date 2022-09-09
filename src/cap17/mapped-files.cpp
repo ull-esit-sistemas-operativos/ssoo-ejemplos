@@ -29,7 +29,7 @@ int protected_main(int argc, char* argv[])
     if (argc != 2)
     {
         std::cerr << "Uso: " << program_name << " <archivo>\n";
-        return 1;
+        return EXIT_FAILURE;
     }
     
     // Abrir el archivo que se quiere mapear en memoria.
@@ -62,7 +62,7 @@ int protected_main(int argc, char* argv[])
 
     std::cout << fmt::format( "{: >7} {: >7} {: >7}\n", lines, words, characters);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int main(int argc, char* argv[])
@@ -80,5 +80,5 @@ int main(int argc, char* argv[])
         std::cerr << fmt::format( "Error: Excepción: {}\n", e.what() );
     }
 
-    return 2;
+    return EXIT_FAILURE;
 }

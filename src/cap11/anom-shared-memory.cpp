@@ -45,7 +45,7 @@ int main()
 
     if (shared_mem == MAP_FAILED) {
         std::cerr << fmt::format( "Error ({}) al reservar la memoria compartida: {}\n", errno, std::strerror(errno) );
-        return 1;
+        return EXIT_FAILURE;
     }
 
     memory_content* memory_region = static_cast<memory_content*>(shared_mem);
@@ -76,7 +76,7 @@ int main()
         // de cómo sería. 
         munmap( memory_region, sizeof(memory_content) );
 
-        return 0;
+        return EXIT_SUCCESS;
     }
     else if (child > 0)
     {

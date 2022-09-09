@@ -40,7 +40,7 @@ int protected_main()
     {
         std::cerr << fmt::format( "Error: No se puedo abrir '{}'.\n", PID_FILENAME );
         std::cerr << "Quizás el servidor no se esté ejecutando o no se tengan permisos suficientes\n";
-        return 1;
+        return EXIT_FAILURE;
     }
 
     // Usamos std::ifstream::read() para intentar leer el archivo en una sola llamada al sistema read().
@@ -62,7 +62,7 @@ int protected_main()
 
     std::cout << "¡Adiós!\n";
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int main()
@@ -76,5 +76,5 @@ int main()
         std::cerr << fmt::format( "Error: Excepción: {}\n", e.what() );
     }
 
-    return 2;
+    return EXIT_FAILURE;
 }

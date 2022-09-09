@@ -62,7 +62,7 @@ int main()
     if (return_code)
     {
         std::cerr << fmt::format( "Error ({}) al crear el hilo: {}\n", return_code, strerror(return_code) );
-        return 1;
+        return EXIT_FAILURE;
     }
 
     return_code = pthread_create( &thread2, nullptr, increment_counter, &thread_args );
@@ -73,7 +73,7 @@ int main()
         // Al terminar main() aquí, estaremos abortando la ejecución del primer hilo, si no ha terminado antes.
         // Este caso es muy sencillo, así que no importa. Pero no suele ser buena idea no dejar que los hilos tengan
         // oportunidad de terminar por sí mismos.
-        return 2;
+        return EXIT_FAILURE;
     }
 
     // Esperar a que los hilos terminen antes de continuar.
@@ -87,5 +87,5 @@ int main()
     // Destruir el mutex cuando ya no es necesario.
     pthread_mutex_destroy( &thread_args.mutex );
 
-    return 0;
+    return EXIT_SUCCESS;
 }

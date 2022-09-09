@@ -11,6 +11,7 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 int main()
@@ -52,11 +53,11 @@ int main()
         printf( "[PADRE] El valor de salida de mi hijo fue: %d\n", WEXITSTATUS(status) );
         
         puts( "[PADRE] ¡Adiós!" );
-        return 0;
+        return EXIT_SUCCESS;
     }
     else {
         // Aquí solo entra el padre si no pudo crear el hijo
         fprintf( stderr, "Error (%d) al crear el proceso: %s\n", errno, strerror(errno) );
-        return 1;
+        return EXIT_FAILURE;
     }
 }

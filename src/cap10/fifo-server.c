@@ -20,6 +20,7 @@
 #include <errno.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <common/timeserver.h>
@@ -132,22 +133,24 @@ int make_control_shm()
             // Si ya existe la tubería, no deberíamos usarla porque habrían varios servidores usando el mismo canal
             // de control. Algunos mensajes llegarían a un servidor y otros al otro. 
             fputs( "Error: Hay otro servidor en ejecución.\n", stderr );
-            return 1;
         }
-        else {
+        else
+        {
             fprintf( stderr, "Error (%d) al crear la tubería: %s\n", errno, strerror(errno) );
-            return 2;
         }
+        
+        return EXIT_FAILURE;
     }
     
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 void cleanup_control_shm()
 {
     // Eliminar la tubería con nombre. Nadie más podrá conectarse.
     int return_code = unlink( CONTROL_FIFO_PATH );
-    if (return_code < 0) {
+    if (return_code < 0)
+    {
         fprintf( stderr, "Error (%d) al borrar la tubería: %s\n", errno, strerror(errno) );
     }
 }
@@ -161,7 +164,7 @@ int alloc_control_memory(int* controlfd)
     if (controlfd < 0)
     {
         fprintf( stderr, "Error (%d) al abrir la tubería: %s\n", errno, strerror(errno) );
-        return 3;
+        return EXIT_FAILURE;
     }
 
     // Teniendo un descriptor de archivos del sistema operativo se puede obtener un FILE de la librería estándar de
@@ -172,7 +175,7 @@ int alloc_control_memory(int* controlfd)
     int fd_flags = fcntl( *controlfd, F_GETFL); 
     fcntl( *controlfd, F_SETFL, fd_flags & (~O_NONBLOCK) );
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int free_control_memory(int controlfd, char* command)
@@ -195,14 +198,14 @@ int free_control_memory(int controlfd, char* command)
                 if (quit_app)
                 {
                     command[0] = '\0';
-                    return 0;
+                    return EXIT_SUCCESS;
                 }
                 else continue;
             }
             else { 
                 fprintf( stderr, "Error (%d) al leer de la tubería: %s\n", errno,
                     strerror(errno) );
-                return 4;
+                return EXIT_FAILURE;
             }
         }
         else if (return_code == 0)
@@ -228,5 +231,5 @@ int free_control_memory(int controlfd, char* command)
     }
 
     *buffer = '\0';
-    return 0;
+    return EXIT_SUCCESS;
 }

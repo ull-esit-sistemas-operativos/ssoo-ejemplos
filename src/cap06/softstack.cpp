@@ -25,5 +25,5 @@ int main()
     std::cout << "Después de abrir el archivo...\n";
     ofs.close();
 
-    return 0;
+    return EXIT_SUCCESS;
 }

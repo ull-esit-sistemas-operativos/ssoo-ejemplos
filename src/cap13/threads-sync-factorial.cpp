@@ -67,5 +67,5 @@ int main()
 
     std::cout << fmt::format( "El factorial de {} es {}\n", number.to_string(), result.to_string() );
 
-    return 0;
+    return EXIT_SUCCESS;
 }

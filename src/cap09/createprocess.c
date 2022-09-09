@@ -7,6 +7,7 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 int main()
 {
@@ -27,7 +28,7 @@ int main()
         &pi ))
     {
         fprintf( stderr, "Error (%d) al crear el proceso.\n", GetLastError() );
-        return 1;
+        return EXIT_FAILURE;
     }
 
     printf( "[PADRE] El PID del nuevo proceso hijo es: %d\n", pi.dwProcessId );
@@ -43,5 +44,5 @@ int main()
     CloseHandle( pi.hProcess );
     CloseHandle( pi.hThread );
 
-    return 0;
+    return EXIT_SUCCESS;
 }

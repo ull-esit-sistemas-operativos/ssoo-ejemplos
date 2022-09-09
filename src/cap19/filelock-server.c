@@ -193,14 +193,14 @@ int read_pid_from_file (int fd, pid_t* pid)
     if (bytes_read < 0)
     {
         fprintf( stderr, "Error (%d) al leer el archivo PID: %s\n", errno, strerror(errno) );
-        return 4;
+        return EXIT_FAILURE;
     }
 
     // Si el archivo está vacío o es muy grande, seguramente no contenga un PID válido
     if (bytes_read == 0 || bytes_read == sizeof(buffer))
     {
         *pid = -1;
-        return 0;
+        return EXIT_SUCCESS;
     }
 
     buffer[bytes_read] = '\0';
@@ -212,12 +212,12 @@ int read_pid_from_file (int fd, pid_t* pid)
     if ( pid_readed == 0 || pid_readed >= INT_MAX  || *endptr != '\0' )
     {
         *pid = -1;
-        return 0;
+        return EXIT_SUCCESS;
     }
 
     *pid = pid_readed;
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int write_pid_to_file (int fd, pid_t pid)
@@ -230,10 +230,10 @@ int write_pid_to_file (int fd, pid_t pid)
     if (truncate_result < 0 || bytes_written < 0)
     {
         fprintf( stderr, "Error (%d) al escribir en el archivo PID: %s\n", errno, strerror(errno) );
-        return 5;
+        return EXIT_FAILURE;
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 bool check_if_process_exist( pid_t pid )
