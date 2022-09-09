@@ -25,11 +25,11 @@ set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 
-# Usar la librería {fmt} hasta std::format esté disponible (C++20)
+# Usar la librería {fmt} hasta que std::format esté disponible (C++20)
 include(FetchContent)
 FetchContent_Declare(fmtlib
     GIT_REPOSITORY "https://github.com/fmtlib/fmt.git"
-    GIT_TAG "7.0.3"
+    GIT_TAG "9.1.0"
 )
 FetchContent_MakeAvailable(fmtlib)
 
