@@ -75,7 +75,7 @@ public:
     // Devuelve el mensaje y la dirección del remitente.
     std::tuple<std::string, sockaddr_un> receive()
     {
-        std::array<char, MAX_MESSAGE_SIZE> buffer;
+        std::array<char, MAX_MESSAGE_SIZE> buffer{};
         
         sockaddr_un remote_address;
         socklen_t address_length = sizeof(remote_address);

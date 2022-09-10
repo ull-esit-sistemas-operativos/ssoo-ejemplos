@@ -72,7 +72,7 @@ public:
     // Devuelve el mensaje y su prioridad.
     std::tuple<std::string, unsigned int> receive()
     {
-        std::array<char, MAX_MESSAGE_SIZE> buffer;
+        std::array<char, MAX_MESSAGE_SIZE> buffer{};
         unsigned int prio;
 
         ssize_t return_code = mq_receive(mqd_, buffer.data(), buffer.size(), &prio);
