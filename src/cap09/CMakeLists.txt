@@ -1,6 +1,6 @@
 if(WIN32)
     add_executable(createprocess createprocess.c)
-else()
+elseif(UNIX)
     add_executable(fork fork.c)
     add_executable(fork-exec fork-exec.c)
 endif()
