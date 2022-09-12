@@ -1146,7 +1146,7 @@ BigInt BigInt::operator+(const BigInt& num) const {
     result.value = "";  // the value is cleared as the digits will be appended
     short carry = 0, sum;
     // add the two values
-    for (long i = larger.size() - 1; i >= 0; i--) {
+    for (long i = static_cast<long>(larger.size()) - 1; i >= 0; i--) {
         sum = larger[i] - '0' + smaller[i] - '0' + carry;
         result.value = std::to_string(sum % 10) + result.value;
         carry = sum / (short) 10;
@@ -1205,7 +1205,7 @@ BigInt BigInt::operator-(const BigInt& num) const {
     short difference;
     long i, j;
     // subtract the two values
-    for (i = larger.size() - 1; i >= 0; i--) {
+    for (i = static_cast<long>(larger.size()) - 1; i >= 0; i--) {
         difference = larger[i] - smaller[i];
         if (difference < 0) {
             for (j = i - 1; j >= 0; j--) {

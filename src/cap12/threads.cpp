@@ -18,13 +18,17 @@
 
 void factorial_thread (BigInt& result, BigInt number, BigInt lower_bound)
 {
+    result = calculate_factorial( number, lower_bound );
+}
+
+void print_thread_info(std::thread& thread)
+{
     std::stringstream ss;
-    ss << std::this_thread::get_id();
+    ss << thread.get_id();
     std::cout << fmt::format( "Hilo creado: {} (0x{:x})\n",
         ss.str(),
-        pthread_self() );
-
-    result = calculate_factorial( number, lower_bound );
+        reinterpret_cast<uintptr_t>(thread.native_handle())
+    );
 }
 
 int main()
@@ -38,7 +42,10 @@ int main()
     auto thread2_number = thread1_lower_bound - 1;
 
     std::thread thread1(factorial_thread, std::ref(thread1_result), number, thread1_lower_bound);
+    print_thread_info(thread1);
+
     std::thread thread2(factorial_thread, std::ref(thread2_result), thread2_number, 2);
+    print_thread_info(thread2);
 
     // Esperar a que los hilos terminen antes de continuar.
     // Si salimos de main() sin esperar, el proceso terminará y todos los hilos morirán inmediatamente,

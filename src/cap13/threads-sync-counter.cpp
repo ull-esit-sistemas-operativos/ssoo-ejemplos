@@ -22,12 +22,6 @@ struct increment_counter_thread_args
 
 void increment_counter (increment_counter_thread_args& args)
 {
-    std::stringstream ss;
-    ss << std::this_thread::get_id(),
-    std::cout << fmt::format( "Hilo creado: {} (0x{:x})\n",
-        ss.str(),
-        pthread_self() );
-
     // args.mutex.lock();
     for (int i = 0; i < 1000000; i++) {
         // Bloquear el mutex antes de incrementar el contador.
@@ -42,13 +36,26 @@ void increment_counter (increment_counter_thread_args& args)
     std::cout << fmt::format( "Valor del contador: {}\n", args.counter );
 }
 
+void print_thread_info(std::thread& thread)
+{
+    std::stringstream ss;
+    ss << thread.get_id();
+    std::cout << fmt::format( "Hilo creado: {} (0x{:x})\n",
+        ss.str(),
+        reinterpret_cast<uintptr_t>(thread.native_handle())
+    );
+}
+
 int main()
 {
     increment_counter_thread_args thread_args = { 0 };
 
     // Crear algunos hilos independientes cada uno de los cuales ejecutará increment_counter()    
     std::thread thread1(increment_counter, std::ref(thread_args));
+    print_thread_info(thread1);
+
     std::thread thread2(increment_counter, std::ref(thread_args));
+    print_thread_info(thread2);
 
     // Esperar a que los hilos terminen antes de continuar.
     // Si salimos de main() sin esperar, el proceso terminará y todos los hilos morirán inmediatamente,

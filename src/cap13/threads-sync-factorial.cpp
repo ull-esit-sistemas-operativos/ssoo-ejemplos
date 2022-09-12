@@ -28,18 +28,22 @@ struct factorial_thread_results
 
 void factorial_thread (factorial_thread_results& results, BigInt number, BigInt lower_bound)
 {
-    std::stringstream ss;
-    ss << std::this_thread::get_id(),
-    std::cout << fmt::format( "Hilo creado: {} (0x{:x})\n",
-        ss.str(),
-        pthread_self() );
-
     auto result = calculate_factorial( number, lower_bound );
 
     // Bloquear el mutex y guardar el resultado
     std::lock_guard<std::mutex> lock( results.mutex );
     results.partials.push_back( result );
     // El mutex se desbloquea al destruirse 'lock'
+}
+
+void print_thread_info(std::thread& thread)
+{
+    std::stringstream ss;
+    ss << thread.get_id();
+    std::cout << fmt::format( "Hilo creado: {} (0x{:x})\n",
+        ss.str(),
+        reinterpret_cast<uintptr_t>(thread.native_handle())
+    );
 }
 
 int main()
@@ -53,7 +57,10 @@ int main()
     auto thread2_number = thread1_lower_bound - 1;
 
     std::thread thread1(factorial_thread, std::ref(thread_results), number, thread1_lower_bound);
+    print_thread_info(thread1);
+
     std::thread thread2(factorial_thread, std::ref(thread_results), thread2_number, 2);
+    print_thread_info(thread2);
 
     // Esperar a que los hilos terminen antes de continuar.
     // Si salimos de main() sin esperar, el proceso terminará y todos los hilos morirán inmediatamente,

@@ -7,7 +7,7 @@
 
 BigInt get_user_input()
 {
-    std::cout << "Introduzca un número: ";
+    std::cout << "Introduzca un entero: ";
     std::cout.flush();
     
     BigInt number;
