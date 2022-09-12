@@ -33,7 +33,8 @@ Concretamente los ejemplos incluidos son:
  * `src/cap13/threads-sync-factorial.cpp` — Sincronización de hilos mediante mutex en C++: Cálculo del factorial de un número.
  * `src/cap13/pthreads-sync-counter.cpp` — Sincronización de hilos mediante mutex de POSIX Threads: Incrementar un contador.
  * `src/cap13/pthreads-sync-factorial.cpp` — Sincronización de hilos mediante mutex de POSIX Threads: Cálculo del factorial de un número.
- * `src/cap17/mapped-files.cpp` — Archivos mapeados en memoria con `mmap()`.
+ * `src/cap17/mapped-files.c` — Archivos mapeados en memoria con `mmap()`.
+ * `src/cap17/mapped-files.cpp` — Archivos mapeados en memoria con `mmap()` en C++.
  * `src/cap19/filelock-client.cpp` — Cliente en C++ del ejemplo del uso de bloqueo de archivos.
  * `src/cap19/filelock-server.c` — Servidor del ejemplo del uso de bloqueo de archivos.
  * `src/otros/yash.cpp` — Ejemplo muy básico del funcionamiento interno de una shell.

@@ -1,11 +1,11 @@
-// mapped-files.cpp - Ejemplo del uso de mmap() para mapear archivos
+// mapped-files.cpp - Ejemplo en C++ del uso de mmap() para mapear archivos
 //
 //  El programa mapea el archivo indicado por la línea de comandos en la memoria y calcula el el número de líneas,
 //  palabras y caracteres, como hace el comando wc.
 //
 //  Compilar:
 //
-//      g++ -lfmtlib -o mapped-files mapped-files.cpp
+//      g++ -lfmtlib -o mapped-files-cpp mapped-files.cpp
 //
 
 #include <algorithm>
