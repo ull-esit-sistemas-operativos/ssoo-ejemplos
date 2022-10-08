@@ -6,7 +6,7 @@
 //
 //  Uso:
 //
-//      # strace -e trace=open,openat,read,write,close ./softstack-cpp
+//      ltrace -CS -n4 ./softstack-cpp
 //
 
 #include <cstdlib>
