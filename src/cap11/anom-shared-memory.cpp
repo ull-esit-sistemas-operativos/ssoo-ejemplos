@@ -37,7 +37,7 @@ int main()
     // Reservar la zona de memoria compartida
     void* shared_mem = mmap(
         nullptr,
-        sizeof(int),
+        sizeof(memory_content),
         PROT_READ | PROT_WRITE,
         MAP_ANONYMOUS | MAP_SHARED,
         -1,
