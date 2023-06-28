@@ -29,10 +29,11 @@ Concretamente los ejemplos incluidos son:
  * `src/cap11/shared-memory-server.c` — Servidor de comunicación entre procesos mediante memoria compartida.
  * `src/cap12/pthreads.cpp` — Uso de hilos mediante POSIX Threads: Cálculo del factorial de un número.
  * `src/cap12/threads.cpp` — Uso de hilos en C++: Cálculo del factorial de un número.
- * `src/cap13/threads-sync-counter.cpp` — Sincronización de hilos mediante mutex en C++: Incrementar un contador.
- * `src/cap13/threads-sync-factorial.cpp` — Sincronización de hilos mediante mutex en C++: Cálculo del factorial de un número.
  * `src/cap13/pthreads-sync-counter.cpp` — Sincronización de hilos mediante mutex de POSIX Threads: Incrementar un contador.
  * `src/cap13/pthreads-sync-factorial.cpp` — Sincronización de hilos mediante mutex de POSIX Threads: Cálculo del factorial de un número.
+ * `src/cap13/threads-sync-counter.cpp` — Sincronización de hilos mediante mutex en C++: Incrementar un contador.
+ * `src/cap13/threads-sync-factorial.cpp` — Sincronización de hilos mediante mutex en C++: Cálculo del factorial de un número.
+* `src/cap13/threads-sync-semaphore.cpp` — Sincronización de hilos mediante semáforo en C++.
  * `src/cap17/mapped-files.c` — Archivos mapeados en memoria con `mmap()`.
  * `src/cap17/mapped-files.cpp` — Archivos mapeados en memoria con `mmap()` en C++.
  * `src/cap19/filelock-client.cpp` — Cliente en C++ del ejemplo del uso de bloqueo de archivos.
