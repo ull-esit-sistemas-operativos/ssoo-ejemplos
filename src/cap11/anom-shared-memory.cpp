@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -lfmtlib -o anom-shared-memory anom-shared-memory.cpp ../common/factorial.cpp
+//      g++ -I../ -o anom-shared-memory anom-shared-memory.cpp ../common/factorial.cpp
 //
 
 #include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo
@@ -20,7 +20,8 @@
                         // pues mete las funciones en el espacio de nombres 'std', como el resto de la librería
                         // estándar de C++.
 
-#include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
+#define FMT_HEADER_ONLY
+#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 #include <common/factorial.hpp>
 
@@ -44,7 +45,7 @@ int main()
         0 );
 
     if (shared_mem == MAP_FAILED) {
-        std::cerr << fmt::format( "Error ({}) al reservar la memoria compartida: {}\n", errno, std::strerror(errno) );
+        fmt::print( stderr, "Error ({}) al reservar la memoria compartida: {}\n", errno, std::strerror(errno) );
         return EXIT_FAILURE;
     }
 
@@ -85,7 +86,7 @@ int main()
         // Poner el proceso a la espera de que esté el resultado.
         sem_wait( &memory_region->ready );
         
-        std::cout << fmt::format( "[PADRE] El factorial de {} es {}\n", number,
+        fmt::print( "[PADRE] El factorial de {} es {}\n", number,
             memory_region->factorial );
 
         // Sabemos que el hijo ha terminado porque ya está el resultado. Aun así hay que llamar a wait() para evitar
@@ -95,7 +96,7 @@ int main()
     else
     {
         // Aquí solo entra el padre si no pudo crear el hijo
-        std::cerr << fmt::format( "Error ({}) al crear el proceso: {}\n", errno, strerror(errno) );
+        fmt::print( stderr, "Error ({}) al crear el proceso: {}\n", errno, strerror(errno) );
         exit_code = 4;
     }
 

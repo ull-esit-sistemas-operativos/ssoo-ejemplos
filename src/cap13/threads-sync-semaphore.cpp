@@ -4,23 +4,24 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -lfmtlib -o threads-sync-semaphore threads-sync-semaphore.cpp
+//      g++ -I../ -I../../lib -o threads-sync-semaphore threads-sync-semaphore.cpp
 //
 
 #include <thread>
 #include <iostream>
 #include <vector>
 
-#include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
+#define FMT_HEADER_ONLY
+#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 #include "semaphore.hpp"
 
 void thread_func(semaphore& sem, int thread_id)
 {
     sem.acquire();
-    std::cout << fmt::format( "Hilo {} creado\n", thread_id);
+    fmt::print( "Hilo {} creado\n", thread_id);
     std::this_thread::sleep_for(std::chrono::seconds(2)); // Dormir el hilo para simular trabajo
-    std::cout << fmt::format( "Hilo {} terminado\n", thread_id);
+    fmt::print( "Hilo {} terminado\n", thread_id);
     sem.release();
 }
 

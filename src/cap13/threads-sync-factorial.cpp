@@ -7,7 +7,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -lfmtlib -o threads-sync-factorial threads-sync-factorial.cpp
+//      g++ -I../ -I../../lib -o threads-sync-factorial threads-sync-factorial.cpp
 //
 
 #include <iostream>
@@ -18,7 +18,8 @@
 #include <thread>
 #include <vector>
 
-#include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
+#define FMT_HEADER_ONLY
+#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 #include <common/bigint_factorial.hpp>
 
@@ -42,7 +43,7 @@ void print_thread_info(std::thread& thread)
 {
     std::stringstream ss;
     ss << thread.get_id();
-    std::cout << fmt::format( "Hilo creado: {} (0x{:x})\n",
+    fmt::print( "Hilo creado: {} (0x{:x})\n",
         ss.str(),
         reinterpret_cast<uintptr_t>(thread.native_handle())
     );
@@ -74,7 +75,7 @@ int main()
     auto result = std::reduce( thread_results.partials.begin(), thread_results.partials.end(),
         BigInt{1}, std::multiplies<BigInt>() );
 
-    std::cout << fmt::format( "El factorial de {} es {}\n", number.to_string(), result.to_string() );
+    fmt::print( "El factorial de {} es {}\n", number.to_string(), result.to_string() );
 
     return EXIT_SUCCESS;
 }

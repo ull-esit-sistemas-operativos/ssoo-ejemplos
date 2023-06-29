@@ -1,6 +1,6 @@
 // yash.cpp - Ejemplo de muy básico del funcionamiento de una shell
 //
-//      g++ -std=c++11 -o yash yash.cpp
+//      g++ -o yash yash.cpp
 //
 
 #include <cerrno>
@@ -14,6 +14,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
+
+#define FMT_HEADER_ONLY
+#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 std::vector<std::string> split(const std::string& s)
 {
@@ -53,7 +56,7 @@ void run(const std::vector<std::string>& words)
         
         int result = execvp(words[0].c_str(), argv);
         if (result < 0) {
-            std::cerr << "No se pudo ejecutar el comando: " << std::strerror(errno) << "\n";
+            fmt::print(stderr, "No se pudo ejecutar el comando: {}\n", std::strerror(errno));
             exit(0);                                    // terminar el proceso para no tener dos shell
         }
     }
@@ -61,7 +64,7 @@ void run(const std::vector<std::string>& words)
         waitpid(pid, nullptr, 0);
     }
     else {
-        std::cerr << "No se pudo ejecutar el comando: " << std::strerror(errno) << "\n";
+        fmt::print(stderr, "No se pudo ejecutar el comando: {}\n", std::strerror(errno));
     }
 }
 

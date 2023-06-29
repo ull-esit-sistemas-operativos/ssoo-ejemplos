@@ -8,7 +8,7 @@
 //
 //  Compilar:
 //
-//      g++ -lfmtlib -lrt -o shared-memory-client shared-memory-client.cpp
+//      g++ -lrt -o shared-memory-client shared-memory-client.cpp
 //
 
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo <stdlib.h> como
@@ -17,7 +17,8 @@
 #include <string>       // librería estándar de C++.
 #include <system_error>
 
-#include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
+#define FMT_HEADER_ONLY
+#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 #include "shared-memory-server.h"
 
@@ -74,11 +75,11 @@ int main()
     }
     catch(std::system_error& e)
     {
-        std::cerr << fmt::format( "Error ({}): {}\n", e.code().value(), e.what() );
+        fmt::print( stderr, "Error ({}): {}\n", e.code().value(), e.what() );
     }
     catch(std::exception& e)
     {
-        std::cerr << fmt::format( "Error: Excepción: {}\n", e.what() );
+        fmt::print( stderr, "Error: Excepción: {}\n", e.what() );
     }
 
     return EXIT_FAILURE;

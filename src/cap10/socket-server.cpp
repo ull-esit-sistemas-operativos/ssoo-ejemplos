@@ -10,14 +10,15 @@
 //
 //  Compilar:
 //
-//      g++ -lfmtlib -o socket-server socket-server.cpp ../common/timeserver.c
+//      g++ -o socket-server socket-server.cpp ../common/timeserver.c
 //
 
 #include <iostream>
 #include <string>
 #include <system_error>
 
-#include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
+#define FMT_HEADER_ONLY
+#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 #include "common/timeserver.h"
 #include "socket-server.hpp"
@@ -50,7 +51,7 @@ int protected_main()
     setup_signals();
     start_alarm();
 
-    std::cout << fmt::format( "Escuchando en el canal de control '{}'...\n", CONTROL_SOCKET_NAME );
+    fmt::print( "Escuchando en el canal de control '{}'...\n", CONTROL_SOCKET_NAME );
 
     // Leer del socket los comandos e interpretarlos.
     while (!quit_app)
@@ -94,11 +95,11 @@ int main()
     }
     catch(std::system_error& e)
     {
-        std::cerr << fmt::format( "Error ({}): {}\n", e.code().value(), e.what() );
+        fmt::print( stderr, "Error ({}): {}\n", e.code().value(), e.what() );
     }
     catch(std::exception& e)
     {
-        std::cerr << fmt::format( "Error: Excepción: {}\n", e.what() );
+        fmt::print( stderr, "Error: Excepción: {}\n", e.what() );
     }
 
     return EXIT_FAILURE;

@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -lfmtlib -o fork-pipe fork-pipe.cpp ../common/factorial.cpp
+//      g++ -I../ -o fork-pipe fork-pipe.cpp ../common/factorial.cpp
 //
 
 #include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo
@@ -20,7 +20,8 @@
                         // C++ pues mete las funciones en el espacio de nombres 'std', como el resto de la librería
                         // estándar de C++.
 
-#include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
+#define FMT_HEADER_ONLY
+#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 #include <common/factorial.hpp>
 
@@ -33,8 +34,7 @@ int main()
 
     int return_code = pipe( fds.data() );
     if (return_code < 0) {
-        std::cerr << fmt::format( "Error ({}) al crear la tubería: {}\n", errno,
-            std::strerror(errno) );
+        fmt::print( stderr, "Error ({}) al crear la tubería: {}\n", errno, std::strerror(errno) );
         return EXIT_FAILURE;
     }
  
@@ -56,7 +56,7 @@ int main()
         ssize_t bytes_written = write( fds[1], factorial_string.c_str(), factorial_string.length() );
         if ( static_cast<size_t>(bytes_written) < factorial_string.length() )
         {
-            std::cerr << fmt::format( "Error ({}) al escribir en la tubería: {}\n", errno, strerror(errno) );
+            fmt::print( stderr, "Error ({}) al escribir en la tubería: {}\n", errno, strerror(errno) );
             
             close( fds[1] );
             return EXIT_FAILURE;
@@ -99,7 +99,7 @@ int main()
         // Aquí solo se llega si read() devuelve 0, que indica fin de archivo, o -1, que es un error.  
         if (bytes_read < 0)
         {
-            std::cerr << fmt::format( "Error ({}) al leer la tubería: {}\n", errno, std::strerror(errno) );
+            fmt::print( stderr, "Error ({}) al leer la tubería: {}\n", errno, std::strerror(errno) );
             return EXIT_FAILURE;
         }
 
@@ -119,14 +119,14 @@ int main()
         }
         
         std::string factorial(read_buffer.begin(), read_buffer_begin);
-        std::cout << fmt::format( "[PADRE] El factorial de {} es {}\n", number, factorial );
+        fmt::print( "[PADRE] El factorial de {} es {}\n", number, factorial );
 
         return EXIT_SUCCESS;
     }
     else
     {
         // Aquí solo entra el padre si no pudo crear el hijo
-        std::cerr << fmt::format( "Error ({}) al crear el proceso: {}\n", errno, strerror(errno) );
+        fmt::print( stderr, "Error ({}) al crear el proceso: {}\n", errno, strerror(errno) );
         
         close( fds[0] );
         close( fds[1] );

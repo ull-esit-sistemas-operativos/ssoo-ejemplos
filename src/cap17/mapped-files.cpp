@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -lfmtlib -o mapped-files-cpp mapped-files.cpp
+//      g++ -o mapped-files-cpp mapped-files.cpp
 //
 
 #include <algorithm>
@@ -14,7 +14,8 @@
 
 #include <libgen.h>     // Cabecera para basename()
 
-#include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
+#define FMT_HEADER_ONLY
+#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 // Como no hay funciones para gestionar ficheros mapeados en memoria en C++, tenemos que usar directamente la librería
 // del sistema. Abstrayendo su uso detrás de clases, simplificamos el resto del código del programa, facilitamos el
@@ -28,7 +29,7 @@ int protected_main(int argc, char* argv[])
 
     if (argc != 2)
     {
-        std::cerr << "Uso: " << program_name << " <archivo>\n";
+        fmt::print( stderr, "Uso: {} <archivo>\n", program_name );
         return EXIT_FAILURE;
     }
     
@@ -60,7 +61,7 @@ int protected_main(int argc, char* argv[])
         characters++;
     }
 
-    std::cout << fmt::format( "{: >7} {: >7} {: >7}\n", lines, words, characters);
+    fmt::print( "{: >7} {: >7} {: >7}\n", lines, words, characters);
 
     return EXIT_SUCCESS;
 }
@@ -73,11 +74,11 @@ int main(int argc, char* argv[])
     }
     catch(std::system_error& e)
     {
-        std::cerr << fmt::format( "Error ({}): {}\n", e.code().value(), e.what() );
+        fmt::print( stderr, "Error ({}): {}\n", e.code().value(), e.what() );
     }
     catch(std::exception& e)
     {
-        std::cerr << fmt::format( "Error: Excepción: {}\n", e.what() );
+        fmt::print( stderr, "Error: Excepción: {}\n", e.what() );
     }
 
     return EXIT_FAILURE;

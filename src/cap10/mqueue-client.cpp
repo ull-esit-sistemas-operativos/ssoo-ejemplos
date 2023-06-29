@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -lfmtlib -lrt -o mqueue-client mqueue-client.cpp
+//      g++ -lrt -o mqueue-client mqueue-client.cpp
 //
 
 #include <cerrno>
@@ -13,7 +13,8 @@
 #include <string>
 #include <system_error>
 
-#include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
+#define FMT_HEADER_ONLY
+#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 #include "mqueue-server.hpp"
 
@@ -60,11 +61,11 @@ int main()
     }
     catch(std::system_error& e)
     {
-        std::cerr << fmt::format( "Error ({}): {}\n", e.code().value(), e.what() );
+        fmt::print( stderr, "Error ({}): {}\n", e.code().value(), e.what() );
     }
     catch(std::exception& e)
     {
-        std::cerr << fmt::format( "Error: Excepción: {}\n", e.what() );
+        fmt::print( stderr, "Error: Excepción: {}\n", e.what() );
     }
 
     return EXIT_FAILURE;

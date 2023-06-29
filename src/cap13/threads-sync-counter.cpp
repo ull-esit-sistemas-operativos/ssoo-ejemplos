@@ -4,7 +4,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -lfmtlib -o threads-sync-counter threads-sync-counter.cpp
+//      g++ -I../ -I../../lib -o threads-sync-counter threads-sync-counter.cpp
 //
 
 #include <iostream>
@@ -12,7 +12,8 @@
 #include <sstream>
 #include <thread>
 
-#include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
+#define FMT_HEADER_ONLY
+#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 struct increment_counter_thread_args
 {
@@ -33,14 +34,14 @@ void increment_counter (increment_counter_thread_args& args)
     }
     // args.mutex.unlock();
 
-    std::cout << fmt::format( "Valor del contador: {}\n", args.counter );
+    fmt::print( "Valor del contador: {}\n", args.counter );
 }
 
 void print_thread_info(std::thread& thread)
 {
     std::stringstream ss;
     ss << thread.get_id();
-    std::cout << fmt::format( "Hilo creado: {} (0x{:x})\n",
+    fmt::print( "Hilo creado: {} (0x{:x})\n",
         ss.str(),
         reinterpret_cast<uintptr_t>(thread.native_handle())
     );
@@ -63,7 +64,7 @@ int main()
     thread1.join();
     thread2.join(); 
 
-    std::cout << fmt::format( "Valor final del contador: {}\n", thread_args.counter );
+    fmt::print( "Valor final del contador: {}\n", thread_args.counter );
 
     return EXIT_SUCCESS;
 }

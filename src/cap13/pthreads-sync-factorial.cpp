@@ -7,7 +7,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -lfmtlib -o pthreads-sync-factorial pthreads-sync-factorial.cpp
+//      g++ -I../ -I../../lib -o pthreads-sync-factorial pthreads-sync-factorial.cpp
 //
 
 #include <pthread.h>
@@ -19,7 +19,8 @@
 #include <numeric>
 #include <vector>
 
-#include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
+#define FMT_HEADER_ONLY
+#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 #include <common/bigint_factorial.hpp>
 
@@ -38,7 +39,7 @@ struct factorial_thread_args
 
 void* factorial_thread (void* arg)
 {
-    std::cout << fmt::format( "Hilo creado: 0x{:x}\n", pthread_self() );
+    fmt::print( "Hilo creado: 0x{:x}\n", pthread_self() );
 
     factorial_thread_args* args = static_cast<factorial_thread_args*>(arg);
     auto result = calculate_factorial( args->number, args->lower_bound );
@@ -73,14 +74,14 @@ int main()
 
     if (return_code)
     {
-        std::cerr << fmt::format( "Error ({}) al crear el hilo: {}\n", return_code, strerror(return_code) );
+        fmt::print( stderr, "Error ({}) al crear el hilo: {}\n", return_code, strerror(return_code) );
         return EXIT_FAILURE;
     }
 
     return_code = pthread_create( &thread2, nullptr, factorial_thread, &thread2_args );
     if (return_code)
     {
-        std::cerr << fmt::format( "Error ({}) al crear el hilo: {}\n", return_code, strerror(return_code) );
+        fmt::print( stderr, "Error ({}) al crear el hilo: {}\n", return_code, strerror(return_code) );
         
         // Al terminar main() aquí, estaremos abortando la ejecución del primer hilo, si no ha terminado antes.
         // Este caso es muy sencillo, así que no importa. Pero no suele ser buena idea no dejar que los hilos tengan
@@ -98,7 +99,7 @@ int main()
     auto result = std::reduce( thread_results.partials.begin(), thread_results.partials.end(),
         BigInt{1}, std::multiplies<BigInt>() );
 
-    std::cout << fmt::format( "El factorial de {} es {}\n", number.to_string(), result.to_string() );
+    fmt::print( "El factorial de {} es {}\n", number.to_string(), result.to_string() );
 
     pthread_mutex_destroy( &thread_results.mutex);
 

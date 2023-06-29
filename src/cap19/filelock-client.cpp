@@ -12,7 +12,7 @@
 //
 //  Compilar:
 //
-//      g++ -lfmtlib -o filelock-client filelock-client.cpp
+//      g++ -o filelock-client filelock-client.cpp
 //
 
 #include <unistd.h>
@@ -25,7 +25,8 @@
 #include <string>
 #include <system_error>
 
-#include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
+#define FMT_HEADER_ONLY
+#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 #include "filelock-server.h"
 
@@ -38,7 +39,7 @@ int protected_main()
     // si el archivo no existe, no se tienen permisos suficientes, etc.
     if ( ! pidfile_stream.is_open() )
     {
-        std::cerr << fmt::format( "Error: No se puedo abrir '{}'.\n", PID_FILENAME );
+        fmt::print( stderr, "Error: No se puedo abrir '{}'.\n", PID_FILENAME );
         std::cerr << "Quizás el servidor no se esté ejecutando o no se tengan permisos suficientes\n";
         return EXIT_FAILURE;
     }
@@ -73,7 +74,7 @@ int main()
     }
     catch(std::exception& e)
     {
-        std::cerr << fmt::format( "Error: Excepción: {}\n", e.what() );
+        fmt::print( stderr, "Error: Excepción: {}\n", e.what() );
     }
 
     return EXIT_FAILURE;

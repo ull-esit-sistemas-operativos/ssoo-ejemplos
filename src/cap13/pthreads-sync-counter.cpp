@@ -4,7 +4,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -lfmtlib -o pthreads-sync pthreads-sync.cpp
+//      g++ -I../ -I../../lib -o pthreads-sync pthreads-sync.cpp
 //
 
 #include <pthread.h>
@@ -13,7 +13,8 @@
 #include <cstring>
 #include <iostream>
 
-#include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
+#define FMT_HEADER_ONLY
+#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 struct increment_counter_thread_args
 {
@@ -23,7 +24,7 @@ struct increment_counter_thread_args
 
 void* increment_counter (void* arg)
 {
-    std::cout << fmt::format( "Hilo creado: 0x{:x}\n", pthread_self() );
+    fmt::print( "Hilo creado: 0x{:x}\n", pthread_self() );
 
     increment_counter_thread_args* args = static_cast<increment_counter_thread_args*>(arg);
 
@@ -37,7 +38,7 @@ void* increment_counter (void* arg)
     }
     // pthread_mutex_unlock( &args->mutex );
 
-    std::cout << fmt::format( "Valor del contador: {}\n", args->counter );
+    fmt::print( "Valor del contador: {}\n", args->counter );
 
     return nullptr;
 }
@@ -61,14 +62,14 @@ int main()
 
     if (return_code)
     {
-        std::cerr << fmt::format( "Error ({}) al crear el hilo: {}\n", return_code, strerror(return_code) );
+        fmt::print( stderr, "Error ({}) al crear el hilo: {}\n", return_code, strerror(return_code) );
         return EXIT_FAILURE;
     }
 
     return_code = pthread_create( &thread2, nullptr, increment_counter, &thread_args );
     if (return_code)
     {
-        std::cerr << fmt::format( "Error ({}) al crear el hilo: {}\n", return_code, strerror(return_code) );
+        fmt::print( stderr, "Error ({}) al crear el hilo: {}\n", return_code, strerror(return_code) );
         
         // Al terminar main() aquí, estaremos abortando la ejecución del primer hilo, si no ha terminado antes.
         // Este caso es muy sencillo, así que no importa. Pero no suele ser buena idea no dejar que los hilos tengan
@@ -82,7 +83,7 @@ int main()
     pthread_join( thread1, nullptr );
     pthread_join( thread2, nullptr ); 
 
-    std::cout << fmt::format( "Valor final del contador: {}\n", thread_args.counter );
+    fmt::print( "Valor final del contador: {}\n", thread_args.counter );
 
     // Destruir el mutex cuando ya no es necesario.
     pthread_mutex_destroy( &thread_args.mutex );

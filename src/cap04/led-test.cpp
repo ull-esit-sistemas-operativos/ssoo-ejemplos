@@ -21,7 +21,8 @@
 #include <iostream>
 #include <string>
 
-#include <fmt/core.h>   // Hasta que std::format (C++20) esté disponible
+#define FMT_HEADER_ONLY
+#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 const char* DEVICE_PATH = "/dev/ttyUSB0";
 
@@ -50,7 +51,7 @@ int main(int argc, char* argv[])
 {
     int fd = open( DEVICE_PATH, O_RDWR | O_NOCTTY );
     if (fd < 0) {
-        std::cerr << fmt::format( "Error ({}) al abrir '{}': {}\n", errno, DEVICE_PATH, std::strerror(errno) );
+        fmt::print( stderr, "Error ({}) al abrir '{}': {}\n", errno, DEVICE_PATH, std::strerror(errno) );
         return EXIT_FAILURE;
     }
 
