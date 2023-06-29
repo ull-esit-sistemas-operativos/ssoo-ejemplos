@@ -55,14 +55,14 @@ int main()
 
     if (return_code)
     {
-        fmt::print( stderr, "Error ({}) al crear el hilo: {}\n", return_code, strerror(return_code) );
+        fmt::print( stderr, "Error ({}) al crear el hilo: {}\n", return_code, std::strerror(return_code) );
         return EXIT_FAILURE;
     }
 
     return_code = pthread_create( &thread2, nullptr,  factorial_thread, &thread2_args );
     if (return_code)
     {
-        fmt::print( stderr, "Error ({}) al crear el hilo: {}\n", return_code, strerror(return_code) );
+        fmt::print( stderr, "Error ({}) al crear el hilo: {}\n", return_code, std::strerror(return_code) );
         
         // Al terminar main() aquí, estaremos abortando la ejecución del primer hilo, si no ha terminado antes.
         // Este caso es muy sencillo, así que no importa. Pero no suele ser buena idea no dejar que los hilos tengan

@@ -9,11 +9,11 @@
 
 #include <iostream>
 #include <mutex>
-#include <sstream>
 #include <thread>
 
 #define FMT_HEADER_ONLY
 #include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
+#include <fmt/std.h>
 
 struct increment_counter_thread_args
 {
@@ -37,26 +37,16 @@ void increment_counter (increment_counter_thread_args& args)
     fmt::print( "Valor del contador: {}\n", args.counter );
 }
 
-void print_thread_info(std::thread& thread)
-{
-    std::stringstream ss;
-    ss << thread.get_id();
-    fmt::print( "Hilo creado: {} (0x{:x})\n",
-        ss.str(),
-        reinterpret_cast<uintptr_t>(thread.native_handle())
-    );
-}
-
 int main()
 {
     increment_counter_thread_args thread_args = { .counter = 0 };
 
     // Crear algunos hilos independientes cada uno de los cuales ejecutará increment_counter()    
     std::thread thread1(increment_counter, std::ref(thread_args));
-    print_thread_info(thread1);
+    fmt::print( "Hilo creado: {} (0x{:x})\n", thread1.get_id(), thread1.native_handle() );
 
     std::thread thread2(increment_counter, std::ref(thread_args));
-    print_thread_info(thread2);
+    fmt::print( "Hilo creado: {} (0x{:x})\n", thread2.get_id(), thread2.native_handle() );
 
     // Esperar a que los hilos terminen antes de continuar.
     // Si salimos de main() sin esperar, el proceso terminará y todos los hilos morirán inmediatamente,

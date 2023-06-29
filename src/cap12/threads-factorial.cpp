@@ -9,27 +9,17 @@
 //
 
 #include <iostream>
-#include <sstream>
 #include <thread>
 
 #define FMT_HEADER_ONLY
 #include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
+#include <fmt/std.h>
 
 #include <common/bigint_factorial.hpp>
 
 void factorial_thread (BigInt& result, BigInt number, BigInt lower_bound)
 {
     result = calculate_factorial( number, lower_bound );
-}
-
-void print_thread_info(std::thread& thread)
-{
-    std::stringstream ss;
-    ss << thread.get_id();
-    fmt::print( "Hilo creado: {} (0x{:x})\n",
-        ss.str(),
-        reinterpret_cast<uintptr_t>(thread.native_handle())
-    );
 }
 
 int main()
@@ -43,10 +33,10 @@ int main()
     auto thread2_number = thread1_lower_bound - 1;
 
     std::thread thread1(factorial_thread, std::ref(thread1_result), number, thread1_lower_bound);
-    print_thread_info(thread1);
+    fmt::print( "Hilo creado: {} (0x{:x})\n", thread1.get_id(), thread1.native_handle() );
 
     std::thread thread2(factorial_thread, std::ref(thread2_result), thread2_number, 2);
-    print_thread_info(thread2);
+    fmt::print( "Hilo creado: {} (0x{:x})\n", thread2.get_id(), thread2.native_handle() );
 
     // Esperar a que los hilos terminen antes de continuar.
     // Si salimos de main() sin esperar, el proceso terminará y todos los hilos morirán inmediatamente,
