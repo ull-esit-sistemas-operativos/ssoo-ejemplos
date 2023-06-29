@@ -11,6 +11,7 @@
 
 #include <cerrno>
 #include <cstring>
+#include <functional>
 #include <memory>
 #include <stdexcept>
 #include <system_error>
