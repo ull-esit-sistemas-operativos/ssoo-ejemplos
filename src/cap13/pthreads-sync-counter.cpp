@@ -47,7 +47,7 @@ int main()
     int return_code = 0;
     pthread_t thread1, thread2;
 
-    increment_counter_thread_args thread_args = { 0 };
+    increment_counter_thread_args thread_args = { .counter = 0 };
     
     // Inicializar el mutex en 'increment_counter_thread_args'
     pthread_mutex_init( &thread_args.mutex, nullptr);

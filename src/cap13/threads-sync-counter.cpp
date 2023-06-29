@@ -48,7 +48,7 @@ void print_thread_info(std::thread& thread)
 
 int main()
 {
-    increment_counter_thread_args thread_args = { 0 };
+    increment_counter_thread_args thread_args = { .counter = 0 };
 
     // Crear algunos hilos independientes cada uno de los cuales ejecutará increment_counter()    
     std::thread thread1(increment_counter, std::ref(thread_args));
