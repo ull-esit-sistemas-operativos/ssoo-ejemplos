@@ -10,7 +10,7 @@
 //
 //  Compilar:
 //
-//      g++ -pthread -lfmtlib -o socket-server socket-server.cpp ../common/timeserver.c
+//      g++ -lfmtlib -o socket-server socket-server.cpp ../common/timeserver.c
 //
 
 #include <iostream>

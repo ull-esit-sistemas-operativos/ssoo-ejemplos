@@ -10,7 +10,7 @@
 //
 //  Compilar:
 //
-//      g++ -pthread -lfmtlib -o socket-client socket-client.cpp
+//      g++ -lfmtlib -o socket-client socket-client.cpp
 //
 
 #include <iostream>

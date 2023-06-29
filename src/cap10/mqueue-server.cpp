@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -pthread -lfmtlib -lrt -o mqueue-server mqueue-server.cpp ../common/timeserver.c
+//      g++ -lfmtlib -lrt -o mqueue-server mqueue-server.cpp ../common/timeserver.c
 //
 
 #include <iostream>

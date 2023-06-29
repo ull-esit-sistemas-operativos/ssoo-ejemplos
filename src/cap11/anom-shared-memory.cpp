@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -lfmtlib -pthread -o anom-shared-memory anom-shared-memory.cpp ../common/factorial.cpp
+//      g++ -I../ -lfmtlib -o anom-shared-memory anom-shared-memory.cpp ../common/factorial.cpp
 //
 
 #include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo

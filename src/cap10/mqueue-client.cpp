@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -pthread -lfmtlib -lrt -o mqueue-client mqueue-client.cpp
+//      g++ -lfmtlib -lrt -o mqueue-client mqueue-client.cpp
 //
 
 #include <cerrno>
