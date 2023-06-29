@@ -1,11 +1,11 @@
-// pthreads.cpp - Ejemplo del uso de threads con POSIX Threads
+// pthreads-factorial.cpp - Ejemplo del uso de threads con POSIX Threads
 //
 // El programa calcula el factorial del número indicado por el usuario. Se utilizan dos hilos para paralelizar
 // los cálculos, aprovechando mejor las CPU con varios núcleos.
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -lfmtlib -pthread -o pthreads pthreads.cpp
+//      g++ -I../ -I../../lib -lfmtlib -o pthreads-factorial pthreads-factorial.cpp
 //
 
 #include <pthread.h>

@@ -1,10 +1,10 @@
-// pthreads-sync.cpp - Ejemplo del uso de mutex en POSIX Threads
+// pthreads-sync-counter.cpp - Ejemplo del uso de mutex en POSIX Threads
 //
 // El programa incrementa un contador usando varios hilos al mismo tiempo .
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -lfmtlib -pthread -o pthreads-sync pthreads-sync.cpp
+//      g++ -I../ -I../../lib -lfmtlib -o pthreads-sync pthreads-sync.cpp
 //
 
 #include <pthread.h>

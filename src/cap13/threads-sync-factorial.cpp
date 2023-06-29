@@ -1,11 +1,13 @@
 // threads-sync-factorial.cpp - Ejemplo del uso de mutex en C++
 //
 // El programa calcula el factorial del número indicado por el usuario. Se utilizan dos hilos para paralelizar
-// los cálculos, aprovechando mejor las CPU con varios núcleos.
+// los cálculos, aprovechando mejor las CPU con varios núcleos. El resultado parcial del cálculo que realiza
+// cada hilo se guarda en un std::vector  compartido, por lo que se usan mecanismos de sincronización para que los
+// hilos no puedan modificar el vector al mismo tiempo.
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -lfmtlib -pthread -o threads-sync-factorial threads-sync-factorial.cpp
+//      g++ -I../ -I../../lib -lfmtlib -o threads-sync-factorial threads-sync-factorial.cpp
 //
 
 #include <iostream>

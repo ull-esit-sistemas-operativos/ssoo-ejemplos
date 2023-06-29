@@ -1,10 +1,10 @@
-// threads-sync.cpp - Ejemplo del uso de mutex en C++
+// threads-sync-counter.cpp - Ejemplo del uso de mutex en C++
 //
 // El programa incrementa un contador compartido usando varios hilos al mismo tiempo.
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -lfmtlib -pthread -o threads-sync-counter threads-sync-counter.cpp
+//      g++ -I../ -I../../lib -lfmtlib -o threads-sync-counter threads-sync-counter.cpp
 //
 
 #include <iostream>

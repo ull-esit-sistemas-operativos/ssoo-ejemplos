@@ -1,11 +1,11 @@
-// threads.cpp - Ejemplo de creación de threads en C++
+// threads-factorial.cpp - Ejemplo de creación de threads en C++
 //
 // El programa calcula el factorial del número indicado por el usuario. Se utilizan dos hilos para paralelizar
 // los cálculos, aprovechando mejor las CPU con varios núcleos.
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -lfmtlib -pthread -o threads threads.cpp
+//      g++ -I../ -I../../lib -lfmtlib -o threads-factorial threads-factorial.cpp
 //
 
 #include <iostream>

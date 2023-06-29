@@ -4,7 +4,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -lfmtlib -pthread -o threads-sync-semaphore threads-sync-semaphore.cpp
+//      g++ -I../ -I../../lib -lfmtlib -o threads-sync-semaphore threads-sync-semaphore.cpp
 //
 
 #include <thread>
