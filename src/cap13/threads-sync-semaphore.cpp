@@ -8,6 +8,7 @@
 //
 
 #include <iostream>
+#include <ranges>
 #include <vector>
 #include <thread>
 
@@ -27,11 +28,10 @@ void thread_function(semaphore& sem, int thread_id)
 
 int main()
 {
-    const int num_threads = 10;
     semaphore sem(3); // Solo permitir 3 hilos simultáneos
 
     std::vector<std::thread> threads;
-    for(int i = 0; i < num_threads; i++)
+    for(int i : std::views::iota(1, 10))
     {
         threads.push_back( std::thread( thread_function, std::ref(sem), i ));
     }
