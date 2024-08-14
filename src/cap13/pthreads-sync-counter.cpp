@@ -11,10 +11,7 @@
 
 #include <cerrno>
 #include <cstring>
-#include <iostream>
-
-#define FMT_HEADER_ONLY
-#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
+#include <print>
 
 struct increment_counter_thread_args
 {
@@ -24,7 +21,7 @@ struct increment_counter_thread_args
 
 void* increment_counter (void* arg)
 {
-    fmt::print( "Hilo creado: 0x{:x}\n", pthread_self() );
+    std::println( "Hilo creado: 0x{:x}", pthread_self() );
 
     increment_counter_thread_args* args = static_cast<increment_counter_thread_args*>(arg);
 
@@ -38,7 +35,7 @@ void* increment_counter (void* arg)
     }
     // pthread_mutex_unlock( &args->mutex );
 
-    fmt::print( "Valor del contador: {}\n", args->counter );
+    std::println( "Valor del contador: {}", args->counter );
 
     return nullptr;
 }
@@ -62,14 +59,14 @@ int main()
 
     if (return_code)
     {
-        fmt::print( stderr, "Error ({}) al crear el hilo: {}\n", return_code, strerror(return_code) );
+        std::println( stderr, "Error ({}) al crear el hilo: {}", return_code, strerror(return_code) );
         return EXIT_FAILURE;
     }
 
     return_code = pthread_create( &thread2, nullptr, increment_counter, &thread_args );
     if (return_code)
     {
-        fmt::print( stderr, "Error ({}) al crear el hilo: {}\n", return_code, strerror(return_code) );
+        std::println( stderr, "Error ({}) al crear el hilo: {}", return_code, strerror(return_code) );
         
         // Al terminar main() aquí, estaremos abortando la ejecución del primer hilo, si no ha terminado antes.
         // Este caso es muy sencillo, así que no importa. Pero no suele ser buena idea no dejar que los hilos tengan
@@ -83,7 +80,7 @@ int main()
     pthread_join( thread1, nullptr );
     pthread_join( thread2, nullptr ); 
 
-    fmt::print( "Valor final del contador: {}\n", thread_args.counter );
+    std::println( "Valor final del contador: {}", thread_args.counter );
 
     // Destruir el mutex cuando ya no es necesario.
     pthread_mutex_destroy( &thread_args.mutex );

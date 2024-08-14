@@ -9,9 +9,11 @@
 //
 
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo <stdlib.h> como
-#include <cstring>      // <cstdlib>. La primera es para usar con C mientras que la segunda es la recomendada en C++
-#include <iostream>     // pues mete las funciones en el espacio de nombres 'std', como el resto de la librería
-#include <fstream>      // estándar de C++.
+#include <cstring>      // <cstdlib>. La primera es para usar con C, mientras que la segunda es la recomendada en C++
+                        // pues mete las funciones en el espacio de nombres 'std', como el resto de la librería
+                        // estándar de C++.
+#include <fstream>
+#include <print>
 #include <string>
 
 #include "fifo-server.h"
@@ -22,7 +24,7 @@ int main()
     // También se puede abrir con open() o std::fopen().
     std::ofstream controlfs { CONTROL_FIFO_PATH, std::ifstream::out | std::ifstream::binary };
     if (controlfs.fail()) {
-        std::cerr << "Error: No se pudo abrir la tubería.\n";
+        std::println( stderr, "Error: No se pudo abrir la tubería.");
         return EXIT_FAILURE;
     }
 
@@ -32,15 +34,15 @@ int main()
     // ejecutando o de que no tiene los permisos adecuados. En el ejemplo 'file-client.c' se muestra  como usar 'errno'
     // con ese fin.
 
-    std::cout << "Cerrando el servidor...\n";
-    controlfs << QUIT_COMMAND << '\n';
+    std::println( "Cerrando el servidor..." );
+    std::println( QUIT_COMMAND );
 
     if (controlfs.bad()) {
-        std::cerr << "Error: No se pudo escribir en la tubería.\n";
+        std::println( stderr, "Error: No se pudo escribir en la tubería.");
         return EXIT_FAILURE;
     }
 
-    std::cout << "¡Adiós!\n";
+    std::println( "¡Adiós!" );
 
     return EXIT_SUCCESS;
 }

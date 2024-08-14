@@ -13,15 +13,11 @@
 #include <sys/wait.h>
 
 #include <array>        // Recomendada para crear arrays de tamaño fijo compatibles con C
-#include <iostream>
-
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo <stdlib.h> como
-#include <cstring>      // <cstdlib>. La primera es para usar con C mientras que la segunda es la recomendada en
+#include <cstring>      // <cstdlib>. La primera es para usar con C, mientras que la segunda es la recomendada en
                         // C++ pues mete las funciones en el espacio de nombres 'std', como el resto de la librería
                         // estándar de C++.
-
-#define FMT_HEADER_ONLY
-#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
+#include <print>
 
 #include <common/factorial.hpp>
 
@@ -34,7 +30,7 @@ int main()
 
     int return_code = pipe( fds.data() );
     if (return_code < 0) {
-        fmt::print( stderr, "Error ({}) al crear la tubería: {}\n", errno, std::strerror(errno) );
+        std::println( stderr, "Error ({}) al crear la tubería: {}", errno, std::strerror(errno) );
         return EXIT_FAILURE;
     }
  
@@ -56,7 +52,7 @@ int main()
         ssize_t bytes_written = write( fds[1], factorial_string.c_str(), factorial_string.length() );
         if ( static_cast<size_t>(bytes_written) < factorial_string.length() )
         {
-            fmt::print( stderr, "Error ({}) al escribir en la tubería: {}\n", errno, strerror(errno) );
+            std::println( stderr, "Error ({}) al escribir en la tubería: {}", errno, strerror(errno) );
             
             close( fds[1] );
             return EXIT_FAILURE;
@@ -99,7 +95,7 @@ int main()
         // Aquí solo se llega si read() devuelve 0, que indica fin de archivo, o -1, que es un error.  
         if (bytes_read < 0)
         {
-            fmt::print( stderr, "Error ({}) al leer la tubería: {}\n", errno, std::strerror(errno) );
+            std::println( stderr, "Error ({}) al leer la tubería: {}", errno, std::strerror(errno) );
             return EXIT_FAILURE;
         }
 
@@ -114,19 +110,19 @@ int main()
         
         if (! (WIFEXITED(status) && WEXITSTATUS(status) == 0) )
         {
-            std::cerr << "Error: La tarea terminó inesperadamente.\n";
+            std::println( stderr, "Error: La tarea terminó inesperadamente." );
             return EXIT_FAILURE;
         }
         
         std::string factorial(read_buffer.begin(), read_buffer_begin);
-        fmt::print( "[PADRE] El factorial de {} es {}\n", number, factorial );
+        std::println( "[PADRE] El factorial de {} es {}", number, factorial );
 
         return EXIT_SUCCESS;
     }
     else
     {
         // Aquí solo entra el padre si no pudo crear el hijo
-        fmt::print( stderr, "Error ({}) al crear el proceso: {}\n", errno, strerror(errno) );
+        std::println( stderr, "Error ({}) al crear el proceso: {}", errno, strerror(errno) );
         
         close( fds[0] );
         close( fds[1] );

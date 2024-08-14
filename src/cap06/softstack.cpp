@@ -11,7 +11,7 @@
 
 #include <cstdlib>
 #include <fstream>
-#include <iostream>
+#include <print>
 
 int main()
 {
@@ -20,9 +20,9 @@ int main()
     std::ofstream ofs;
     mkstemp( filename );
 
-    std::cout << "Antes de abrir el archivo...\n";
+    std::println( "Antes de abrir el archivo..." );
     ofs.open( filename, std::ofstream::out );
-    std::cout << "Después de abrir el archivo...\n";
+    std::println( "Después de abrir el archivo..." );
     ofs.close();
 
     return EXIT_SUCCESS;

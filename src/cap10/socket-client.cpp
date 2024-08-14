@@ -13,12 +13,9 @@
 //      g++ -o socket-client socket-client.cpp
 //
 
-#include <iostream>
+#include <print>
 #include <string>
 #include <system_error>
-
-#define FMT_HEADER_ONLY
-#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 #include "socket-server.hpp"
 
@@ -33,12 +30,12 @@ int protected_main()
     // Crear un socket local para comunicarnos con el servidor.
     socket_t sock { socket_t::SOCKET_UNNAMED };
 
-    std::cout << "Cerrando el servidor...\n";
+    std::println( "Cerrando el servidor..." );
 
     // Enviar el comando de terminar a la cola.
     sock.send( QUIT_COMMAND, CONTROL_SOCKET_NAME );
 
-    std::cout << "¡Adiós!\n";
+    std::println( "¡Adiós!" );
 
     return EXIT_SUCCESS;
 }
@@ -51,11 +48,11 @@ int main()
     }
     catch(std::system_error& e)
     {
-        fmt::print( stderr, "Error ({}): {}\n", e.code().value(), e.what() );
+        std::println( stderr, "Error ({}): {}", e.code().value(), e.what() );
     }
     catch(std::exception& e)
     {
-        fmt::print( stderr, "Error: Excepción: {}\n", e.what() );
+        std::println( stderr, "Error: Excepción: {}", e.what() );
     }
 
     return EXIT_FAILURE;

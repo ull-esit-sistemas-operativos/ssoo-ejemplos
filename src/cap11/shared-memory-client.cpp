@@ -12,13 +12,12 @@
 //
 
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo <stdlib.h> como
-#include <cstring>      // <cstdlib>. La primera es para usar con C mientras quela segunda es la recomendada en C++
-#include <iostream>     // pues mete las funciones en el espacio de nombres 'std', como el resto de la
-#include <string>       // librería estándar de C++.
+#include <cstring>      // <cstdlib>. La primera es para usar con C, mientras que la segunda es la recomendada en C++
+                        // pues mete las funciones en el espacio de nombres 'std', como el resto de la
+                        // librería estándar de C++.
+#include <print>
+#include <string>
 #include <system_error>
-
-#define FMT_HEADER_ONLY
-#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 #include "shared-memory-server.h"
 
@@ -41,7 +40,7 @@ int protected_main()
     {
         if (e.code().value() == ENOENT)
         {
-            std::cerr << "Error: El servidor no parece estar en ejecución.\n";
+            std::println( stderr, "Error: El servidor no parece estar en ejecución." );
             return EXIT_FAILURE;
         }
         else throw;
@@ -54,7 +53,7 @@ int protected_main()
     // Poner el proceso a la espera de que se pueda enviar un comando.
     sem_wait( &memory_region->empty );
 
-    std::cout << "Cerrando el servidor...\n";
+    std::println( "Cerrando el servidor..." );
 
     // Escribir el comando en la región de memoria compartida.
     std::strcpy( memory_region->command_buffer, QUIT_COMMAND );
@@ -62,7 +61,7 @@ int protected_main()
     // Indicar al servidor que ya se escribió el comando.
     sem_post( &memory_region->empty );
 
-    std::cout << "¡Adiós!\n";
+    std::println( "¡Adiós!" );
 
     return EXIT_SUCCESS;
 }
@@ -75,11 +74,11 @@ int main()
     }
     catch(std::system_error& e)
     {
-        fmt::print( stderr, "Error ({}): {}\n", e.code().value(), e.what() );
+        std::println( stderr, "Error ({}): {}", e.code().value(), e.what() );
     }
     catch(std::exception& e)
     {
-        fmt::print( stderr, "Error: Excepción: {}\n", e.what() );
+        std::println( stderr, "Error: Excepción: {}", e.what() );
     }
 
     return EXIT_FAILURE;

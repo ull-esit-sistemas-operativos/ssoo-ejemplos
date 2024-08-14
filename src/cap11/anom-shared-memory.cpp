@@ -14,14 +14,11 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include <iostream>
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo  <stdlib.h> como
-#include <cstring>      // <cstdlib>. La primera es para usar con C mientras que la segunda es la recomendada en C++
+#include <cstring>      // <cstdlib>. La primera es para usar con C, mientras que la segunda es la recomendada en C++
                         // pues mete las funciones en el espacio de nombres 'std', como el resto de la librería
                         // estándar de C++.
-
-#define FMT_HEADER_ONLY
-#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
+#include <print>
 
 #include <common/factorial.hpp>
 
@@ -45,7 +42,7 @@ int main()
         0 );
 
     if (shared_mem == MAP_FAILED) {
-        fmt::print( stderr, "Error ({}) al reservar la memoria compartida: {}\n", errno, std::strerror(errno) );
+        std::println( stderr, "Error ({}) al reservar la memoria compartida: {}", errno, std::strerror(errno) );
         return EXIT_FAILURE;
     }
 
@@ -86,7 +83,7 @@ int main()
         // Poner el proceso a la espera de que esté el resultado.
         sem_wait( &memory_region->ready );
         
-        fmt::print( "[PADRE] El factorial de {} es {}\n", number,
+        std::println( "[PADRE] El factorial de {} es {}", number,
             memory_region->factorial );
 
         // Sabemos que el hijo ha terminado porque ya está el resultado. Aun así hay que llamar a wait() para evitar
@@ -96,7 +93,7 @@ int main()
     else
     {
         // Aquí solo entra el padre si no pudo crear el hijo
-        fmt::print( stderr, "Error ({}) al crear el proceso: {}\n", errno, strerror(errno) );
+        std::println( stderr, "Error ({}) al crear el proceso: {}", errno, strerror(errno) );
         exit_code = 4;
     }
 

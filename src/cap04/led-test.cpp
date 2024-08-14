@@ -19,10 +19,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <print>
 #include <string>
-
-#define FMT_HEADER_ONLY
-#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 const char* DEVICE_PATH = "/dev/ttyUSB0";
 
@@ -51,7 +49,7 @@ int main(int argc, char* argv[])
 {
     int fd = open( DEVICE_PATH, O_RDWR | O_NOCTTY );
     if (fd < 0) {
-        fmt::print( stderr, "Error ({}) al abrir '{}': {}\n", errno, DEVICE_PATH, std::strerror(errno) );
+        std::println( stderr, "Error ({}) al abrir '{}': {}", errno, DEVICE_PATH, std::strerror(errno) );
         return EXIT_FAILURE;
     }
 
@@ -59,7 +57,7 @@ int main(int argc, char* argv[])
     setupSerial( fd, oldtio );
  
     std::string chars;
-    std::cout << "\nIndica el color del LED (R, G o B): \n";
+    std::println( "\nIndica el color del LED (R, G o B): " );
     while(std::cin.good()) {
         std::cin >> chars;
 

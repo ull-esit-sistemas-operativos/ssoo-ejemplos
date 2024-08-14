@@ -9,13 +9,10 @@
 //
 
 #include <algorithm>
-#include <iostream>
+#include <print>
 #include <system_error>
 
 #include <libgen.h>     // Cabecera para basename()
-
-#define FMT_HEADER_ONLY
-#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 // Como no hay funciones para gestionar ficheros mapeados en memoria en C++, tenemos que usar directamente la librería
 // del sistema. Abstrayendo su uso detrás de clases, simplificamos el resto del código del programa, facilitamos el
@@ -29,7 +26,7 @@ int protected_main(int argc, char* argv[])
 
     if (argc != 2)
     {
-        fmt::print( stderr, "Uso: {} <archivo>\n", program_name );
+        std::println( stderr, "Uso: {} <archivo>", program_name );
         return EXIT_FAILURE;
     }
     
@@ -61,7 +58,7 @@ int protected_main(int argc, char* argv[])
         characters++;
     }
 
-    fmt::print( "{: >7} {: >7} {: >7}\n", lines, words, characters);
+    std::println( "{: >7} {: >7} {: >7}", lines, words, characters);
 
     return EXIT_SUCCESS;
 }
@@ -74,11 +71,11 @@ int main(int argc, char* argv[])
     }
     catch(std::system_error& e)
     {
-        fmt::print( stderr, "Error ({}): {}\n", e.code().value(), e.what() );
+        std::println( stderr, "Error ({}): {}", e.code().value(), e.what() );
     }
     catch(std::exception& e)
     {
-        fmt::print( stderr, "Error: Excepción: {}\n", e.what() );
+        std::println( stderr, "Error: Excepción: {}", e.what() );
     }
 
     return EXIT_FAILURE;

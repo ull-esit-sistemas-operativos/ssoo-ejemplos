@@ -19,14 +19,13 @@
 #include <signal.h>
 
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo <stdlib.h> como
-#include <cstring>      // <cstdlib>. La primera es para usar con C mientras quela segunda es la recomendada en C++
-#include <iostream>     // pues mete las funciones en el espacio de nombres 'std', como el resto de la
-#include <fstream>      // librería estándar de C++.
+#include <cstring>      // <cstdlib>. La primera es para usar con C, mientras que la segunda es la recomendada en C++
+                        // pues mete las funciones en el espacio de nombres 'std', como el resto de la
+                        // librería estándar de C++.
+#include <fstream>      
+#include <print>
 #include <string>
 #include <system_error>
-
-#define FMT_HEADER_ONLY
-#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 #include "filelock-server.h"
 
@@ -39,8 +38,9 @@ int protected_main()
     // si el archivo no existe, no se tienen permisos suficientes, etc.
     if ( ! pidfile_stream.is_open() )
     {
-        fmt::print( stderr, "Error: No se puedo abrir '{}'.\n", PID_FILENAME );
-        std::cerr << "Quizás el servidor no se esté ejecutando o no se tengan permisos suficientes\n";
+        std::println( stderr, "Error: No se puedo abrir '{}'.\n"
+                              "Quizás el servidor no se esté ejecutando o no se tengan permisos suficientes"
+                              , PID_FILENAME );
         return EXIT_FAILURE;
     }
 
@@ -57,11 +57,11 @@ int protected_main()
     pidfile_stream.read( buffer, sizeof(buffer) );
     pid_t server_pid = std::stoi( std::string( buffer, pidfile_stream.gcount() ));
 
-    std::cout << "Cerrando el servidor...\n";
+    std::println( "Cerrando el servidor..." );
 
     kill( server_pid, SIGTERM );
 
-    std::cout << "¡Adiós!\n";
+    std::println( "¡Adiós!" );
 
     return EXIT_SUCCESS;
 }
@@ -74,7 +74,7 @@ int main()
     }
     catch(std::exception& e)
     {
-        fmt::print( stderr, "Error: Excepción: {}\n", e.what() );
+        std::println( stderr, "Error: Excepción: {}", e.what() );
     }
 
     return EXIT_FAILURE;

@@ -9,12 +9,9 @@
 //
 
 #include <cerrno>
-#include <iostream>
+#include <print>
 #include <string>
 #include <system_error>
-
-#define FMT_HEADER_ONLY
-#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 #include "mqueue-server.hpp"
 
@@ -37,18 +34,18 @@ int protected_main()
     {
         if (e.code().value() == ENOENT)
         {
-            std::cerr << "Error: El servidor no parece estar en ejecución.\n";
+            std::println( stderr, "Error: El servidor no parece estar en ejecución." );
             return EXIT_FAILURE;
         }
         else throw;
     }
 
-    std::cout << "Cerrando el servidor...\n";
+    std::println( "Cerrando el servidor..." );
 
     // Enviar el comando de terminar a la cola.
     control_queue.send( QUIT_COMMAND, 0 );
 
-    std::cout << "¡Adiós!\n";
+    std::println( "¡Adiós!" );
 
     return EXIT_SUCCESS;
 }
@@ -61,11 +58,11 @@ int main()
     }
     catch(std::system_error& e)
     {
-        fmt::print( stderr, "Error ({}): {}\n", e.code().value(), e.what() );
+        std::println( stderr, "Error ({}): {}", e.code().value(), e.what() );
     }
     catch(std::exception& e)
     {
-        fmt::print( stderr, "Error: Excepción: {}\n", e.what() );
+        std::println( stderr, "Error: Excepción: {}", e.what() );
     }
 
     return EXIT_FAILURE;

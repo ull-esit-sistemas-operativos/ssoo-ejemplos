@@ -8,12 +8,8 @@
 //      g++ -I../ -I../../lib -o threads-factorial threads-factorial.cpp
 //
 
-#include <iostream>
+#include <print>
 #include <thread>
-
-#define FMT_HEADER_ONLY
-#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
-#include <fmt/std.h>
 
 #include <common/bigint_factorial.hpp>
 
@@ -33,10 +29,10 @@ int main()
     auto thread2_number = thread1_lower_bound - 1;
 
     std::thread thread1(factorial_thread, std::ref(thread1_result), number, thread1_lower_bound);
-    fmt::print( "Hilo creado: {} (0x{:x})\n", thread1.get_id(), thread1.native_handle() );
+    std::println( "Hilo creado: {} (0x{:x})", thread1.get_id(), thread1.native_handle() );
 
     std::thread thread2(factorial_thread, std::ref(thread2_result), thread2_number, 2);
-    fmt::print( "Hilo creado: {} (0x{:x})\n", thread2.get_id(), thread2.native_handle() );
+    std::println( "Hilo creado: {} (0x{:x})", thread2.get_id(), thread2.native_handle() );
 
     // Esperar a que los hilos terminen antes de continuar.
     // Si salimos de main() sin esperar, el proceso terminará y todos los hilos morirán inmediatamente,
@@ -47,7 +43,7 @@ int main()
     // Combinar ambos resultados parciales en el factorial final.
     auto result = thread1_result * thread2_result;
 
-    fmt::print( "El factorial de {} es {}\n", number.to_string(), result.to_string() );
+    std::println( "El factorial de {} es {}", number.to_string(), result.to_string() );
 
     return EXIT_SUCCESS;
 }

@@ -5,23 +5,19 @@
 //      g++ -I../ -I../../lib -o threads threads.cpp
 //
 
-#include <iostream>
-#include <thread>
-
-#define FMT_HEADER_ONLY
-#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
-#include <fmt/std.h> 
+#include <print>
+#include <thread> 
 
 void thread_function(int thread_id)
 {
-    fmt::print( "[Hilo {}] Creado\n", thread_id );
+    std::println( "[Hilo {}] Creado", thread_id );
     for(int i = 0; i < 10; ++i)
     {
         // Dormir el hilo para simular que hace trabajo
         std::this_thread::sleep_for( std::chrono::microseconds(200) );
-        fmt::print( "[Hilo {}] Ejecutada la iteración {}...\n", thread_id, i );
+        std::println( "[Hilo {}] Ejecutada la iteración {}...", thread_id, i );
     }
-    fmt::print( "[Hilo {}] Terminado\n", thread_id );
+    std::println( "[Hilo {}] Terminado", thread_id );
 }
 
 int main()
@@ -31,13 +27,13 @@ int main()
     std::thread thread2( thread_function, 2 );
     std::thread thread3( thread_function, 3 );
 
-    std::cout << "[Main] Todos los hilos creados\n";
+    std::println( "[Main] Todos los hilos creados" );
 
-    fmt::print( "[Main] Hilo 1 - Id: {}, Manejador del sistema: 0x{:x}\n",
+    std::println( "[Main] Hilo 1 - Id: {}, Manejador del sistema: 0x{:x}",
         thread1.get_id(), thread1.native_handle() );
-    fmt::print( "[Main] Hilo 2 - Id: {}, Manejador del sistema: 0x{:x}\n",
+    std::println( "[Main] Hilo 2 - Id: {}, Manejador del sistema: 0x{:x}",
         thread2.get_id(), thread2.native_handle() );
-    fmt::print( "[Main] Hilo 3 - Id: {}, Manejador del sistema: 0x{:x}\n",
+    std::println( "[Main] Hilo 3 - Id: {}, Manejador del sistema: 0x{:x}",
         thread3.get_id(), thread3.native_handle() );
 
     // Esperar a que los hilos terminen antes de continuar.

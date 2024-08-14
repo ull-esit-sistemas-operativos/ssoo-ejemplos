@@ -8,12 +8,9 @@
 //      g++ -lrt -o mqueue-server mqueue-server.cpp ../common/timeserver.c
 //
 
-#include <iostream>
+#include <print>
 #include <string>
 #include <system_error>
-
-#define FMT_HEADER_ONLY
-#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 #include "common/timeserver.h"
 #include "mqueue-server.hpp"
@@ -37,7 +34,7 @@ int protected_main()
     {
         if (e.code().value() == EEXIST)
         {
-            std::cerr << "Error: Hay otro servidor en ejecución.\n";
+            std::println( stderr, "Error: Hay otro servidor en ejecución." );
             return EXIT_FAILURE;
         }
         else throw;
@@ -46,7 +43,7 @@ int protected_main()
     setup_signals();
     start_alarm();
 
-    fmt::print( "Escuchando en el canal de control '{}'...\n", CONTROL_QUEUE_NAME );
+    std::println( "Escuchando en el canal de control '{}'...", CONTROL_QUEUE_NAME );
 
     // Leer de la cola de mensajes los comandos e interpretarlos.
     while (!quit_app)
@@ -76,7 +73,7 @@ int protected_main()
     stop_alarm();
     
     // Vamos a salir del programa...
-    std::cout << "Ha llegado orden de terminar ¡Adiós!\n";
+    std::println( "Ha llegado orden de terminar ¡Adiós!" );
 
     return EXIT_SUCCESS;
 }
@@ -89,11 +86,11 @@ int main()
     }
     catch(std::system_error& e)
     {
-        fmt::print( stderr, "Error ({}): {}\n", e.code().value(), e.what() );
+        std::println( stderr, "Error ({}): {}", e.code().value(), e.what() );
     }
     catch(std::exception& e)
     {
-        fmt::print( stderr, "Error: Excepción: {}\n", e.what() );
+        std::println( stderr, "Error: Excepción: {}", e.what() );
     }
 
     return EXIT_FAILURE;

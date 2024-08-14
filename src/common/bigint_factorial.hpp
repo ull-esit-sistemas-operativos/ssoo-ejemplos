@@ -2,12 +2,13 @@
 //
 
 #include <iostream>
+#include <print>
 
 #include <BigInt/BigInt.hpp>
 
 BigInt get_user_input()
 {
-    std::cout << "Introduzca un entero: ";
+    std::print( "Introduzca un entero: " );
     std::cout.flush();
     
     BigInt number;

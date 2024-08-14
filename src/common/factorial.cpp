@@ -2,12 +2,13 @@
 //
 
 #include <iostream>
+#include <print>
 
 #include "factorial.hpp"
 
 int get_user_input()
 {
-    std::cout << "[PADRE] Introduzca un número: ";
+    std::print( "[PADRE] Introduzca un número: " );
     std::cout.flush();
     
     int number;
@@ -17,7 +18,7 @@ int get_user_input()
 
 int calculate_factorial(int number)
 {
-    std::cout << "[HIJO] Calculando...";
+    std::print( "[HIJO] Calculando..." );
     std::cout.flush();
 
     int factorial = 1;
@@ -25,12 +26,11 @@ int calculate_factorial(int number)
     {
         factorial = factorial * i;
 
-        std::cout << '.';
+        std::print(".");
         std::cout.flush();
     }
 
-    std::cout << '\n';
-    std::cout.flush();
+    std::cout << std::endl;
 
     return factorial;
 }

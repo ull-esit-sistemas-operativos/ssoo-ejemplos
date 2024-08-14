@@ -7,6 +7,7 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <print>
 #include <sstream>
 #include <vector>
 
@@ -15,8 +16,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#define FMT_HEADER_ONLY
-#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
 
 std::vector<std::string> split(const std::string& s)
 {
@@ -34,9 +33,9 @@ std::vector<std::string> split(const std::string& s)
 void echo(const std::vector<std::string>& words)
 {
     for (auto it = words.begin() + 1; it != words.end(); ++it) {
-        std::cout << *it << " ";
+        std::print( "{} ", *it);
     }
-    std::cout << "\n";
+    std::print("\n");
 }
 
 void run(const std::vector<std::string>& words)
@@ -56,7 +55,7 @@ void run(const std::vector<std::string>& words)
         
         int result = execvp(words[0].c_str(), argv);
         if (result < 0) {
-            fmt::print(stderr, "No se pudo ejecutar el comando: {}\n", std::strerror(errno));
+            std::println(stderr, "No se pudo ejecutar el comando: {}", std::strerror(errno));
             exit(0);                                    // terminar el proceso para no tener dos shell
         }
     }
@@ -64,7 +63,7 @@ void run(const std::vector<std::string>& words)
         waitpid(pid, nullptr, 0);
     }
     else {
-        fmt::print(stderr, "No se pudo ejecutar el comando: {}\n", std::strerror(errno));
+        std::println(stderr, "No se pudo ejecutar el comando: {}", std::strerror(errno));
     }
 }
 
@@ -103,7 +102,7 @@ int main(int argc, char* argv[])
     while(! std::cin.eof()) {
         
         if(interative_mode) {
-            std::cout << "$> ";
+            std::print( "$> " );
         }
         
         std::string line;

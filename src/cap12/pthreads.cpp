@@ -6,13 +6,11 @@
 //
 
 #include <pthread.h>
+#include <unistd.h>
 
 #include <cerrno>
 #include <cstring>
-#include <iostream>
-
-#define FMT_HEADER_ONLY
-#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
+#include <print>
 
 struct thread_args
 {
@@ -24,15 +22,15 @@ void* thread_function(void* arg)
 {
     thread_args* args = static_cast<thread_args*>(arg);
 
-    fmt::print( "[Hilo {}] Creado. Manejador del sistema: 0x{:x}\n", args->id, pthread_self() );
+    std::println( "[Hilo {}] Creado. Manejador del sistema: 0x{:x}", args->id, pthread_self() );
 
     for(int i = 0; i < 5; ++i)
     {
         // Dormir el hilo para simular que hace trabajo
         sleep(1);
-        fmt::print( "[Hilo {}] Ejecutada la iteración {}...\n", args->id, i );
+        std::println( "[Hilo {}] Ejecutada la iteración {}...", args->id, i );
     }
-    fmt::print( "[Hilo {}] Terminado\n", args->id );
+    std::println( "[Hilo {}] Terminado", args->id );
 
     args->result = args->id;
     return &args->result;
@@ -51,14 +49,14 @@ int main()
     return_code = pthread_create( &thread1, nullptr, thread_function, &thread1_args );
     if (return_code)
     {
-        fmt::print( stderr, "Error ({}) al crear el hilo: {}\n", return_code, std::strerror(return_code) );
+        std::println( stderr, "Error ({}) al crear el hilo: {}", return_code, std::strerror(return_code) );
         return EXIT_FAILURE;
     }
     
     return_code = pthread_create( &thread2, nullptr,  thread_function, &thread2_args );
     if (return_code)
     {
-        fmt::print( stderr, "Error ({}) al crear el hilo: {}\n", return_code, std::strerror(return_code) );
+        std::println( stderr, "Error ({}) al crear el hilo: {}", return_code, std::strerror(return_code) );
         
         // Al terminar main() aquí, estaremos abortando la ejecución del primer hilo, si no ha terminado antes.
         // Este caso es muy sencillo, así que no importa. Pero no suele ser buena idea no dejar que los hilos tengan
@@ -69,7 +67,7 @@ int main()
     return_code = pthread_create( &thread3, nullptr,  thread_function, &thread3_args );
     if (return_code)
     {
-        fmt::print( stderr, "Error ({}) al crear el hilo: {}\n", return_code, std::strerror(return_code) );
+        std::println( stderr, "Error ({}) al crear el hilo: {}", return_code, std::strerror(return_code) );
 
         // Al terminar main() aquí, estaremos abortando la ejecución del primer y segundo hilo.
         return EXIT_FAILURE;
@@ -84,7 +82,7 @@ int main()
     pthread_join( thread2, reinterpret_cast<void**>(&thread2_result) );
     pthread_join( thread3, reinterpret_cast<void**>(&thread3_result) );
 
-    fmt::print( "Los hilos han terminado con {}, {} y {}\n", *thread1_result, *thread2_result, *thread3_result );
+    std::println( "Los hilos han terminado con {}, {} y {}", *thread1_result, *thread2_result, *thread3_result );
 
     return EXIT_SUCCESS;
 }

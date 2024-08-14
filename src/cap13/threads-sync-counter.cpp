@@ -7,13 +7,9 @@
 //      g++ -I../ -I../../lib -o threads-sync-counter threads-sync-counter.cpp
 //
 
-#include <iostream>
 #include <mutex>
+#include <print>
 #include <thread>
-
-#define FMT_HEADER_ONLY
-#include <fmt/format.h> // Hasta que std::format (C++20) esté disponible
-#include <fmt/std.h>
 
 struct increment_counter_thread_args
 {
@@ -34,7 +30,7 @@ void increment_counter (increment_counter_thread_args& args)
     }
     // args.mutex.unlock();
 
-    fmt::print( "Valor del contador: {}\n", args.counter );
+    std::println( "Valor del contador: {}", args.counter );
 }
 
 int main()
@@ -43,10 +39,10 @@ int main()
 
     // Crear algunos hilos independientes cada uno de los cuales ejecutará increment_counter()    
     std::thread thread1(increment_counter, std::ref(thread_args));
-    fmt::print( "Hilo creado: {} (0x{:x})\n", thread1.get_id(), thread1.native_handle() );
+    std::println( "Hilo creado: {} (0x{:x})", thread1.get_id(), thread1.native_handle() );
 
     std::thread thread2(increment_counter, std::ref(thread_args));
-    fmt::print( "Hilo creado: {} (0x{:x})\n", thread2.get_id(), thread2.native_handle() );
+    std::println( "Hilo creado: {} (0x{:x})", thread2.get_id(), thread2.native_handle() );
 
     // Esperar a que los hilos terminen antes de continuar.
     // Si salimos de main() sin esperar, el proceso terminará y todos los hilos morirán inmediatamente,
@@ -54,7 +50,7 @@ int main()
     thread1.join();
     thread2.join(); 
 
-    fmt::print( "Valor final del contador: {}\n", thread_args.counter );
+    std::println( "Valor final del contador: {}", thread_args.counter );
 
     return EXIT_SUCCESS;
 }
