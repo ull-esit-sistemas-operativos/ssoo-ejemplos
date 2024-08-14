@@ -9,6 +9,7 @@
 
 #include <mutex>
 #include <print>
+#include <sstream>      // Requerido para la conversion de std::thread::id
 #include <thread>
 
 struct increment_counter_thread_args

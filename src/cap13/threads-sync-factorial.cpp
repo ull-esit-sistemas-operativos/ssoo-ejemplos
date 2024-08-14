@@ -14,6 +14,7 @@
 #include <mutex>
 #include <numeric>
 #include <print>
+#include <sstream>      // Requerido para la conversion de std::thread::id
 #include <thread>
 #include <vector>
 

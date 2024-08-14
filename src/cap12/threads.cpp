@@ -6,7 +6,8 @@
 //
 
 #include <print>
-#include <thread> 
+#include <sstream>      // Requerido para la conversion de std::thread::id
+#include <thread>
 
 void thread_function(int thread_id)
 {

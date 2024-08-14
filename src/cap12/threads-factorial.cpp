@@ -9,6 +9,7 @@
 //
 
 #include <print>
+#include <sstream>      // Requerido para la conversion de std::thread::id
 #include <thread>
 
 #include <common/bigint_factorial.hpp>
