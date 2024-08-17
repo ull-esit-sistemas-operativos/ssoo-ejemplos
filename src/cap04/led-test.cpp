@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -o led_test led_test.cpp
+//      g++ -o led-test led-test.cpp
 //
 
 #include <sys/types.h>
