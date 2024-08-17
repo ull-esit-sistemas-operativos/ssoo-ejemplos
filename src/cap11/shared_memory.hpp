@@ -65,17 +65,23 @@ public:
         }
     }
 
-    // Para reservar una región de la memoria virtual del proceso y mapear en ella el objeto de memoria compartida,
-    // se usa mmap(). Mientras que para liberarlo munmap().
-    // En C++ no es adecuado depender de "acordamos de liberarla" cuando ya no la necesitamos. En su lugar, debemos
-    // usar punteros inteligentes (como std::unique_ptr) para que se llame automáticamente a munmap() cuando ya no
-    // la vayamos a necesitar más.
+    // map() - Mapear en la memoria del proceso 'num' objetos de tipo T (es decir, 'sizeof(T) * num' bytes) del
+    //  objeto de memoria compartida abierto en 'fd_'. Así se puede mapear en la memoria compartida a un solo
+    //  elemento T o un array de elementos T.
+    //
+    // NOTAS:
+    //  Se usa mmap() para reservar una región de la memoria virtual del proceso y mapear en ella el objeto de
+    //  memoria compartida. Mientras que para liberarlo munmap().
 
-    // Esta función mapea num objetos de tipo T, es decir, sizeof(T) * num bytes. Así se puede acceder a un solo
-    // elemento T o un array de T en la memoria compartida.
+    //  En C++ no es adecuado depender de "acordamos de llamar a munmap()" cuando ya no la memoria mapeada.
+    //  En su lugar, debemos usar punteros inteligentes (como std::unique_ptr) para que se llame automáticamente a
+    //  munmap() cuando el puntero va a ser destruido.
 
     template <typename T>
-    std::unique_ptr<T, std::function<void(T*)>> map( int prot, size_t num = 1, off_t offset = 0 )
+    using mmap_deleter_func = std::function<void(T*)>;
+
+    template <typename T>
+    std::unique_ptr<T, mmap_deleter_func<T>> map( int prot, size_t num = 1, off_t offset = 0 )
     {
         if (fd_ < 0) throw std::runtime_error( "El objeto no contiene un descriptor válido." );
  
@@ -85,7 +91,8 @@ public:
             throw std::system_error( errno, std::system_category(), "Fallo en mmap()" );
         }
 
-        auto mmap_deleter = [num](T* addr)
+        // Función para liberar la memoria mapeada.
+        mmap_deleter_func<T> mmap_deleter = [num](T* addr)
         {
             munmap(
                 addr,               // Puntero a la región a liberar (devuelto por mmap())
@@ -96,20 +103,25 @@ public:
         return { static_cast<T*>(shared_mem),  mmap_deleter };
     }
 
-    // Si un objeto de C++ se puede copiar es asumimos que la copia es independiente del original, que se puede
-    // destruir sin problemas. Pero cuando un objeto de C++ contiene un recurso del sistema que no se puede duplicar,
-    // es mejor hacer que el objeto de C++ tampoco sea copiable, para que imite las restricciones del recurso que
-    // abstrae. De lo contrario podemos tener problemas por tener, por ejemplo, dos objetos de C++ que hacen referencia
-    // al mismo objeto de memoria compartida; porque si uno de ellos es destruido, destruirá el recurso compartido
-    // por ambos.
+    // Constructores de copia y operadores de asignación.
+    //
+    //  Si un objeto de C++ se puede copiar asumimos que cada copia es independiente del original, de forma que
+    //  cada una se puede destruir sin afectar a las demás. Pero cuando un objeto de C++ contiene un recurso del
+    //  sistema que no se puede duplicar, es mejor hacer que el objeto de C++ tampoco sea copiable, para que imite
+    //  las restricciones del recurso que contiene. De lo contrario podemos tener problemas por tener.
+    //
+    //  Por ejemplo, si se pudiera hacer copia de objetos 'shared_memory' y ambas copias harían referencia al mismo
+    //  objeto de memoria compartida a través del descriptor de archivo fd_. Si luego se destruye uno de ellos, este
+    //  cerrará el descriptor de archivo y el otro objeto de C++ ya no podrá utilizarlo.
 
-    // Borrar el constructor de copia y el operador de asignación para evitar el clonado del objeto.
+    // Borrar el constructor de copia y el operador de asignación para evitar el problema comentado
+    // con la copia de objetos
 
     shared_memory(const shared_memory&) = delete;
     shared_memory& operator=(const shared_memory&) = delete;
 
-    // Sí podemos mover objetos, haciendo que el operador de asignación por movimiento se lleve el descriptor al nuevo
-    // objeto y lo pierda el de origen.
+    // Permitimes mover objetos, haciendo que el operador de asignación por movimiento se lleve el descriptor al nuevo
+    // objeto y lo pierda el de origen. Así no hay riesgo de que haya varios objetos de C++ con el mismo descriptor.
 
     shared_memory& operator=(shared_memory&& lhs)
     {
