@@ -11,7 +11,7 @@ if(UNIX)
     add_executable(socket-client socket-client.cpp)
     add_executable(socket-server socket-server.cpp ../common/timeserver.c)
 
-    add_executable(fork-pipe fork-pipe.cpp ../common/factorial.cpp)
+    add_executable(fork-pipe fork-pipe.cpp)
 
     add_executable(fork-redir fork-redir.c)
     add_executable(signals signals.c)

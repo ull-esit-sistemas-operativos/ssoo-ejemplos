@@ -14,7 +14,7 @@
 #include <cstring>
 #include <print>
 
-#include <common/bigint_factorial.hpp>
+#include <common/bigint-factorial.hpp>
 
 struct factorial_thread_args
 {

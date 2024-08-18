@@ -1,5 +1,5 @@
 if(UNIX)
-    add_executable(anom-shared-memory anom-shared-memory.cpp ../common/factorial.cpp)
+    add_executable(anom-shared-memory anom-shared-memory.cpp)
     target_include_directories(anom-shared-memory PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
     add_executable(shared-memory-client shared-memory-client.cpp)

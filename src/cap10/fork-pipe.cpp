@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -o fork-pipe fork-pipe.cpp ../common/factorial.cpp
+//      g++ -I../ -o fork-pipe fork-pipe.cpp
 //
 
 #include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo

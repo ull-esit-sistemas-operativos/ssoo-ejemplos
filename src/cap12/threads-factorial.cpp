@@ -12,7 +12,7 @@
 #include <sstream>      // Requerido para la conversion de std::thread::id
 #include <thread>
 
-#include <common/bigint_factorial.hpp>
+#include <common/bigint-factorial.hpp>
 
 void factorial_thread (BigInt& result, BigInt number, BigInt lower_bound)
 {

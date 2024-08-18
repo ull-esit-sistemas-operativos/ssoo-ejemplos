@@ -19,7 +19,7 @@
 #include <print>
 #include <vector>
 
-#include <common/bigint_factorial.hpp>
+#include <common/bigint-factorial.hpp>
 
 struct factorial_thread_results
 {

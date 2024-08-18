@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -o anom-shared-memory anom-shared-memory.cpp ../common/factorial.cpp
+//      g++ -I../ -o anom-shared-memory anom-shared-memory.cpp
 //
 
 #include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo
