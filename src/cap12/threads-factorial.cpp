@@ -35,10 +35,10 @@ int main()
     BigInt thread1_result, thread2_result;
 
     std::thread thread1(factorial_thread, std::ref(thread1_result), number, thread1_lower_bound);
-    std::println( "Hilo creado: {} (0x{:x})", thread1.get_id(), thread1.native_handle() );
+    std::println( "[HILO PRINCIPAL] Hilo creado: {} (0x{:x})", thread1.get_id(), thread1.native_handle() );
 
     std::thread thread2(factorial_thread, std::ref(thread2_result), thread2_number, 2);
-    std::println( "Hilo creado: {} (0x{:x})", thread2.get_id(), thread2.native_handle() );
+    std::println( "[HILO PRINCIPAL] Hilo creado: {} (0x{:x})", thread2.get_id(), thread2.native_handle() );
 
     // Esperar a que los hilos terminen antes de continuar.
     // Si salimos de main() sin esperar, el proceso terminará y todos los hilos morirán inmediatamente,
@@ -49,7 +49,7 @@ int main()
     // Combinar ambos resultados parciales en el factorial final.
     auto result = thread1_result * thread2_result;
 
-    std::println( "El factorial de {} es {}", number.to_string(), result.to_string() );
+    std::println( "[HILO PRINCIPAL] El factorial de {} es {}", number.to_string(), result.to_string() );
 
     return EXIT_SUCCESS;
 }

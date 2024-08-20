@@ -41,10 +41,10 @@ int main()
     BigInt thread1_result, thread2_result;
 
     std::jthread thread1(factorial_thread, std::ref(thread1_result), number, thread1_lower_bound);
-    std::println( "Hilo creado: {} (0x{:x})", thread1.get_id(), thread1.native_handle() );
+    std::println( "[HILO PRINCIPAL] Hilo creado: {} (0x{:x})", thread1.get_id(), thread1.native_handle() );
 
     std::jthread thread2(factorial_thread, std::ref(thread2_result), thread2_number, 2);
-    std::println( "Hilo creado: {} (0x{:x})", thread2.get_id(), thread2.native_handle() );
+    std::println( "[HILO PRINCIPAL] Hilo creado: {} (0x{:x})", thread2.get_id(), thread2.native_handle() );
 
     // Esperar a que los hilos terminen antes de continuar contando el tiempo.
     // Si se supera TIMEOUT sin que los hilos hayan terminado, se cancelan los hilos y termina el programa.
@@ -54,7 +54,7 @@ int main()
         std::this_thread::sleep_for(THREAD_POLLING_INTERVAL);
         if (std::chrono::steady_clock::now() - start > TIMEOUT)
         {
-            std::println( "¡Tiempo excedido! Cancelando..." );
+            std::println( "[HILO PRINCIPAL] ¡Tiempo excedido! Cancelando..." );
 
             // Cancelar los hilos.
             thread1.request_stop();
@@ -78,7 +78,7 @@ int main()
     // Combinar ambos resultados parciales en el factorial final.
     auto result = thread1_result * thread2_result;
 
-    std::println( "El factorial de {} es {}", number.to_string(), result.to_string() );
+    std::println( "[HILO PRINCIPAL] El factorial de {} es {}", number.to_string(), result.to_string() );
 
     return EXIT_SUCCESS;
 }

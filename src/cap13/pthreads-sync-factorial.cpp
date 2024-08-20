@@ -73,14 +73,16 @@ int main()
 
     if (return_code)
     {
-        std::println( stderr, "Error ({}) al crear el hilo: {}", return_code, strerror(return_code) );
+        std::println( stderr, "[HILO PRINCIPAL] Error ({}) al crear el hilo: {}",
+            return_code, strerror(return_code) );
         return EXIT_FAILURE;
     }
 
     return_code = pthread_create( &thread2, nullptr, factorial_thread, &thread2_args );
     if (return_code)
     {
-        std::println( stderr, "Error ({}) al crear el hilo: {}", return_code, strerror(return_code) );
+        std::println( stderr, "[HILO PRINCIPAL] Error ({}) al crear el hilo: {}",
+            return_code, strerror(return_code) );
         
         // Al terminar main() aquí, estaremos abortando la ejecución del primer hilo, si no ha terminado antes.
         // Este caso es muy sencillo, así que no importa. Pero no suele ser buena idea no dejar que los hilos tengan
@@ -98,7 +100,7 @@ int main()
     auto result = std::reduce( thread_results.partials.begin(), thread_results.partials.end(),
         BigInt{1}, std::multiplies<BigInt>() );
 
-    std::println( "El factorial de {} es {}", number.to_string(), result.to_string() );
+    std::println( "[HILO PRINCIPAL] El factorial de {} es {}", number.to_string(), result.to_string() );
 
     pthread_mutex_destroy( &thread_results.mutex);
 
