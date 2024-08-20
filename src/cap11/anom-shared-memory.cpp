@@ -57,7 +57,7 @@ int main()
 
     // Como el hijo tiene una copia de la memoria del padre antes del fork() no hace falta meter 'number' en la
     // memoria compartida.
-    int number = get_user_input();
+    int number = get_user_input( "PADRE" );
 
     // Crear el proceso hijo para el cálculo del factorial
     pid_t child = fork();
@@ -65,7 +65,7 @@ int main()
     {   
         // Aquí solo entra el proceso hijo
 
-        memory_region->factorial = calculate_factorial( number );
+        memory_region->factorial = calculate_factorial( number, "HIJO" );
 
         // Indicar que ya está el resultado.
         sem_post( &memory_region->ready );

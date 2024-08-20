@@ -8,9 +8,14 @@
 
 #include "factorial.hpp"
 
-int get_user_input()
+int get_user_input(std::string_view output_label)
 {
-    std::print( "[PADRE] Introduzca un número: " );
+    if (! output_label.empty())
+    {
+        std::print( "[{}] ", output_label);
+    }
+
+    std::print( "Introduzca un número: " );
     std::cout.flush();
     
     int number;
@@ -18,21 +23,20 @@ int get_user_input()
     return number;
 }
 
-int calculate_factorial(int number)
+int calculate_factorial(int number, std::string_view output_label)
 {
-    std::print( "[HIJO] Calculando..." );
-    std::cout.flush();
+    if (! output_label.empty())
+    {
+        std::print( "[{}] ", output_label);
+    }
+
+    std::println( "Calculando..." );
 
     int factorial = 1;
     for ( int i = 2; i <= number; i++ )
     {
         factorial = factorial * i;
-
-        std::print(".");
-        std::cout.flush();
     }
-
-    std::cout << std::endl;
 
     return factorial;
 }

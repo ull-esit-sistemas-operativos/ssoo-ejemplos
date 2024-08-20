@@ -25,17 +25,20 @@ struct factorial_thread_args
 
 void* factorial_thread (void* arg)
 {
-    std::println( "Hilo creado: 0x{:x}", pthread_self() );
+    std::string output_label = std::format( "HILO 0x{:x}", pthread_self() );
+    std::println( "[{}] Hilo creado", output_label );
 
     factorial_thread_args* args = static_cast<factorial_thread_args*>(arg);
-    args->result = calculate_factorial( args->number, args->lower_bound );
+    args->result = calculate_factorial( args->number, args->lower_bound, output_label );
+
+    std::println( "[{}] Terminando...", output_label );
 
     return &args->result;
 }
 
 int main()
 {
-    auto number = get_user_input();
+    auto number = get_user_input( "HILO PRINCIPAL" );
 
     int return_code = 0;
     pthread_t thread1, thread2;

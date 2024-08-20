@@ -28,7 +28,8 @@ struct factorial_thread_results
 
 void factorial_thread (factorial_thread_results& results, BigInt number, BigInt lower_bound)
 {
-    auto result = calculate_factorial( number, lower_bound );
+    std::string output_label = std::format( "HILO {}", std::this_thread::get_id() );
+    auto result = calculate_factorial( number, lower_bound, output_label );
 
     // Bloquear el mutex y guardar el resultado
     std::lock_guard<std::mutex> lock( results.mutex );
@@ -38,7 +39,7 @@ void factorial_thread (factorial_thread_results& results, BigInt number, BigInt 
 
 int main()
 {
-    auto number = get_user_input();
+    auto number = get_user_input( "HILO PRINCIPAL" );
 
     factorial_thread_results thread_results;
 

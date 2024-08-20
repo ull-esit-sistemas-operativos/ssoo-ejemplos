@@ -36,10 +36,11 @@ struct factorial_thread_args
 
 void* factorial_thread (void* arg)
 {
-    std::println( "Hilo creado: 0x{:x}", pthread_self() );
+    std::string output_label = std::format( "HILO 0x{:x}", pthread_self() );
+    std::println( "[{}] Hilo creado", output_label );
 
     factorial_thread_args* args = static_cast<factorial_thread_args*>(arg);
-    auto result = calculate_factorial( args->number, args->lower_bound );
+    auto result = calculate_factorial( args->number, args->lower_bound, output_label );
 
     // Bloquear el mutex y guardar el resultado
     pthread_mutex_lock( &args->results->mutex );
@@ -51,7 +52,7 @@ void* factorial_thread (void* arg)
 
 int main()
 {
-    auto number = get_user_input();
+    auto number = get_user_input( "HILO PRINCIPAL" );
 
     int return_code = 0;
     pthread_t thread1, thread2;

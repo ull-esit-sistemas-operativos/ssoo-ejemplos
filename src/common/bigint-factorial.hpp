@@ -6,9 +6,14 @@
 
 #include <BigInt/BigInt.hpp>
 
-BigInt get_user_input()
+BigInt get_user_input(std::string_view output_label = "INPUT")
 {
-    std::print( "Introduzca un entero: " );
+    if (! output_label.empty())
+    {
+        std::print( "[{}] ", output_label);
+    }
+
+    std::print( "Introduzca un número: " );
     std::cout.flush();
     
     BigInt number;
@@ -16,8 +21,15 @@ BigInt get_user_input()
     return number;
 }
 
-BigInt calculate_factorial(BigInt number, BigInt lower_bound = 2)
+BigInt calculate_factorial(BigInt number, BigInt lower_bound, std::string_view output_label = "FACTORIAL")
 {
+    if (! output_label.empty())
+    {
+        std::print( "[{}] ", output_label);
+    }
+
+    std::println( "Calculando..." );
+
     lower_bound = lower_bound < 2 ? 2 : lower_bound;
     BigInt factorial = 1;
     for ( BigInt i = lower_bound; i <= number; i++ )
@@ -26,4 +38,9 @@ BigInt calculate_factorial(BigInt number, BigInt lower_bound = 2)
     }
 
     return factorial;
+}
+
+BigInt calculate_factorial(BigInt number, std::string_view output_label = "FACTORIAL")
+{
+    return calculate_factorial(number, 2, output_label);
 }

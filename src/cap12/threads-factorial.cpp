@@ -16,12 +16,16 @@
 
 void factorial_thread (BigInt& result, BigInt number, BigInt lower_bound)
 {
-    result = calculate_factorial( number, lower_bound );
+    std::string output_label = std::format( "HILO {}", std::this_thread::get_id() );
+    
+    result = calculate_factorial( number, lower_bound, output_label );
+    
+    std::println( "[{}] Terminando...", output_label );
 }
 
 int main()
 {
-    auto number = get_user_input();
+    auto number = get_user_input( "HILO PRINCIPAL" );
 
     BigInt thread1_result, thread2_result;
 

@@ -23,7 +23,7 @@
 
 int main()
 {
-    int number = get_user_input();
+    int number = get_user_input( "PADRE" );
 
     // Crear una tubería
     std::array<int, 2> fds;     // Equivalente a 'int fds[2]' pero más seguro
@@ -45,7 +45,7 @@ int main()
         // Cerramos el de lectura.
         close( fds[0] );
 
-        int factorial = calculate_factorial( number );
+        int factorial = calculate_factorial( number, "HIJO" );
         auto factorial_string = std::to_string( factorial );
 
         // Escribir en la tubería el resultado convertido a cadena sin el '\0' del final.
