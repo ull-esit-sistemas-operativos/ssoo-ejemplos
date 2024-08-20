@@ -23,12 +23,12 @@
 
 int protected_main()
 {
-    message_queue control_queue;
+    examples::message_queue control_queue;
 
     try
     {
         // Abrir la cola de mensajes creada por el servidor.
-        control_queue = message_queue{ CONTROL_QUEUE_NAME, message_queue::open_mode::write_only };
+        control_queue = examples::message_queue{ CONTROL_QUEUE_NAME, examples::message_queue::open_mode::write_only };
     }
     catch ( const std::system_error& e )
     {

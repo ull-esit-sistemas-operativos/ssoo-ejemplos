@@ -23,12 +23,13 @@
 
 int protected_main()
 {
-    message_queue control_queue;
+    examples::message_queue control_queue;
 
     try
     {
         // Crear la cola de mensajes donde escuchar los comandos de control
-        control_queue = message_queue{ CONTROL_QUEUE_NAME, message_queue::open_mode::read_only, true };
+        control_queue = examples::message_queue{
+            CONTROL_QUEUE_NAME, examples::message_queue::open_mode::read_only, true };
     }
     catch ( const std::system_error& e )
     {

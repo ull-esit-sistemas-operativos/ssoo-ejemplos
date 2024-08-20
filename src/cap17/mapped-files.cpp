@@ -31,7 +31,7 @@ int protected_main(int argc, char* argv[])
     }
     
     // Abrir el archivo que se quiere mapear en memoria.
-    memory_map mapped_file { argv[1], memory_map::open_mode::read_only };
+    examples::memory_map mapped_file { argv[1], examples::memory_map::open_mode::read_only };
 
     // Reservar una región de la memoria virtual del proceso y mapear en ella el archivo.
     struct stat statinfo = mapped_file.status();

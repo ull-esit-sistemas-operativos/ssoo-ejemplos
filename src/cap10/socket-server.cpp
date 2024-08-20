@@ -22,18 +22,18 @@
 
 // Aunque se está trabajando en ello, en C++ no hay una librería de comunicaciones en red. Así que tenemos que usar
 // directamente la librería del sistema. Abstrayendo su uso detrás de clases, simplificamos el resto del código del
-// programa, facilitamos el manejo de errores y que todos los recursos se liberen. 
+// programa, facilitamos el manejo de errores y que todos los recursos se liberen al terminar el programa. 
 
 #include "socket.hpp"
 
 int protected_main()
 {
-    socket_t sock;
+    examples::socket sock;
 
     try
     {
         // Crear el socket local donde escuchar los comandos de control
-        sock = socket_t{ CONTROL_SOCKET_NAME };
+        sock = examples::socket{ CONTROL_SOCKET_NAME };
     }
     catch ( const std::system_error& e )
     {

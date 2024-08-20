@@ -29,12 +29,12 @@
 
 int protected_main()
 {
-    shared_memory control_shm;
+    examples::shared_memory control_shm;
 
     try
     {
         // Abrir el objeto de memoria compartida creado por el servidor.
-        control_shm = shared_memory{ CONTROL_SHM_NAME };
+        control_shm = examples::shared_memory{ CONTROL_SHM_NAME };
     }
     catch ( const std::system_error& e )
     {

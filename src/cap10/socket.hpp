@@ -15,140 +15,149 @@
 #include <system_error>
 #include <tuple>
 
-class socket_t
+namespace examples
 {
-public:
-
-    static constexpr char* SOCKET_UNNAMED = nullptr; 
-    static constexpr size_t MAX_MESSAGE_SIZE = 8196;
-
-    socket_t() {}
-
-    socket_t(const char* pathname)
+    class socket
     {
-        // Crear el socket de dominio UNIX no orientados a conexión
-        sockfd_ = socket( AF_UNIX, SOCK_DGRAM, 0 );
-        if (sockfd_ < 0)
+    public:
+
+        static constexpr char* SOCKET_UNNAMED = nullptr; 
+        static constexpr size_t MAX_MESSAGE_SIZE = 8196;
+
+        socket() {}
+
+        socket(const char* pathname)
         {
-            throw std::system_error( errno, std::system_category(), "Fallo en socket()" );
-        }
-
-        // Asignar 'pathname' como dirección del socket local creado.
-        if (pathname)
-        {
-            pathname_ = pathname;
-
-            // Construir la dirección en el formato que necesita bind().
-            sockaddr_un local_address = make_address( pathname_ );
-
-            int return_code = bind( sockfd_, reinterpret_cast<sockaddr*>(&local_address), sizeof(local_address) );
-            if (return_code < 0)
+            // Crear el socket de dominio UNIX no orientados a conexión
+            sockfd_ = ::socket( AF_UNIX, SOCK_DGRAM, 0 );
+            if (sockfd_ < 0)
             {
-                throw std::system_error( errno, std::system_category(), "Fallo en bind()" );
+                throw std::system_error( errno, std::system_category(), "Fallo en socket()" );
             }
 
-            // Recordar que somos los responsables de eliminar el archivo especial que representa a los socket de
-            // dominio UNIX en el sistema de archivos cuando llegue el momento de destruir el objeto de C++.
-            unlink_flag_ = true;
+            // Asignar 'pathname' como dirección del socket local creado.
+            if (pathname)
+            {
+                pathname_ = pathname;
+
+                // Construir la dirección en el formato que necesita bind().
+                sockaddr_un local_address = make_address( pathname_ );
+
+                int return_code = bind( sockfd_, reinterpret_cast<sockaddr*>(&local_address), sizeof(local_address) );
+                if (return_code < 0)
+                {
+                    throw std::system_error( errno, std::system_category(), "Fallo en bind()" );
+                }
+
+                // Recordar que somos los responsables de eliminar el archivo especial que representa a los socket de
+                // dominio UNIX en el sistema de archivos cuando llegue el momento de destruir el objeto de C++.
+                unlink_flag_ = true;
+            }
         }
-    }
 
-    socket_t(const std::string& pathname)
-        : socket_t{ pathname.c_str() }
-    {}
+        socket(const std::string& pathname)
+            : socket{ pathname.c_str() }
+        {}
 
-    // Asegurar que se liberan todos los recursos reservados en el constructor.
-    ~socket_t()
-    {
-        if (sockfd_ >= 0) 
+        // Asegurar que se liberan todos los recursos reservados en el constructor.
+        ~socket()
         {
-            close( sockfd_ );
+            if (sockfd_ >= 0) 
+            {
+                close( sockfd_ );
+            }
+
+            if (unlink_flag_)
+            {
+                unlink( pathname_.c_str() );
+            }
         }
 
-        if (unlink_flag_)
+        // Función para recibir mensajes que hayan llegado al socket.
+        // Devuelve el mensaje y la dirección del remitente.
+        std::tuple<std::string, sockaddr_un> receive()
         {
-            unlink( pathname_.c_str() );
+            std::array<char, MAX_MESSAGE_SIZE> buffer{};
+            
+            sockaddr_un remote_address;
+            socklen_t address_length = sizeof(remote_address);
+
+            // Al volver de recvfrom, si todo ha ido bien, 'buffer' contiene el mensaje, 'remote_address' la dirección del
+            // socket del remitente y 'address_length' el tamaño de la estructura copiada en 'remote_address';       
+            ssize_t return_code = recvfrom(sockfd_, buffer.data(), buffer.size(), 0,
+                reinterpret_cast<sockaddr*>(&remote_address), &address_length);
+            if (return_code < 0)
+            {
+                throw std::system_error( errno, std::system_category(), "Fallo en recvfrom()" );
+            }
+
+            return {
+                { buffer.data(), static_cast<size_t>(return_code) },    // Mensaje
+                remote_address                                          // Dirección remitente
+            };
         }
-    }
 
-    // Función para recibir mensajes que hayan llegado al socket.
-    // Devuelve el mensaje y la dirección del remitente.
-    std::tuple<std::string, sockaddr_un> receive()
-    {
-        std::array<char, MAX_MESSAGE_SIZE> buffer{};
-        
-        sockaddr_un remote_address;
-        socklen_t address_length = sizeof(remote_address);
-
-        // Al volver de recvfrom, si todo ha ido bien, 'buffer' contiene el mensaje, 'remote_address' la dirección del
-        // socket del remitente y 'address_length' el tamaño de la estructura copiada en 'remote_address';       
-        ssize_t return_code = recvfrom(sockfd_, buffer.data(), buffer.size(), 0,
-            reinterpret_cast<sockaddr*>(&remote_address), &address_length);
-        if (return_code < 0)
+        // Función para enviar mensajes desde el socket al socket de destino indicado.
+        void send(const std::string& message, const std::string& destination )
         {
-            throw std::system_error( errno, std::system_category(), "Fallo en recvfrom()" );
+            // Construir la dirección en el formato que necesita sendto().
+            sockaddr_un remote_address = make_address( destination );
+
+            ssize_t return_code = sendto( sockfd_, message.c_str(), message.size(), 0,
+                reinterpret_cast<sockaddr*>(&remote_address), sizeof(remote_address) );
+            if (return_code < 0)
+            {
+                throw std::system_error( errno, std::system_category(), "Fallo en sendto()" );
+            }
         }
 
-        return {
-            { buffer.data(), static_cast<size_t>(return_code) },    // Mensaje
-            remote_address                                          // Dirección remitente
-        };
-    }
+        // Constructores de copia y operadores de asignación.
+        //
+        //  Si un objeto de C++ se puede copiar asumimos que cada copia es independiente del original, de forma que
+        //  cada una se puede destruir sin afectar a las demás. Pero cuando un objeto de C++ contiene un recurso del
+        //  sistema que no se puede duplicar, es mejor hacer que el objeto de C++ tampoco sea copiable, para que imite
+        //  las restricciones del recurso que contiene. De lo contrario podemos tener problemas por tener.
+        //
+        //  Por ejemplo, si se pudiera hacer copia de objetos 'examples::socket', ambas copias harían referencia al
+        //  mismo socket del sistema a través del descriptor de archivo fd_. Si luego se destruye uno de los objetos,
+        //  este cerrará el descriptor del socket y el otro objeto de C++ ya no podrá utilizarlo.
 
-    // Función para enviar mensajes desde el socket al socket de destino indicado.
-    void send(const std::string& message, const std::string& destination )
-    {
-        // Construir la dirección en el formato que necesita sendto().
-        sockaddr_un remote_address = make_address( destination );
+        // Borrar el constructor de copia y el operador de asignación para evitar el problema comentado
+        // con la copia de objetos
 
-        ssize_t return_code = sendto( sockfd_, message.c_str(), message.size(), 0,
-            reinterpret_cast<sockaddr*>(&remote_address), sizeof(remote_address) );
-        if (return_code < 0)
+        socket(const socket&) = delete;
+        socket& operator=(const socket&) = delete;
+
+        // Sí podemos mover objetos, haciendo que el operador de asignación por movimiento se lleve el descriptor al nuevo
+        // objeto y lo pierda el de origen.
+
+        socket& operator=(socket&& lhs)
         {
-            throw std::system_error( errno, std::system_category(), "Fallo en sendto()" );
+            pathname_ = std::move(lhs.pathname_);
+
+            // Mover el descriptor del socket al objeto destino.
+            sockfd_ = lhs.sockfd_;
+            lhs.sockfd_ = -1;
+
+            unlink_flag_ = lhs.unlink_flag_;
+            lhs.unlink_flag_ = false;
+
+            return *this;
         }
-    }
 
-    // Si un objeto de C++ se puede copiar es asumimos que la copia es independiente del original, que se puede
-    // destruir sin problemas. Pero cuando un objeto de C++ contiene un recurso del sistema que no se puede duplicar,
-    // es mejor hacer que el objeto de C++ tampoco sea copiable, para que imite las restricciones del recurso que
-    // abstrae. De lo contrario podemos tener problemas por tener, por ejemplo, dos objetos de C++ que hacen referencia
-    // al mismo descriptor de socket; porque si uno de ellos es destruido, destruirá el recurso compartido por ambos.
+    private:
+        int sockfd_ = -1;
+        bool unlink_flag_ = false;
+        std::string pathname_;
 
-    // Borrar el constructor de copia y el operador de asignación para evitar el clonado del objeto.
+        // Función para construir direcciones en el formato que necesita la librería de sockets
+        sockaddr_un make_address(const std::string& pathname)
+        {
+            sockaddr_un address = {};
+            address.sun_family = AF_UNIX;
+            pathname.copy( address.sun_path, sizeof(address.sun_path) - 1, 0 );
 
-    socket_t(const socket_t&) = delete;
-    socket_t& operator=(const socket_t&) = delete;
-
-    // Sí podemos mover objetos, haciendo que el operador de asignación por movimiento se lleve el descriptor al nuevo
-    // objeto y lo pierda el de origen.
-
-    socket_t& operator=(socket_t&& lhs)
-    {
-        pathname_ = std::move(lhs.pathname_);
-
-        // Mover el descriptor del socket al objeto destino.
-        sockfd_ = lhs.sockfd_;
-        lhs.sockfd_ = -1;
-
-        unlink_flag_ = lhs.unlink_flag_;
-        lhs.unlink_flag_ = false;
-
-        return *this;
-    }
-
-private:
-    int sockfd_ = -1;
-    bool unlink_flag_ = false;
-    std::string pathname_;
-
-    // Función para construir direcciones en el formato que necesita la librería de sockets
-    sockaddr_un make_address(const std::string& pathname)
-    {
-        sockaddr_un address = {};
-        address.sun_family = AF_UNIX;
-        pathname.copy( address.sun_path, sizeof(address.sun_path) - 1, 0 );
-
-        return address;
-    }
-};
+            return address;
+        }
+    };
+} // namespace examples

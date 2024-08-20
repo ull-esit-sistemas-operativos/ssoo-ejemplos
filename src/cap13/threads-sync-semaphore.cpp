@@ -14,7 +14,7 @@
 
 #include "semaphore.hpp"
 
-void thread_function(semaphore& sem, int thread_id)
+void thread_function(examples::semaphore& sem, int thread_id)
 {
     sem.acquire();
     std::println( "Hilo {} creado", thread_id );
@@ -25,7 +25,7 @@ void thread_function(semaphore& sem, int thread_id)
 
 int main()
 {
-    semaphore sem(3); // Solo permitir 3 hilos simultáneos
+    examples::semaphore sem(3); // Solo permitir 3 hilos simultáneos
 
     std::vector<std::thread> threads;
     for(int i : std::views::iota(1, 10))
