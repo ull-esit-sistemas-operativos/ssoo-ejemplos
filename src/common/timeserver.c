@@ -11,7 +11,7 @@
 
 #include "timeserver.h"
 
-const int ALARM_DEFAULT_TIME = 3 /* seg. */; 
+const int ALARM_DEFAULT_TIME = 5 /* seg. */; 
 
 atomic_bool quit_app;
 
