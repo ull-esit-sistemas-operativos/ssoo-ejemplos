@@ -1,3 +1,4 @@
+add_executable(jthreads-factorial jthreads-factorial.cpp)
 add_executable(threads threads.cpp)
 add_executable(threads-factorial threads-factorial.cpp)
 

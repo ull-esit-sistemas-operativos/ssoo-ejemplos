@@ -27,10 +27,11 @@ Concretamente los ejemplos incluidos son:
  * `src/cap11/anom-shared-memory.cpp` — Comunicación entre procesos padre e hijo mediante memoria compartida anónima.
  * `src/cap11/shared-memory-client.cpp` — Cliente en C++ de comunicación entre procesos mediante memoria compartida.
  * `src/cap11/shared-memory-server.c` — Servidor de comunicación entre procesos mediante memoria compartida.
+ * `src/cap12/jthreads-factorial.cpp` — Uso de hilos con `std::jthread` y cancelación coordinada en C++: Cálculo del factorial de un número.
  * `src/cap12/pthreads.cpp` — Creación de hilos mediante POSIX Threads.
  * `src/cap12/pthreads-factorial.cpp` — Uso de hilos mediante POSIX Threads: Cálculo del factorial de un número.
- * `src/cap12/threads.cpp` — Creación de hilos en C++.
- * `src/cap12/threads-factorial.cpp` — Uso de hilos en C++: Cálculo del factorial de un número.
+ * `src/cap12/threads.cpp` — Creación de hilos con `std::thread` en C++.
+ * `src/cap12/threads-factorial.cpp` — Uso de hilos con `std::thread` en C++: Cálculo del factorial de un número.
  * `src/cap13/pthreads-sync-counter.cpp` — Sincronización de hilos mediante mutex de POSIX Threads: Incrementar un contador.
  * `src/cap13/pthreads-sync-factorial.cpp` — Sincronización de hilos mediante mutex de POSIX Threads: Cálculo del factorial de un número.
  * `src/cap13/threads-sync-counter.cpp` — Sincronización de hilos mediante mutex en C++: Incrementar un contador.

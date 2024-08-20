@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <print>
+#include <stop_token>
 
 #include <BigInt/BigInt.hpp>
 
@@ -43,4 +44,28 @@ BigInt calculate_factorial(BigInt number, BigInt lower_bound, std::string_view o
 BigInt calculate_factorial(BigInt number, std::string_view output_label = "FACTORIAL")
 {
     return calculate_factorial(number, 2, output_label);
+}
+
+BigInt cancellable_calculate_factorial(std::stop_token stoken, BigInt number, BigInt lower_bound,
+    std::string_view output_label = "FACTORIAL")
+{
+    if (! output_label.empty())
+    {
+        std::print( "[{}] ", output_label);
+    }
+
+    std::println( "Calculando..." );
+
+    lower_bound = lower_bound < 2 ? 2 : lower_bound;
+    BigInt factorial = 1;
+    for ( BigInt i = lower_bound; i <= number; i++ )
+    {
+        if(stoken.stop_requested()) 
+        {
+            return factorial;
+        }
+        factorial = factorial * i;
+    }
+
+    return factorial;
 }
