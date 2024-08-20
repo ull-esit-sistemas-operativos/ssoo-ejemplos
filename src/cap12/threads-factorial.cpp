@@ -27,11 +27,12 @@ int main()
 {
     auto number = get_user_input( "HILO PRINCIPAL" );
 
-    BigInt thread1_result, thread2_result;
-
     // Para calcular el N!, un hilo multiplica desde N a N/2 y el otro desde (N/2)-1 hasta 2.
+    // Luego será necesario multiplicar ambos resultados parciales para obtener el resultado final.
     auto thread1_lower_bound = number / 2;
     auto thread2_number = thread1_lower_bound - 1;
+    
+    BigInt thread1_result, thread2_result;
 
     std::thread thread1(factorial_thread, std::ref(thread1_result), number, thread1_lower_bound);
     std::println( "Hilo creado: {} (0x{:x})", thread1.get_id(), thread1.native_handle() );

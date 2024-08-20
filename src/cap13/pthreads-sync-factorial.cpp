@@ -61,6 +61,7 @@ int main()
     pthread_mutex_init( &thread_results.mutex, nullptr);
 
     // Para calcular el N!, un hilo multiplica desde N a N/2 y el otro desde (N/2)-1 hasta 2
+    // Luego será necesario multiplicar ambos resultados parciales para obtener el resultado final.
     factorial_thread_args thread1_args { .number = number, .lower_bound = number / 2, .results = &thread_results };
     factorial_thread_args thread2_args { .number = (number / 2) - 1, .lower_bound = 2, .results = &thread_results };
     
