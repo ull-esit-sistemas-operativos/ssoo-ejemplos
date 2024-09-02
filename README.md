@@ -45,12 +45,12 @@ Concretamente los ejemplos incluidos son:
 
 ### Requisitos
 
-Para la compilación de estos ejemplos en Linux es necesario tener instalados los siguientes paquetes:
+Para la compilación de estos ejemplos en Linux es necesario tener instalado un compilador de C++ que soporte C++23 —como **GCC 14**— y los siguientes paquetes:
 
  * `build-essential`
  * `cmake`
 
-Mientras que en Microsoft Windows se necesita **Visual Studio Build Tools**, que incluye una versión de **CMake**.
+Mientras que en Microsoft Windows se necesita almenos **Visual Studio Build Tools 2022**, que incluye una versión de **CMake**.
 
 ### Compilación
 
