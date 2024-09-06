@@ -8,11 +8,11 @@
 //      g++ -I../ -I../../lib -o pthreads-factorial pthreads-factorial.cpp
 //
 
-#include <pthread.h>
-
 #include <cerrno>
 #include <cstring>
 #include <print>
+
+#include <pthread.h>
 
 #include <common/bigint-factorial.hpp>
 

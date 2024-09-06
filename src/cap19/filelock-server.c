@@ -17,6 +17,12 @@
 
 #define _XOPEN_SOURCE   500
 
+#include <errno.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo
 #include <fcntl.h>      // Algunas operaciones del estándar POSIX con descriptores de archivo
                         // no están en <unistd.h> sino aquí. Por ejemplo open()
@@ -25,12 +31,6 @@
 #include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-
-#include <errno.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "filelock-server.h"
 

@@ -7,11 +7,11 @@
 //      g++ -I../ -I../../lib -o pthreads-sync pthreads-sync.cpp
 //
 
-#include <pthread.h>
-
 #include <cerrno>
 #include <cstring>
 #include <print>
+
+#include <pthread.h>
 
 struct increment_counter_thread_args
 {

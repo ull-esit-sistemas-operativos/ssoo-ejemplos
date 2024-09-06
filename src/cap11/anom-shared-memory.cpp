@@ -8,17 +8,17 @@
 //      g++ -I../ -o anom-shared-memory anom-shared-memory.cpp
 //
 
-#include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo
-#include <semaphore.h>  // Cabecera para los semáforos
-#include <sys/mman.h>   // Cabecera para mmap()
-#include <sys/types.h>
-#include <sys/wait.h>
-
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo  <stdlib.h> como
 #include <cstring>      // <cstdlib>. La primera es para usar con C, mientras que la segunda es la recomendada en C++
                         // pues mete las funciones en el espacio de nombres 'std', como el resto de la librería
                         // estándar de C++.
 #include <print>
+
+#include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo
+#include <semaphore.h>  // Cabecera para los semáforos
+#include <sys/mman.h>   // Cabecera para mmap()
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #include <common/factorial.hpp>
 

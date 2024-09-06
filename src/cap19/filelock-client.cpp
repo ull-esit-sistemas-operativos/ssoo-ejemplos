@@ -15,9 +15,6 @@
 //      g++ -o filelock-client filelock-client.cpp
 //
 
-#include <unistd.h>
-#include <signal.h>
-
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo <stdlib.h> como
 #include <cstring>      // <cstdlib>. La primera es para usar con C, mientras que la segunda es la recomendada en C++
                         // pues mete las funciones en el espacio de nombres 'std', como el resto de la
@@ -26,6 +23,9 @@
 #include <print>
 #include <string>
 #include <system_error>
+
+#include <unistd.h>
+#include <signal.h>
 
 #include "filelock-server.h"
 

@@ -3,18 +3,18 @@
 
 #pragma once
 
-#include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo
-#include <fcntl.h>
-#include <sys/mman.h>   // Cabecera para mmap() y shm_open()
-#include <sys/types.h>
-#include <sys/stat.h>
-
 #include <cerrno>
 #include <cstring>
 #include <functional>
 #include <memory>
 #include <stdexcept>
 #include <system_error>
+
+#include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo
+#include <fcntl.h>
+#include <sys/mman.h>   // Cabecera para mmap() y shm_open()
+#include <sys/types.h>
+#include <sys/stat.h>
 
 namespace examples
 {

@@ -10,14 +10,14 @@
 //      g++ -I../ -I../../lib -o pthreads-sync-factorial pthreads-sync-factorial.cpp
 //
 
-#include <pthread.h>
-
 #include <cerrno>
 #include <cstring>
 #include <functional>
 #include <numeric>
 #include <print>
 #include <vector>
+
+#include <pthread.h>
 
 #include <common/bigint-factorial.hpp>
 

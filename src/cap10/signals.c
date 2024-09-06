@@ -11,13 +11,13 @@
 
 #define _POSIX_C_SOURCE 200809L
 
-#include <unistd.h>
-#include <signal.h>
-
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include <unistd.h>
+#include <signal.h>
 
 void term_signal_handler(int signum)
 {

@@ -8,16 +8,16 @@
 //      g++ -I../ -o fork-pipe fork-pipe.cpp
 //
 
-#include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo
-#include <sys/types.h>
-#include <sys/wait.h>
-
 #include <array>        // Recomendada para crear arrays de tamaño fijo compatibles con C
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo <stdlib.h> como
 #include <cstring>      // <cstdlib>. La primera es para usar con C, mientras que la segunda es la recomendada en
                         // C++ pues mete las funciones en el espacio de nombres 'std', como el resto de la librería
                         // estándar de C++.
 #include <print>
+
+#include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #include <common/factorial.hpp>
 

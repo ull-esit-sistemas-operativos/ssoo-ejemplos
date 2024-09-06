@@ -5,12 +5,12 @@
 //      g++ -I../ -I../../lib -o pthreads pthreads.cpp
 //
 
-#include <pthread.h>
-#include <unistd.h>
-
 #include <cerrno>
 #include <cstring>
 #include <print>
+
+#include <pthread.h>
+#include <unistd.h>
 
 struct thread_args
 {

@@ -8,19 +8,19 @@
 //      gcc -o mapped-files mapped-files.c
 //
 
-#include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo
-#include <fcntl.h>      // Cabecera para open()
-#include <libgen.h>     // Cabecera para basename()
-#include <sys/mman.h>   // Cabecera para mmap()
-#include <sys/types.h>
-#include <sys/stat.h>
-
 #include <errno.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+#include <unistd.h>     // Cabecera principal de la API POSIX del sistema operativo
+#include <fcntl.h>      // Cabecera para open()
+#include <libgen.h>     // Cabecera para basename()
+#include <sys/mman.h>   // Cabecera para mmap()
+#include <sys/types.h>
+#include <sys/stat.h>
 
 void memory_word_count(uint8_t* first_char_ptr, uint8_t* last_char_ptr)
 {

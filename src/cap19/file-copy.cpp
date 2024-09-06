@@ -8,12 +8,12 @@
 //      g++ -o file-copy file-copy.cpp
 //
 
+#include <print>
+#include <system_error>
+
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <unistd.h>
-
-#include <print>
-#include <system_error>
 
 int protected_main(int argc, char* argv[])
 {

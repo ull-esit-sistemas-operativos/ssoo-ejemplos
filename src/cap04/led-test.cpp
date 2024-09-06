@@ -8,19 +8,19 @@
 //      g++ -o led-test led-test.cpp
 //
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <ctype.h>
-#include <fcntl.h>
-#include <termios.h>
-#include <unistd.h>
-
 #include <cerrno>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
 #include <print>
 #include <string>
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <ctype.h>
+#include <fcntl.h>
+#include <termios.h>
+#include <unistd.h>
 
 const char* DEVICE_PATH = "/dev/ttyUSB0";
 

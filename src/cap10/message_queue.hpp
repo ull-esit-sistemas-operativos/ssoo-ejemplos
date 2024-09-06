@@ -3,14 +3,14 @@
 
 #pragma once
 
-#include <mqueue.h>     // Cabecera de las colas de mensajes 
-
 #include <array>
 #include <cerrno>
 #include <cstring>
 #include <stdexcept>
 #include <system_error>
 #include <tuple>
+
+#include <mqueue.h>     // Cabecera de las colas de mensajes 
 
 namespace examples
 {
