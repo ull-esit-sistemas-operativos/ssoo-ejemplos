@@ -1,11 +1,11 @@
-// copyfile.cpp - Copia un archivo a otro
+// file-copy.cpp - Copia un archivo a otro
 //
 //  Este programa copia un archivo a otro. Si el archivo de destino ya existe, se sobreescribe.
 //  Si el archivo de origen no existe, se muestra un mensaje de error.
 //
 //  Compilar:
 //
-//      g++ -o copyfile copyfile.cpp
+//      g++ -o file-copy file-copy.cpp
 //
 
 #include <fcntl.h>

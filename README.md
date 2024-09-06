@@ -39,11 +39,11 @@ Concretamente los ejemplos incluidos son:
  * `src/cap13/threads-sync-semaphore.cpp` — Sincronización de hilos mediante semáforos en C++.
  * `src/cap17/mapped-files.c` — Archivos mapeados en memoria con `mmap()`.
  * `src/cap17/mapped-files.cpp` — Archivos mapeados en memoria con `mmap()` en C++.
- * `src/cap19/copyfile.cpp` — Copia de archivos con `read()` y `write()`.
+ * `src/cap19/file-copy.cpp` — Copia de archivos con `read()` y `write()`.
  * `src/cap19/file-attribs.cpp` — Leer y mostrar los atributos de archivo.
  * `src/cap19/filelock-client.cpp` — Cliente en C++ del ejemplo del uso de bloqueo de archivos.
  * `src/cap19/filelock-server.c` — Servidor del ejemplo del uso de bloqueo de archivos.
- * `src/cap19/listdir.cpp` — Listar el contenido de un directorio.
+ * `src/cap19/dir-list.cpp` — Listar el contenido de un directorio.
  * `src/otros/yash.cpp` — Ejemplo muy básico del funcionamiento interno de una shell.
 
 ### Requisitos

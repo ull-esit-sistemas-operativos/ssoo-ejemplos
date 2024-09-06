@@ -1,10 +1,10 @@
-// listdir.cpp - Listar el contenido de un directorio
+// dir-list.cpp - Listar el contenido de un directorio
 //
 //  Este programa lista el contenido de un directorio. Si no se especifica un directorio, lista el contenido del
 //  directorio actual.
 //
 //  Compilar:
-//      g++ -o listdir listdir.cpp
+//      g++ -o dir-list dir-list.cpp
 //
 
 #include <dirent.h>
