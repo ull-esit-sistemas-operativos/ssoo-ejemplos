@@ -35,7 +35,7 @@ int main()
     // con ese fin.
 
     std::println( "Cerrando el servidor..." );
-    std::println( QUIT_COMMAND );
+    std::println( controlfs, QUIT_COMMAND );
 
     if (controlfs.bad()) {
         std::println( stderr, "Error: No se pudo escribir en la tubería.");
