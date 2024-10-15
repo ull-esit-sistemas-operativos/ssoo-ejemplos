@@ -22,7 +22,7 @@ Concretamente los ejemplos incluidos son:
  * `src/cap10/fork-redir.cpp` — Redirección de E/S estándar usando tuberías anónimas.
  * `src/cap10/mqueue-client.cpp` — Cliente en C++ de comunicación entre procesos mediante colas de mensajes POSIX.
  * `src/cap10/mqueue-server.cpp` — Servidor de comunicación entre procesos mediante colas de mensajes POSIX.
- * `src/cap10/socket-client.cpp` — Cliente en C++ de comunicación entre procesos mediante colas de mensajes POSIX.
+ * `src/cap10/signals.cpp` — Ejemplo básico de manejo de señales POSIX.
  * `src/cap10/socket-server.cpp` — Servidor de comunicación entre procesos mediante colas de mensajes POSIX.
  * `src/cap11/anom-shared-memory.cpp` — Comunicación entre procesos padre e hijo mediante memoria compartida anónima.
  * `src/cap11/shared-memory-client.cpp` — Cliente en C++ de comunicación entre procesos mediante memoria compartida.
