@@ -20,13 +20,14 @@ Concretamente los ejemplos incluidos son:
  * `src/cap10/fifo-server.c` — Servidor de comunicación entre procesos mediante tuberías con nombre.
  * `src/cap10/fork-pipe.cpp` — Comunicación entre procesos padre e hijo mediante tuberías anónimas.
  * `src/cap10/fork-redir.cpp` — Redirección de E/S estándar usando tuberías anónimas.
- * `src/cap10/mqueue-client.cpp` — Cliente en C++ de comunicación entre procesos mediante colas de mensajes POSIX.
+ * `src/cap10/mqueue-client.cpp` — Cliente de comunicación entre procesos mediante colas de mensajes POSIX.
  * `src/cap10/mqueue-server.cpp` — Servidor de comunicación entre procesos mediante colas de mensajes POSIX.
  * `src/cap10/signals.cpp` — Ejemplo básico de manejo de señales POSIX.
+ * `src/cap10/socket-client.cpp` — Cliente de comunicación entre procesos mediante colas de mensajes POSIX.
  * `src/cap10/socket-server.cpp` — Servidor de comunicación entre procesos mediante colas de mensajes POSIX.
  * `src/cap11/anom-shared-memory.cpp` — Comunicación entre procesos padre e hijo mediante memoria compartida anónima.
- * `src/cap11/shared-memory-client.cpp` — Cliente en C++ de comunicación entre procesos mediante memoria compartida.
- * `src/cap11/shared-memory-server.c` — Servidor de comunicación entre procesos mediante memoria compartida.
+ * `src/cap11/shared-memory.cpp` — Ejemplo de comunicación entre procesos mediante memoria compartida.
+ * `src/cap11/shared-memory-control.cpp` — Programa de control del ejemplo de comunicación entre procesos mediante memoria compartida.
  * `src/cap12/jthreads-factorial.cpp` — Uso de hilos con `std::jthread` y cancelación coordinada en C++: Cálculo del factorial de un número.
  * `src/cap12/pthreads.cpp` — Creación de hilos mediante POSIX Threads.
  * `src/cap12/pthreads-factorial.cpp` — Uso de hilos mediante POSIX Threads: Cálculo del factorial de un número.
