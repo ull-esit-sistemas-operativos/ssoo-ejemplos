@@ -1,8 +1,11 @@
-// filelock-server.c - Servidor del ejemplo del uso de bloqueos de archivos
+// filelock-server.c - Ejemplo del uso de bloqueos de archivos
 //
 //  El programa servidor utiliza alarm() y las señales del sistema para mostrar periódicamente la hora. Además,
-//  crea un archivo con el PID del proceso. El cliente puede usar este archivo para conocer el PID para enviar una
-//  señal al servidor.
+//  crea un archivo con el PID del proceso. Este archivo es bloqueado durante su creación para que solo un servidor
+//  pueda escribir su PID en él. Otros servidores detectarán la situación y terminarán inmediatamente.
+//
+//  El programa de control puede usar este archivo para conocer el PID para enviar una señal al servidor y hacer
+//  que termine.
 //
 //  Esta técnica es muy usada por los servicios del sistema. Frecuentemente crean un subdirectorio con el nombre del
 //  servicio dentro de /var/run. Allí colocan un archivo '.pid' con el PID del proceso, así como otros recursos
@@ -32,8 +35,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "filelock-server.h"
-
+#define PID_FILENAME "filelock-server.pid"
 const int ALARM_DEFAULT_TIME = 3 /* seg. */; 
 
 int create_pidfile();

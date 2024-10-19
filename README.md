@@ -41,8 +41,8 @@ Concretamente los ejemplos incluidos son:
  * `src/cap17/mapped-files.cpp` — Archivos mapeados en memoria con `mmap()` en C++.
  * `src/cap19/file-copy.cpp` — Copia de archivos con `read()` y `write()`.
  * `src/cap19/file-attribs.cpp` — Leer y mostrar los atributos de archivo.
- * `src/cap19/filelock-client.cpp` — Cliente en C++ del ejemplo del uso de bloqueo de archivos.
- * `src/cap19/filelock-server.c` — Servidor del ejemplo del uso de bloqueo de archivos.
+ * `src/cap19/filelock-server.c` — Ejemplo del uso de bloqueo de archivos.
+ * `src/cap19/filelock-stop.cpp` — Programa de control del ejemplo del uso de bloqueo de archivos.
  * `src/cap19/dir-list.cpp` — Listar el contenido de un directorio.
  * `src/otros/yash.cpp` — Ejemplo muy básico del funcionamiento interno de una shell.
 
