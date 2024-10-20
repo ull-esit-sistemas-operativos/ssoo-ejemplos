@@ -19,7 +19,7 @@ void alarm_signal_handler(int signum)
     char current_time_string[26];
     ctime_r( &current_time, current_time_string );
     
-    // No se puede usar printf(). Mo está dentro de las funciones seguras en manejadores de señal
+    // No se puede usar printf() o std::cout. No está dentro de las funciones seguras en manejadores de señal
     write( STDOUT_FILENO, current_time_string, std::strlen(current_time_string) );
     
     // Programar la siguiente alarma

@@ -120,7 +120,7 @@ Para manejar errores en las llamadas al sistema, normalmente comprobamos el valo
 Si es negativo, es que ocurrió un error y la variable `errno` contiene el código de error.
 
 ```c
-#include <errno.h
+#include <errno.h>
 #include <stdio.h>
 #include <unistd.h>
 
