@@ -1,7 +1,6 @@
 if(UNIX)
-    add_executable(fifo-client-c fifo-client.c)
-    add_executable(fifo-client-cpp fifo-client.cpp)
-    add_executable(fifo-server fifo-server.c ../common/timeserver.c)
+    add_executable(fifo fifo.cpp ../common/timeserver.c)
+    add_executable(fifo-control fifo-control.cpp)
 
     add_executable(mqueue-client mqueue-client.cpp)
     target_link_libraries(mqueue-client rt)
