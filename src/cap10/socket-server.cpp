@@ -10,14 +10,14 @@
 //
 //  Compilar:
 //
-//      g++ -o socket-server socket-server.cpp ../common/timeserver.c
+//      g++ -o socket-server socket-server.cpp ../common/timeserver.cpp
 //
 
 #include <print>
 #include <string>
 #include <system_error>
 
-#include "common/timeserver.h"
+#include "common/timeserver.hpp"
 #include "socket-server.hpp"
 
 // Aunque se está trabajando en ello, en C++ no hay una librería de comunicaciones en red. Así que tenemos que usar
@@ -45,12 +45,12 @@ int protected_main()
         else throw;
     }
 
-    setup_signals();
     start_alarm();
 
     std::println( "Escuchando en el canal de control '{}'...", CONTROL_SOCKET_NAME );
 
     // Leer del socket los comandos e interpretarlos.
+    bool quit_app = false;
     while (!quit_app)
     {
         try

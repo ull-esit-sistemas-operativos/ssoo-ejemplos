@@ -10,7 +10,7 @@
 
 using namespace std::literals;
 
-inline const std::string CONTROL_SHM_NAME = "/ssoo-class-shm-server"s;
+inline const std::string CONTROL_SHM_NAME = "/ssoo-class-shm"s;
 inline const std::string QUIT_COMMAND = "QUIT"s;
 
 struct memory_content

@@ -8,7 +8,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -lrt -o shared-memory shared-memory.cpp ../common/timeserver.c
+//      g++ -I../ -lrt -o shared-memory shared-memory.cpp ../common/timeserver.cpp
 //
 
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo <stdlib.h> como
@@ -26,7 +26,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "common/timeserver.h"
+#include <common/timeserver.hpp>
 #include "shared-memory-common.hpp"
 
 int protected_main()
@@ -69,12 +69,12 @@ int protected_main()
     sem_init( &memory_region->ready, 1, 0);
 
     // Comenzar a mostrar la hora periódicamente.
-    setup_signals();
     start_alarm();
 
     std::println( "Escuchando en el canal de control '{}'...", CONTROL_SHM_NAME);
 
     // Leer de la memoria compartida los comandos e interpretarlos.
+    bool quit_app = false;
     while (!quit_app)
     {
         // Poner el proceso a la espera de que esté el comando en la memoria compartida.

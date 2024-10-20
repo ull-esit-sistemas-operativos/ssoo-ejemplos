@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -o fifo fifo.cpp ../common/timeserver.c
+//      g++ -I../ -o fifo fifo.cpp ../common/timeserver.cpp
 //
 
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo <stdlib.h> como
@@ -23,7 +23,7 @@
 #include <sys/stat.h>
 #include <time.h>
 
-#include <common/timeserver.h>
+#include <common/timeserver.hpp>
 #include "fifo-common.hpp"
 
 const size_t MAX_COMMAND_SIZE = 100;

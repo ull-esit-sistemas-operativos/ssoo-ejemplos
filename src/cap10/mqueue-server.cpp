@@ -5,14 +5,14 @@
 //
 //  Compilar:
 //
-//      g++ -lrt -o mqueue-server mqueue-server.cpp ../common/timeserver.c
+//      g++ -lrt -o mqueue-server mqueue-server.cpp ../common/timeserver.cpp
 //
 
 #include <print>
 #include <string>
 #include <system_error>
 
-#include "common/timeserver.h"
+#include "common/timeserver.hpp"
 #include "mqueue-server.hpp"
 
 // Como no hay funciones para usar los colas de mensajes en C++, tenemos que usar directamente la librería del sistema.
@@ -41,12 +41,12 @@ int protected_main()
         else throw;
     }
 
-    setup_signals();
     start_alarm();
 
     std::println( "Escuchando en el canal de control '{}'...", CONTROL_QUEUE_NAME );
 
     // Leer de la cola de mensajes los comandos e interpretarlos.
+    bool quit_app = false;
     while (!quit_app)
     {
         try
