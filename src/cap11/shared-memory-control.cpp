@@ -59,7 +59,7 @@ int protected_main()
     memory_region->command_length = QUIT_COMMAND.size();
 
     // Indicar al servidor que ya se escribió el comando para que pueda leerlo.
-    sem_post( &memory_region->empty );
+    sem_post( &memory_region->ready );
 
     std::println( "¡Adiós!" );
 
