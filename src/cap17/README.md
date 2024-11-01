@@ -5,10 +5,10 @@ Esto se realiza con las llamadas al sistema `mmap()` y `munmap()`.
 
 **Tabla de contenidos**
 - [Mapear archivos](#mapear-archivos)
-  - [Uso de mmap()](#uso-de-mmap)
+  - [Uso de `mmap()`](#uso-de-mmap)
 - [Desmapear archivos](#desmapear-archivos)
-  - [Uso de munmap()](#uso-de-munmap)
-- [Ejemplos](#ejemplos)
+  - [Uso de `munmap()`](#uso-de-munmap)
+- [Ejemplo](#ejemplo)
 
 ## Mapear archivos
 
@@ -36,7 +36,7 @@ Los argumentos de la función `mmap()` son los siguientes:
 - `offset`: Desplazamiento en el archivo donde se iniciará el mapeo.
   Si se quiere mapear todo el archivo, se debe indicar 0, para empezar desde el principio.
 
-### Uso de mmap()
+### Uso de `mmap()`
 
 Este es un ejemplo muy sencillo de cómo mapear un archivo en memoria:
 
@@ -86,7 +86,7 @@ Los argumentos de la función `munmap()` son los siguientes:
 No es necesario desmapear la región completa mapeada.
 Es decir, se puede desmapear solo una parte de esta.
 
-### Uso de munmap()
+### Uso de `munmap()`
 
 Por ejemplo, para liberar el mapeo completo del archivo anterior, se debe llamar a `munmap()` con la dirección de memoria devuelta por `mmap` y el tamaño del archivo:
 
@@ -103,6 +103,6 @@ Y tampoco se debe olvidar cerrar el descriptor del archivo cuando se haya termin
 close(fd);
 ```
 
-## Ejemplos
+## Ejemplo
 
 El archivo [mmapped-files.cpp](mmapped-files.cpp) contiene un ejemplo del uso de `mmap()` y `munmap()` para hacer la copia de un archivo.
