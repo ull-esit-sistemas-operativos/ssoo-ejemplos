@@ -1,13 +1,17 @@
-## Ejemplos de las clases de Sistemas Operativos
+# Ejemplos de las clases de Sistemas Operativos
 
-[![CC-0 license](https://img.shields.io/badge/License-CC--0-blue.svg)](https://creativecommons.org/publicdomain/zero/1.0)
-
-### Descripción
-
-En los apuntes de la asignatura y durante las clases de Sistemas Operativos del Grado en Ingeniería Informática, solemos hacer referencia a algunos programas de ejemplo que usamos para ilustrar lo explicado.
+En los [apuntes de la asignatura](https://ull-esit-sistemas-operativos.github.io/ssoo-apuntes/so2425/) y durante las clases de Sistemas Operativos del Grado en Ingeniería Informática, solemos hacer referencia a algunos programas de ejemplo que usamos para ilustrar lo explicado.
 Este proyecto es una recopilación de dichos programas.
 
-Concretamente los ejemplos incluidos son:
+**Tabla de contenidos**
+- [Ejemplos incluidos](#ejemplos-incluidos)
+- [Requisitos de compilación](#requisitos-de-compilación)
+- [Compilación](#compilación)
+- [Autor y contacto](#autor-y-contacto)
+
+## Ejemplos incluidos
+
+Concretamente los ejemplos incluidos actualmente son:
 
  * `src/cap04/led_test.cpp` — Acceso a la E/S serial en UNIX. Ejemplo del control de un LED tricolor conectado a un Arduino que a su vez está conectado al puerto serie del ordenador.
  * `src/cap06/syscall.s` — Llamadas al sistema en el simulador en Linux para x86-64.
@@ -45,7 +49,7 @@ Concretamente los ejemplos incluidos son:
  * `src/cap19/dir-list.cpp` — Listar el contenido de un directorio.
  * `src/otros/yash.cpp` — Ejemplo muy básico del funcionamiento interno de una shell.
 
-### Requisitos
+## Requisitos de compilación
 
 Para la compilación de estos ejemplos en Linux es necesario tener instalado un compilador de C++ que soporte C++23 —como **GCC 14**— y los siguientes paquetes:
 
@@ -54,7 +58,7 @@ Para la compilación de estos ejemplos en Linux es necesario tener instalado un 
 
 Mientras que en Microsoft Windows se necesita almenos **Visual Studio Build Tools 2022**, que incluye una versión de **CMake**.
 
-### Compilación
+## Compilación
 
 Los ejemplos se compilan de manera sencilla siguiendo estos pasos:
 
@@ -67,6 +71,6 @@ En Microsoft Windows estos comandos deben ejecutarse desde la consola de **Devel
 En cada sistema solo se compilarán los ejemplos compatibles.
 Los ejecutables resultantes de la compilación son guardados en el directorio `build/bin/`.
 
-### Autor y contacto
+## Autor y contacto
 
 Si tienes cualquier cuestión no dudes en ponerte en contacto con Jesús Torres <[jmtorres@ull.es](mailto:jmtorres@ull.es)>.
