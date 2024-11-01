@@ -69,7 +69,7 @@ int protected_main()
 
         if ( QUIT_COMMAND == command )
         {
-            puts( "Ha llegado orden de terminar ¡Adiós!" );
+            std::println( "Ha llegado orden de terminar ¡Adiós!" );
             quit_app = true;
         }
         // Aquí va código para detectar e interpretar más comandos...

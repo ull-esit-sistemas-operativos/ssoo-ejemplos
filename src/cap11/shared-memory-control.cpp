@@ -63,6 +63,11 @@ int protected_main()
 
     std::println( "¡Adiós!" );
 
+    // Liberar la región de memoria reservada para mapear el objeto de memoria compartida.
+    munmap( shared_mem, sizeof(memory_content) );
+    // Cerrar el descriptor de archivo del objeto de memoria compartida abierto.
+    close( shm_fd );
+
     return EXIT_SUCCESS;
 }
 
