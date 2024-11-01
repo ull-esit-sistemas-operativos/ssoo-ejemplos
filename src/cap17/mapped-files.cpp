@@ -12,13 +12,11 @@
 #include <print>
 #include <system_error>
 
+#include <fcntl.h>
 #include <libgen.h>     // Cabecera para basename()
-
-// Como no hay funciones para gestionar ficheros mapeados en memoria en C++, tenemos que usar directamente la librería
-// del sistema. Abstrayendo su uso detrás de clases, simplificamos el resto del código del programa, facilitamos el
-// manejo de errores y que todos los recursos se liberen. 
-
-#include "memory_map.hpp"
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 int protected_main(int argc, char* argv[])
 {
@@ -31,14 +29,30 @@ int protected_main(int argc, char* argv[])
     }
     
     // Abrir el archivo que se quiere mapear en memoria.
-    examples::memory_map mapped_file { argv[1], examples::memory_map::open_mode::read_only };
+    int fd = open( argv[1], O_RDONLY );
+    if (fd == -1)
+    {
+        throw std::system_error( errno, std::system_category(), "Fallo en open()" );
+    }
 
-    // Reservar una región de la memoria virtual del proceso y mapear en ella el archivo.
-    struct stat statinfo = mapped_file.status();
-    auto memory_region =  mapped_file.map<uint8_t>( PROT_READ, statinfo.st_size );
+    // Obtener el tamaño del archivo.
+    // La función lseek() sirve para mover el puntero de lectura/escritura de un archivo y retorna la posición
+    // a la que se ha movido. Si se mueve al final del archivo, se obtiene el tamaño del archivo.
+    int file_size = lseek( fd, 0, SEEK_END );
 
-    const uint8_t* memory_region_begin = memory_region.get();
-    const uint8_t* memory_region_end = memory_region_begin + statinfo.st_size;
+    // Mapear `length` bytes del archivo desde el byte 0 en la memoria del proceso, solo para lectura.
+    // Como `length` es el tamaño del archivo, se mapea todo el archivo.
+    void* mapped_file = mmap( nullptr, file_size, PROT_READ, MAP_SHARED, fd, 0 );
+    if (mapped_file == MAP_FAILED)
+    {
+        throw std::system_error( errno, std::system_category(), "Fallo en mmap()" );
+    }
+
+    // Cerar el descriptor de archivo, ya que no se necesita más.
+    close( fd );
+
+    const uint8_t* memory_region_begin = static_cast<uint8_t*>(mapped_file);
+    const uint8_t* memory_region_end = memory_region_begin + file_size;
     size_t lines = 0, words = 0, characters = 0;
     bool space_character = true;
 

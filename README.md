@@ -37,8 +37,7 @@ Concretamente los ejemplos incluidos son:
  * `src/cap13/threads-sync-counter.cpp` — Sincronización de hilos mediante mutex en C++: Incrementar un contador.
  * `src/cap13/threads-sync-factorial.cpp` — Sincronización de hilos mediante mutex en C++: Cálculo del factorial de un número.
  * `src/cap13/threads-sync-semaphore.cpp` — Sincronización de hilos mediante semáforos en C++.
- * `src/cap17/mapped-files.c` — Archivos mapeados en memoria con `mmap()`.
- * `src/cap17/mapped-files.cpp` — Archivos mapeados en memoria con `mmap()` en C++.
+ * `src/cap17/mapped-files.cpp` — Archivos mapeados en memoria con `mmap()`.
  * `src/cap19/file-copy.cpp` — Copia de archivos con `read()` y `write()`.
  * `src/cap19/file-attribs.cpp` — Leer y mostrar los atributos de archivo.
  * `src/cap19/filelock-server.c` — Ejemplo del uso de bloqueo de archivos.
