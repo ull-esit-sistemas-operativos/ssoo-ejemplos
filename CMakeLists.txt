@@ -28,14 +28,15 @@ set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 find_package(Threads REQUIRED)
 
 include_directories(
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/lib
+    ${PROJECT_SOURCE_DIR}/src
+    ${PROJECT_SOURCE_DIR}/lib
 )
 
 add_subdirectory(src/cap04)
 add_subdirectory(src/cap06)
 add_subdirectory(src/cap09)
 add_subdirectory(src/cap10)
+add_subdirectory(src/cap10/sockets)
 add_subdirectory(src/cap11)
 add_subdirectory(src/cap12)
 add_subdirectory(src/cap13)

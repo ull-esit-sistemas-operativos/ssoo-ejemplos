@@ -7,9 +7,6 @@ if(UNIX)
     add_executable(mqueue-server mqueue-server.cpp ../common/timeserver.cpp)
     target_link_libraries(mqueue-server rt)
 
-    add_executable(socket-client socket-client.cpp)
-    add_executable(socket-server socket-server.cpp ../common/timeserver.cpp)
-
     add_executable(fork-pipe fork-pipe.cpp)
 
     add_executable(fork-redir fork-redir.c)
