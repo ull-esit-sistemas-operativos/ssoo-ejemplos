@@ -19,15 +19,15 @@ Concretamente los ejemplos incluidos actualmente son:
  * `src/cap06/softstack.cpp` — Ejemplo básico en C++ para mostrar la pila de software con `strace` o `ltrace`.
  * `src/cap09/fork.cpp` — Creación de procesos mediante `fork()`.
  * `src/cap09/fork-exec.cpp` — Ejecutar otros programas mediante `fork()` y `exec()`.
- * `src/cap10/fifo.cpp` — Ejemplo de comunicación entre procesos mediante tuberías con nombre.
- * `src/cap10/fifo-control.cpp` — Programa de control del ejemplo de comunicación entre procesos mediante tuberías con nombre.
- * `src/cap10/fork-pipe.cpp` — Comunicación entre procesos padre e hijo mediante tuberías anónimas.
- * `src/cap10/fork-redir.cpp` — Redirección de E/S estándar usando tuberías anónimas.
  * `src/cap10/mqueue-client.cpp` — Cliente de comunicación entre procesos mediante colas de mensajes POSIX.
  * `src/cap10/mqueue-server.cpp` — Servidor de comunicación entre procesos mediante colas de mensajes POSIX.
  * `src/cap10/signals.cpp` — Ejemplo básico de manejo de señales POSIX.
  * `src/cap10/sockets/socket.cpp` — Ejemplo de comunicación entre procesos mediante colas de mensajes POSIX.
  * `src/cap10/sockets/socket-control.cpp` — Programa de control del ejemplo de comunicación entre procesos mediante colas de mensajes POSIX.
+ * `src/cap10/tuberías/fifo.cpp` — Ejemplo de comunicación entre procesos mediante tuberías con nombre.
+ * `src/cap10/tuberías/fifo-control.cpp` — Programa de control del ejemplo de comunicación entre procesos mediante tuberías con nombre.
+ * `src/cap10/tuberías/fork-pipe.cpp` — Comunicación entre procesos padre e hijo mediante tuberías anónimas.
+ * `src/cap10/tuberías/fork-redir.cpp` — Redirección de E/S estándar usando tuberías anónimas.
  * `src/cap11/anom-shared-memory.cpp` — Comunicación entre procesos padre e hijo mediante memoria compartida anónima.
  * `src/cap11/shared-memory.cpp` — Ejemplo de comunicación entre procesos mediante memoria compartida.
  * `src/cap11/shared-memory-control.cpp` — Programa de control del ejemplo de comunicación entre procesos mediante memoria compartida.
