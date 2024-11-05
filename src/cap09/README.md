@@ -2,7 +2,7 @@
 
 ## Uso de fork()
 
-La función `fork()` se utiliza para crear un nuevo proceso.
+La función [`fork()`](https://manpages.debian.org/stretch/manpages-es/fork.2.es.html) se utiliza para crear un nuevo proceso.
 El proceso creado es una copia exacta del proceso que llamó a `fork()`, pero tiene su propio espacio de direcciones.
 
 ```cpp
@@ -26,7 +26,7 @@ El archivo [fork.c](fork.c) contiene un ejemplo del uso de `fork()`.
 
 ## Uso de exec()
 
-La función `exec()` se utiliza para reemplazar la imagen del proceso actual con un nuevo programa.
+La función [`exec()`](https://manpages.debian.org/stretch/manpages-es/exec.3.es.html) se utiliza para reemplazar la imagen del proceso actual con un nuevo programa.
 Esta función solo retorna de su invocación si ha ocurrido un error.
 
 ```cpp
@@ -115,7 +115,7 @@ Como veremos a continuación, el valor pasado a `exit()` o `return` se puede lee
 
 ## Uso de wait() y waitpid()
 
-Las funciones `wait()` y `waitpid()` se utilizan para hacer que el proceso padre espere a que termine uno de sus procesos hijos.
+Las funciones [`wait()`](https://manpages.debian.org/stretch/manpages-es/wait.2.es.html) y [`waitpid()`](https://manpages.debian.org/stretch/manpages-es/waitpid.2.es.html) se utilizan para hacer que el proceso padre espere a que termine uno de sus procesos hijos.
 
 ```cpp
 pid_t pid = fork();
