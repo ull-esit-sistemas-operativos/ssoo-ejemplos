@@ -9,6 +9,6 @@ if(UNIX)
 
     add_executable(fork-pipe fork-pipe.cpp)
 
-    add_executable(fork-redir fork-redir.c)
+    add_executable(fork-redir fork-redir.cpp)
     add_executable(signals signals.cpp)
 endif()
