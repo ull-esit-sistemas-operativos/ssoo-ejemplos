@@ -104,6 +104,13 @@ La función [`unlink()`](https://manpages.debian.org/stretch/manpages-es/unlink.
 unlink("/tmp/myfifo");
 ```
 
+## Lectura y escritura en tuberías
+
+Para leer de una tubería se utiliza la función [`read()`](https://manpages.debian.org/stretch/manpages-es/read.2.es.html) y para escribir se utiliza la función [`write()`](https://manpages.debian.org/stretch/manpages-es/write.2.es.html).
+
+La lectura de una tubería en la que no hay datos disponibles bloqueará el proceso hasta que haya datos para leer.
+Cuando se cierran todos los descriptores de archivo de escritura de una tubería y se han leído todos los datos, la llamada a `read()` devuelve 0, indicando que no hay más datos que leer.
+
 ## Redirección de la entrada y salida estándar
 
 ### Duplicar descriptores de archivo
