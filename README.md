@@ -19,28 +19,28 @@ Concretamente los ejemplos incluidos actualmente son:
  * `src/cap06/softstack.cpp` — Ejemplo básico en C++ para mostrar la pila de software con `strace` o `ltrace`.
  * `src/cap09/fork.cpp` — Creación de procesos mediante `fork()`.
  * `src/cap09/fork-exec.cpp` — Ejecutar otros programas mediante `fork()` y `exec()`.
- * `src/cap10/mqueue-client.cpp` — Cliente de comunicación entre procesos mediante colas de mensajes POSIX.
- * `src/cap10/mqueue-server.cpp` — Servidor de comunicación entre procesos mediante colas de mensajes POSIX.
- * `src/cap10/signals.cpp` — Ejemplo básico de manejo de señales POSIX.
- * `src/cap10/sockets/socket.cpp` — Ejemplo de comunicación entre procesos mediante colas de mensajes POSIX.
- * `src/cap10/sockets/socket-control.cpp` — Programa de control del ejemplo de comunicación entre procesos mediante colas de mensajes POSIX.
- * `src/cap10/tuberías/fifo.cpp` — Ejemplo de comunicación entre procesos mediante tuberías con nombre.
- * `src/cap10/tuberías/fifo-control.cpp` — Programa de control del ejemplo de comunicación entre procesos mediante tuberías con nombre.
- * `src/cap10/tuberías/fork-pipe.cpp` — Comunicación entre procesos padre e hijo mediante tuberías anónimas.
- * `src/cap10/tuberías/fork-redir.cpp` — Redirección de E/S estándar usando tuberías anónimas.
- * `src/cap11/anom-shared-memory.cpp` — Comunicación entre procesos padre e hijo mediante memoria compartida anónima.
- * `src/cap11/shared-memory.cpp` — Ejemplo de comunicación entre procesos mediante memoria compartida.
- * `src/cap11/shared-memory-control.cpp` — Programa de control del ejemplo de comunicación entre procesos mediante memoria compartida.
- * `src/cap12/jthreads-factorial.cpp` — Uso de hilos con `std::jthread` y cancelación coordinada en C++: Cálculo del factorial de un número.
- * `src/cap12/pthreads.cpp` — Creación de hilos mediante POSIX Threads.
- * `src/cap12/pthreads-factorial.cpp` — Uso de hilos mediante POSIX Threads: Cálculo del factorial de un número.
- * `src/cap12/threads.cpp` — Creación de hilos con `std::thread` en C++.
- * `src/cap12/threads-factorial.cpp` — Uso de hilos con `std::thread` en C++: Cálculo del factorial de un número.
- * `src/cap13/pthreads-sync-counter.cpp` — Sincronización de hilos mediante mutex de POSIX Threads: Incrementar un contador.
- * `src/cap13/pthreads-sync-factorial.cpp` — Sincronización de hilos mediante mutex de POSIX Threads: Cálculo del factorial de un número.
- * `src/cap13/threads-sync-counter.cpp` — Sincronización de hilos mediante mutex en C++: Incrementar un contador.
- * `src/cap13/threads-sync-factorial.cpp` — Sincronización de hilos mediante mutex en C++: Cálculo del factorial de un número.
- * `src/cap13/threads-sync-semaphore.cpp` — Sincronización de hilos mediante semáforos en C++.
+ * `src/cap11/mqueue-client.cpp` — Cliente de comunicación entre procesos mediante colas de mensajes POSIX.
+ * `src/cap11/mqueue-server.cpp` — Servidor de comunicación entre procesos mediante colas de mensajes POSIX.
+ * `src/cap11/signals.cpp` — Ejemplo básico de manejo de señales POSIX.
+ * `src/cap11/sockets/socket.cpp` — Ejemplo de comunicación entre procesos mediante colas de mensajes POSIX.
+ * `src/cap11/sockets/socket-control.cpp` — Programa de control del ejemplo de comunicación entre procesos mediante colas de mensajes POSIX.
+ * `src/cap11/tuberías/fifo.cpp` — Ejemplo de comunicación entre procesos mediante tuberías con nombre.
+ * `src/cap11/tuberías/fifo-control.cpp` — Programa de control del ejemplo de comunicación entre procesos mediante tuberías con nombre.
+ * `src/cap11/tuberías/fork-pipe.cpp` — Comunicación entre procesos padre e hijo mediante tuberías anónimas.
+ * `src/cap11/tuberías/fork-redir.cpp` — Redirección de E/S estándar usando tuberías anónimas.
+ * `src/cap12/anom-shared-memory.cpp` — Comunicación entre procesos padre e hijo mediante memoria compartida anónima.
+ * `src/cap12/shared-memory.cpp` — Ejemplo de comunicación entre procesos mediante memoria compartida.
+ * `src/cap12/shared-memory-control.cpp` — Programa de control del ejemplo de comunicación entre procesos mediante memoria compartida.
+ * `src/cap13/jthreads-factorial.cpp` — Uso de hilos con `std::jthread` y cancelación coordinada en C++: Cálculo del factorial de un número.
+ * `src/cap13/pthreads.cpp` — Creación de hilos mediante POSIX Threads.
+ * `src/cap13/pthreads-factorial.cpp` — Uso de hilos mediante POSIX Threads: Cálculo del factorial de un número.
+ * `src/cap13/threads.cpp` — Creación de hilos con `std::thread` en C++.
+ * `src/cap13/threads-factorial.cpp` — Uso de hilos con `std::thread` en C++: Cálculo del factorial de un número.
+ * `src/cap14/pthreads-sync-counter.cpp` — Sincronización de hilos mediante mutex de POSIX Threads: Incrementar un contador.
+ * `src/cap14/pthreads-sync-factorial.cpp` — Sincronización de hilos mediante mutex de POSIX Threads: Cálculo del factorial de un número.
+ * `src/cap14/threads-sync-counter.cpp` — Sincronización de hilos mediante mutex en C++: Incrementar un contador.
+ * `src/cap14/threads-sync-factorial.cpp` — Sincronización de hilos mediante mutex en C++: Cálculo del factorial de un número.
+ * `src/cap14/threads-sync-semaphore.cpp` — Sincronización de hilos mediante semáforos en C++.
  * `src/cap17/mapped-files.cpp` — Archivos mapeados en memoria con `mmap()`.
  * `src/cap19/file-copy.cpp` — Copia de archivos con `read()` y `write()`.
  * `src/cap19/file-attribs.cpp` — Leer y mostrar los atributos de archivo.

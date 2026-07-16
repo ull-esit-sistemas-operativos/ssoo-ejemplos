@@ -1,8 +1,8 @@
-add_executable(threads-sync-counter threads-sync-counter.cpp)
-add_executable(threads-sync-factorial threads-sync-factorial.cpp)
-add_executable(threads-sync-semaphore threads-sync-semaphore.cpp)
+add_executable(jthreads-factorial jthreads-factorial.cpp)
+add_executable(threads threads.cpp)
+add_executable(threads-factorial threads-factorial.cpp)
 
 if(CMAKE_USE_PTHREADS_INIT)
-    add_executable(pthreads-sync-counter pthreads-sync-counter.cpp)
-    add_executable(pthreads-sync-factorial pthreads-sync-factorial.cpp)
+    add_executable(pthreads pthreads.cpp)
+    add_executable(pthreads-factorial pthreads-factorial.cpp)
 endif()

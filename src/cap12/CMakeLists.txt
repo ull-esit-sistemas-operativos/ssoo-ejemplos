@@ -1,8 +1,11 @@
-add_executable(jthreads-factorial jthreads-factorial.cpp)
-add_executable(threads threads.cpp)
-add_executable(threads-factorial threads-factorial.cpp)
+if(UNIX)
+    add_executable(anom-shared-memory anom-shared-memory.cpp)
+    target_include_directories(anom-shared-memory PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
-if(CMAKE_USE_PTHREADS_INIT)
-    add_executable(pthreads pthreads.cpp)
-    add_executable(pthreads-factorial pthreads-factorial.cpp)
+    add_executable(shared-memory shared-memory.cpp ../common/timeserver.cpp)
+    target_include_directories(shared-memory PRIVATE ${CMAKE_SOURCE_DIR}/src)
+    target_link_libraries(shared-memory rt)
+
+    add_executable(shared-memory-control shared-memory-control.cpp)
+    target_link_libraries(shared-memory-control rt)
 endif()
