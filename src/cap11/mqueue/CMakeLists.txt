@@ -1,0 +1,6 @@
+if(UNIX)
+    add_executable(mqueue-client mqueue-client.cpp)
+    target_link_libraries(mqueue-client rt)
+    add_executable(mqueue-server mqueue-server.cpp ${PROJECT_SOURCE_DIR}/src/common/timeserver.cpp)
+    target_link_libraries(mqueue-server rt)
+endif()

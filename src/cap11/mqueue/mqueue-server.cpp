@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -lrt -o mqueue-server mqueue-server.cpp ../common/timeserver.cpp
+//      g++ -lrt -o mqueue-server mqueue-server.cpp ../../common/timeserver.cpp
 //
 
 #include <print>
