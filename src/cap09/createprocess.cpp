@@ -13,13 +13,13 @@
 int main()
 {
     TCHAR lpCommandLine[] = "C:\\Windows\\System32\\charmap.exe";
-    STARTUPINFO si = { 
-        .cb = sizeof(STARTUPINFO) 
+    STARTUPINFO si = {
+        .cb = sizeof(STARTUPINFO)
     };
     PROCESS_INFORMATION pi = {};
 
-    // Crear procesos hijo y comprobar si no se creó con éxito.
-    if ( ! CreateProcess(
+    // Crear proceso hijo y comprobar si no se creó con éxito.
+    BOOL success = CreateProcess(
         nullptr,
         lpCommandLine,
         nullptr,
@@ -29,7 +29,9 @@ int main()
         nullptr,
         nullptr,
         &si,
-        &pi ))
+        &pi );
+
+    if ( ! success )
     {
         std::println( stderr, "Error ({}) al crear el proceso.", GetLastError() );
         return EXIT_FAILURE;
