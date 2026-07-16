@@ -10,5 +10,5 @@ En los distintos métodos se puede ver cómo se utilizan las funciones de la lib
 En [`mqueue-server.cpp`](mqueue-server.cpp) y [`mqueue-client.cpp`](mqueue-client.cpp) se ilustra cómo se utiliza la clase en [`message_queue.hpp`](message_queue.hpp).
 El primero es un programa que muestra la hora del sistema periódicamente, mientras que el segundo se puede comunicar con el primero a través de una cola de mensajes para controlarlo.
 
-El ejemplo es muy sencillo, así que, por el momento, lo único que puede hacer [`mqueue-client.cpp`](mqueue-client.cpp) es pedirle a [`mqueue-server.cpp`](mqueue-server.cpp) que termine.
-Sin embargo, no costaría nada añadir otras órdenes, como pedir que cambie la hora del sistema o la periodicidad con la que la muestra.
+El ejemplo es muy sencillo, así que, por el momento, lo único que puede hacer [`mqueue-client.cpp`](mqueue-client.cpp) es pedirle a [`mqueue-server.cpp`](mqueue-server.cpp) que termine y para eso utiliza una cola de mensajes.
+No costaría nada añadir otras órdenes, como pedir que cambie la hora del sistema o la periodicidad con la que la que `mqueue-server.cpp` muestra la hora.

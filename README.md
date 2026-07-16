@@ -21,7 +21,7 @@ Concretamente los ejemplos incluidos actualmente son:
  * `src/cap09/fork-exec.cpp` — Ejecutar otros programas mediante `fork()` y `exec()`.
  * `src/cap11/mqueue/mqueue-client.cpp` — Cliente de comunicación entre procesos mediante colas de mensajes POSIX.
  * `src/cap11/mqueue/mqueue-server.cpp` — Servidor de comunicación entre procesos mediante colas de mensajes POSIX.
- * `src/cap11/signals.cpp` — Ejemplo básico de manejo de señales POSIX.
+ * `src/cap11/signals/signals.cpp` — Ejemplo básico de manejo de señales POSIX.
  * `src/cap11/sockets/socket.cpp` — Ejemplo de comunicación entre procesos mediante colas de mensajes POSIX.
  * `src/cap11/sockets/socket-control.cpp` — Programa de control del ejemplo de comunicación entre procesos mediante colas de mensajes POSIX.
  * `src/cap11/tuberías/fifo.cpp` — Ejemplo de comunicación entre procesos mediante tuberías con nombre.
