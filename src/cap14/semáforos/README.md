@@ -5,13 +5,13 @@ _Acquire_ decrementa el contador si es mayor que 0 y, si vale 0, bloquea al hilo
 Así, un semáforo inicializado a _N_ solo deja que _N_ hilos ejecuten a la vez el código que protege.
 
 Un semáforo inicializado a 1 proporciona **exclusión mutua**, igual que un _mutex_.
-Pero, a diferencia del _mutex_, no tiene que liberarlo el mismo hilo que lo adquirió, así que también sirve para que un hilo avise a otro de que ha ocurrido algo, cubriendo la **sincronización condicional**.
+Pero, a diferencia del _mutex_, no tiene que liberarlo el mismo hilo que lo adquirió, así que también sirve para que un hilo avise a otro de que ha ocurrido algo, cubriendo el caso de la **sincronización condicional**.
 
 Tanto POSIX —con [`sem_init()`](https://man7.org/linux/man-pages/man3/sem_init.3.html), [`sem_wait()`](https://man7.org/linux/man-pages/man3/sem_wait.3.html) y [`sem_post()`](https://man7.org/linux/man-pages/man3/sem_post.3.html)— como la librería estándar de C++ desde C++20 —con [`std::counting_semaphore`](https://en.cppreference.com/w/cpp/thread/counting_semaphore)— ofrecen semáforos.
 Pero, si un sistema o un lenguaje no los tuviera, implementarlos es sencillo cuando se dispone de un _mutex_ y una variable de condición.
-Eso es justo lo que hace este ejemplo.
+Eso es justo lo que hacemos en este ejemplo.
 
-## Un semáforo hecho con un _mutex_ y una variable de condición
+## Semáforo hecho con un _mutex_ y una variable de condición
 
 En [`semaphore.hpp`](semaphore.hpp) está la clase `examples::semaphore`, que guarda el contador del semáforo en un miembro `count_` protegido por el _mutex_ `mutex_`, y usa la variable de condición `cv_` para dormir a los hilos que no pueden entrar:
 

@@ -1,10 +1,10 @@
 # Mutex
 
-Un **_mutex_** —de _mutual exclusion_— es un objeto que garantiza que solo un hilo a la vez ejecute la porción de código que manipula un recurso compartido, es decir, su **sección crítica**.
+Un **_mutex_** es un objeto que garantiza que solo un hilo a la vez ejecute la porción de código que manipula un recurso compartido, es decir, su **sección crítica**.
 
 El hilo que quiere entrar en la sección crítica adquiere el _mutex_ y lo libera al salir de ella.
 Si otro hilo intenta adquirirlo mientras tanto, queda bloqueado hasta que el primero lo libere.
-Todos los hilos que acceden al recurso deben usar el mismo _mutex_: la protección no está en el dato, sino en el acuerdo entre los hilos que lo comparten.
+Todos los hilos que acceden al recurso deben usar el mismo _mutex_.
 
 Aquí hay dos ejemplos, cada uno en dos versiones: una con los _mutex_ de [POSIX Threads](https://man7.org/linux/man-pages/man7/pthreads.7.html) —[`pthread_mutex_lock()`](https://man7.org/linux/man-pages/man3/pthread_mutex_lock.3p.html) y [`pthread_mutex_unlock()`](https://man7.org/linux/man-pages/man3/pthread_mutex_lock.3p.html)— y otra con [`std::mutex`](https://en.cppreference.com/w/cpp/thread/mutex) de la librería estándar de C++.
 
@@ -26,6 +26,13 @@ pthread_mutex_unlock( &args->mutex );
 En la versión en C++ el _mutex_ no se bloquea ni se desbloquea a mano, sino que se construye un [`std::lock_guard`](https://en.cppreference.com/w/cpp/thread/lock_guard) que lo adquiere al crearse y lo libera al destruirse, cuando la ejecución sale del ámbito.
 Así es más difícil olvidarse de liberarlo.
 
+```cpp
+// Bloquear el mutex antes de incrementar el contador.
+std::lock_guard<std::mutex> lock( args.mutex );
+args.counter++;
+// El mutex se desbloquea al destruirse 'lock'
+```
+
 Es interesante comentar las llamadas al _mutex_ y volver a ejecutar el programa, para comprobar que el valor final del contador deja de ser el correcto.
 
 ## Un vector de resultados parciales
@@ -37,7 +44,7 @@ A diferencia de los ejemplos del capítulo anterior, los hilos no devuelven su r
 ```cpp
 struct factorial_thread_results
 {
-    pthread_mutex_t mutex;
+    std::mutex mutex;
     std::vector<BigInt> partials;
 };
 ```
@@ -46,9 +53,9 @@ Como el vector lo modifican ambos hilos, hay que protegerlo con el _mutex_ que l
 
 ```cpp
 // Bloquear el mutex y guardar el resultado
-pthread_mutex_lock( &args->results->mutex );
-args->results->partials.push_back( result );
-pthread_mutex_unlock( &args->results->mutex );
+std::lock_guard<std::mutex> lock( results.mutex );
+results.partials.push_back( result );
+// El mutex se desbloquea al destruirse 'lock'
 ```
 
 No basta con que `push_back()` sea una sola llamada.
