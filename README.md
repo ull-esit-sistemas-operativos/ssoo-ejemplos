@@ -13,33 +13,43 @@ Este proyecto es una recopilación de dichos programas.
 
 Concretamente los ejemplos incluidos actualmente son:
 
- * `src/cap04/led-test.cpp` — Acceso a la E/S serial en UNIX. Ejemplo del control de un LED tricolor conectado a un Arduino que a su vez está conectado al puerto serie del ordenador.
- * `src/cap06/syscall.s` — Llamadas al sistema en el simulador en Linux para x86-64.
- * `src/cap06/softstack.c` — Ejemplo básico en C para mostrar la pila de software con `strace` o `ltrace`.
- * `src/cap06/softstack.cpp` — Ejemplo básico en C++ para mostrar la pila de software con `strace` o `ltrace`.
- * `src/cap09/fork.cpp` — Creación de procesos mediante `fork()`.
- * `src/cap09/fork-exec.cpp` — Ejecutar otros programas mediante `fork()` y `exec()`.
- * `src/cap11/mqueue` — Ejemplo de comunicación entre procesos mediante colas de mensajes POSIX.
- * `src/cap11/signals` — Ejemplo básico de manejo de señales POSIX.
- * `src/cap11/sockets` — Ejemplo de comunicación entre procesos mediante _sockets_.
- * `src/cap11/tuberías` — Ejemplos de comunicación entre procesos mediante tuberías anónimas y con nombre, y de redirección de la E/S estándar.
- * `src/cap12/anom-shared-memory.cpp` — Comunicación entre procesos padre e hijo mediante memoria compartida anónima.
- * `src/cap12/shared-memory.cpp` — Ejemplo de comunicación entre procesos mediante memoria compartida.
- * `src/cap12/shared-memory-control.cpp` — Programa de control del ejemplo de comunicación entre procesos mediante memoria compartida.
- * `src/cap13/jthreads-factorial.cpp` — Uso de hilos con `std::jthread` y cancelación coordinada en C++: Cálculo del factorial de un número.
- * `src/cap13/pthreads.cpp` — Creación de hilos mediante POSIX Threads.
- * `src/cap13/pthreads-factorial.cpp` — Uso de hilos mediante POSIX Threads: Cálculo del factorial de un número.
- * `src/cap13/threads.cpp` — Creación de hilos con `std::thread` en C++.
- * `src/cap13/threads-factorial.cpp` — Uso de hilos con `std::thread` en C++: Cálculo del factorial de un número.
- * `src/cap14/mutex` — Ejemplos de sincronización de hilos mediante mutex, en POSIX Threads y en C++.
- * `src/cap14/semáforos` — Ejemplo de la implementación de un semáforo en C++ a partir de un mutex y una variable de condición.
- * `src/cap17/mapped-files.cpp` — Archivos mapeados en memoria con `mmap()`.
- * `src/cap19/file-copy.cpp` — Copia de archivos con `read()` y `write()`.
- * `src/cap19/file-attribs.cpp` — Leer y mostrar los atributos de archivo.
- * `src/cap19/filelock-server.c` — Ejemplo del uso de bloqueo de archivos.
- * `src/cap19/filelock-stop.cpp` — Programa de control del ejemplo del uso de bloqueo de archivos.
- * `src/cap19/dir-list.cpp` — Listar el contenido de un directorio.
- * `src/otros/yash.cpp` — Ejemplo muy básico del funcionamiento interno de una shell.
+ * `src/cap04/` — **4. Componentes del sistema**
+   * `led-test.cpp` — Acceso a la E/S serial en UNIX. Ejemplo del control de un LED tricolor conectado a un Arduino que a su vez está conectado al puerto serie del ordenador.
+ * `src/cap06/` — **6. Interfaz de programación de aplicaciones**
+   * `syscall.s` — Llamadas al sistema en el simulador en Linux para x86-64.
+   * `softstack.c` — Ejemplo básico en C para mostrar la pila de software con `strace` o `ltrace`.
+   * `softstack.cpp` — Ejemplo básico en C++ para mostrar la pila de software con `strace` o `ltrace`.
+ * `src/cap09/` — **9. Procesos**
+   * `fork.cpp` — Creación de procesos mediante `fork()`.
+   * `fork-exec.cpp` — Ejecutar otros programas mediante `fork()` y `exec()`.
+ * `src/cap11/` — **11. Comunicación mediante paso de mensajes**
+   * `mqueue/` — Ejemplo de comunicación entre procesos mediante colas de mensajes POSIX.
+   * `signals/` — Ejemplo básico de manejo de señales POSIX.
+   * `sockets/` — Ejemplo de comunicación entre procesos mediante _sockets_.
+   * `tuberías/` — Ejemplos de comunicación entre procesos mediante tuberías anónimas y con nombre, y de redirección de la E/S estándar.
+ * `src/cap12/` — **12. Memoria compartida**
+   * `anom-shared-memory.cpp` — Comunicación entre procesos padre e hijo mediante memoria compartida anónima.
+   * `shared-memory.cpp` — Ejemplo de comunicación entre procesos mediante memoria compartida.
+   * `shared-memory-control.cpp` — Programa de control del ejemplo de comunicación entre procesos mediante memoria compartida.
+ * `src/cap13/` — **13. Hilos**
+   * `jthreads-factorial.cpp` — Uso de hilos con `std::jthread` y cancelación coordinada en C++: Cálculo del factorial de un número.
+   * `pthreads.cpp` — Creación de hilos mediante POSIX Threads.
+   * `pthreads-factorial.cpp` — Uso de hilos mediante POSIX Threads: Cálculo del factorial de un número.
+   * `threads.cpp` — Creación de hilos con `std::thread` en C++.
+   * `threads-factorial.cpp` — Uso de hilos con `std::thread` en C++: Cálculo del factorial de un número.
+ * `src/cap14/` — **14. Sincronización**
+   * `mutex/` — Ejemplos de sincronización de hilos mediante mutex, en POSIX Threads y en C++.
+   * `semáforos/` — Ejemplo de la implementación de un semáforo en C++ a partir de un mutex y una variable de condición.
+ * `src/cap17/` — **17. Memoria virtual**
+   * `mapped-files.cpp` — Archivos mapeados en memoria con `mmap()`.
+ * `src/cap19/` — **19. Sistemas de archivos**
+   * `file-copy.cpp` — Copia de archivos con `read()` y `write()`.
+   * `file-attribs.cpp` — Leer y mostrar los atributos de archivo.
+   * `filelock-server.c` — Ejemplo del uso de bloqueo de archivos.
+   * `filelock-stop.cpp` — Programa de control del ejemplo del uso de bloqueo de archivos.
+   * `dir-list.cpp` — Listar el contenido de un directorio.
+ * `src/otros/` — **Otros ejemplos**
+   * `yash.cpp` — Ejemplo muy básico del funcionamiento interno de una shell.
 
 ## Requisitos de compilación
 
