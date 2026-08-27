@@ -19,7 +19,7 @@ int main()
     PROCESS_INFORMATION pi = {};
 
     // Crear proceso hijo y comprobar si no se creó con éxito.
-    BOOL success = CreateProcess(
+    BOOL bSuccess = CreateProcess(
         nullptr,
         lpCommandLine,
         nullptr,
@@ -31,7 +31,7 @@ int main()
         &si,
         &pi );
 
-    if ( ! success )
+    if ( ! bSuccess )
     {
         std::println( stderr, "Error ({}) al crear el proceso.", GetLastError() );
         return EXIT_FAILURE;
