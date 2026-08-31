@@ -11,11 +11,14 @@ Compararlos es la forma más rápida de ver qué trabajo hace por nosotros la li
 En [`threads.cpp`](threads.cpp) y [`pthreads.cpp`](pthreads.cpp) el hilo principal crea tres hilos, les pasa un identificador a cada uno y espera a que terminen.
 
 La diferencia está en cómo se le pasan los argumentos a la **función principal** del hilo.
-En C++ se indican con su tipo, detrás del nombre de la función, al construir el objeto [`std::thread`](https://en.cppreference.com/w/cpp/thread/thread):
+En C++ se indican con su tipo, detrás del nombre de la función, al construir el objeto [`std::jthread`](https://en.cppreference.com/w/cpp/thread/jthread):
 
 ```cpp
-std::thread thread1( thread_function, 1 );
+std::jthread thread1( thread_function, 1 );
 ```
+
+`std::jthread` es la clase de hilos que incorporó C++20 y la que conviene usar por defecto.
+La clase original de C++11 es [`std::thread`](https://en.cppreference.com/w/cpp/thread/thread), que se usa igual, pero cuyo destructor aborta el programa si antes no se ha llamado a `join()` o `detach()`.
 
 En POSIX Threads la función principal recibe y devuelve un `void*`, así que cuando hacen falta varios argumentos —o hace falta devolver algo— se agrupan en una estructura y se pasa su dirección:
 
@@ -54,10 +57,12 @@ pthread_join( thread1, reinterpret_cast<void**>(&thread1_result) );
 Como lo que se devuelve es un puntero, **no se puede devolver la dirección de una variable local** de la función principal, pues se destruye cuando el hilo termina y el puntero deja de ser válido.
 Por eso los ejemplos devuelven la dirección de un campo de la estructura de argumentos, que vive en `main()`.
 
-Cuando el resultado del hilo no interesa, por lo que no se piensa esperar por él, se lo marca como separado con [`pthread_detach()`](https://man7.org/linux/man-pages/man3/pthread_detach.3.html) o [`std::thread::detach()`](https://en.cppreference.com/w/cpp/thread/thread/detach), y entonces es el sistema quien los libera automáticamente.
+Cuando el resultado del hilo no interesa, por lo que no se piensa esperar por él, se lo marca como separado con [`pthread_detach()`](https://man7.org/linux/man-pages/man3/pthread_detach.3.html) o [`std::jthread::detach()`](https://en.cppreference.com/w/cpp/thread/jthread/detach), y entonces es el sistema quien los libera automáticamente.
 
 Es interesante comentar las llamadas a `join()` y volver a ejecutar los programas.
-La versión con POSIX Threads termina sin esperar y mata a los hilos a media ejecución, mientras que la versión en C++ aborta con `std::terminate()`, porque destruir un objeto `std::thread` que no ha sido ni unido ni separado es un error.
+La versión con POSIX Threads termina sin esperar y mata a los hilos a media ejecución.
+La versión en C++, en cambio, sigue funcionando igual, porque el destructor de `std::jthread` espera por su hilo.
+Con `std::thread` en su lugar, el programa abortaría con `std::terminate()`, porque destruir un objeto del que no se ha llamado a `join()` ni a `detach()` es un error.
 
 ## Repartir un cálculo entre varios hilos
 
@@ -69,7 +74,7 @@ El cálculo usa la clase `BigInt` de [`../../lib/BigInt`](../../lib/BigInt), par
 ## Cancelar hilos
 
 Cancelar un hilo es terminarlo antes de que acabe su trabajo.
-En [`jthreads-factorial.cpp`](jthreads-factorial.cpp) y [`pthreads-cancel-factorial.cpp`](pthreads-cancel-factorial.cpp) se calcula otra vez el factorial con dos hilos, pero el hilo principal los cancela si el cálculo tarda más de cinco segundos.
+En [`threads-cancel-factorial.cpp`](threads-cancel-factorial.cpp) y [`pthreads-cancel-factorial.cpp`](pthreads-cancel-factorial.cpp) se calcula otra vez el factorial con dos hilos, pero el hilo principal los cancela si el cálculo tarda más de cinco segundos.
 Prueba a introducir un número pequeño y otro muy grande, para ver los dos casos.
 
 Los dos ejemplos resuelven el mismo problema de formas muy distintas.
@@ -141,4 +146,4 @@ Así devuelve su resultado parcial como cualquier otro valor de retorno, se dest
 
 La otra diferencia está en el destructor.
 El de `std::jthread` pide la cancelación del hilo con [`request_stop()`](https://en.cppreference.com/w/cpp/thread/jthread/request_stop) y luego espera a que termine antes de destruirse.
-El de `std::thread`, en cambio, aborta el programa si no se ha llamado a `join()`, para esperar a que termine el hilo, o a `detach()`, para separarlo.
+Por eso en este ejemplo las llamadas a `request_stop()` y `join()` del hilo principal serían innecesarias si nos bastara con cancelar los hilos al salir de `main()`.

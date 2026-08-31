@@ -1,4 +1,4 @@
-// threads-factorial.cpp - Ejemplo de creación de threads en C++
+// threads-factorial.cpp - Ejemplo del uso de hilos en C++
 //
 // El programa calcula el factorial del número indicado por el usuario. Se utilizan dos hilos para paralelizar
 // los cálculos, aprovechando mejor las CPU con varios núcleos.
@@ -9,7 +9,7 @@
 //
 
 #include <print>
-#include <sstream>      // Requerido para la conversion de std::thread::id
+#include <sstream>      // Requerido para la conversion de std::jthread::id
 #include <thread>
 
 #include <common/bigint-factorial.hpp>
@@ -34,15 +34,13 @@ int main()
     
     BigInt thread1_result, thread2_result;
 
-    std::thread thread1(factorial_thread, std::ref(thread1_result), number, thread1_lower_bound);
+    std::jthread thread1(factorial_thread, std::ref(thread1_result), number, thread1_lower_bound);
     std::println( "[HILO PRINCIPAL] Hilo creado: {} (0x{:x})", thread1.get_id(), thread1.native_handle() );
 
-    std::thread thread2(factorial_thread, std::ref(thread2_result), thread2_number, 2);
+    std::jthread thread2(factorial_thread, std::ref(thread2_result), thread2_number, 2);
     std::println( "[HILO PRINCIPAL] Hilo creado: {} (0x{:x})", thread2.get_id(), thread2.native_handle() );
 
     // Esperar a que los hilos terminen antes de continuar.
-    // Si salimos de main() sin esperar, el proceso terminará y todos los hilos morirán inmediatamente,
-    // sin tener tiempo de terminar adecuadamente. 
     thread1.join();
     thread2.join(); 
 

@@ -32,12 +32,12 @@ Concretamente los ejemplos incluidos actualmente son:
    * `shared-memory.cpp` — Ejemplo de comunicación entre procesos mediante memoria compartida.
    * `shared-memory-control.cpp` — Programa de control del ejemplo de comunicación entre procesos mediante memoria compartida.
  * `src/cap13/` — **13. Hilos**
-   * `jthreads-factorial.cpp` — Uso de hilos con `std::jthread` y cancelación cooperativa en C++: Cálculo del factorial de un número.
    * `pthreads.cpp` — Creación de hilos mediante POSIX Threads.
    * `pthreads-cancel-factorial.cpp` — Cancelación de hilos mediante POSIX Threads: Cálculo del factorial de un número.
    * `pthreads-factorial.cpp` — Uso de hilos mediante POSIX Threads: Cálculo del factorial de un número.
-   * `threads.cpp` — Creación de hilos con `std::thread` en C++.
-   * `threads-factorial.cpp` — Uso de hilos con `std::thread` en C++: Cálculo del factorial de un número.
+   * `threads.cpp` — Creación de hilos con `std::jthread` en C++.
+   * `threads-cancel-factorial.cpp` — Cancelación cooperativa de hilos con `std::jthread` en C++: Cálculo del factorial de un número.
+   * `threads-factorial.cpp` — Uso de hilos con `std::jthread` en C++: Cálculo del factorial de un número.
  * `src/cap14/` — **14. Sincronización**
    * `mutex/` — Ejemplos de sincronización de hilos mediante mutex, en POSIX Threads y en C++.
    * `semáforos/` — Ejemplo de la implementación de un semáforo en C++ a partir de un mutex y una variable de condición.

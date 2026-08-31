@@ -1,16 +1,16 @@
-// threads-factorial.cpp - Ejemplo de creación de threads en C++
+// threads-cancel-factorial.cpp - Ejemplo de cancelación cooperativa de hilos en C++
 //
 // El programa calcula el factorial del número indicado por el usuario. Se utilizan dos hilos para paralelizar
 // los cálculos, aprovechando mejor las CPU con varios núcleos.
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -o threads-factorial threads-factorial.cpp
+//      g++ -I../ -I../../lib -o threads-cancel-factorial threads-cancel-factorial.cpp
 //
 
 #include <chrono>
 #include <print>
-#include <sstream>      // Requerido para la conversion de std::thread::id
+#include <sstream>      // Requerido para la conversion de std::jthread::id
 #include <thread>
 
 #include <common/bigint-factorial.hpp>

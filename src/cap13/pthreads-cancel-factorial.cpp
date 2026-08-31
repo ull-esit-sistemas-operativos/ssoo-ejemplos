@@ -3,7 +3,7 @@
 // El programa calcula el factorial del número indicado por el usuario, repartiendo el trabajo entre dos hilos.
 // Si el cálculo tarda más de TIMEOUT, el hilo principal cancela ambos hilos y termina.
 //
-// Es la versión con POSIX Threads de jthreads-factorial.cpp, que hace lo mismo con std::jthread y un token de
+// Es la versión con POSIX Threads de threads-cancel-factorial.cpp, que hace lo mismo con std::jthread y un token de
 // cancelación.
 //
 //  Compilar:

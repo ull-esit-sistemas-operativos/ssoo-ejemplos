@@ -1,4 +1,4 @@
-// threads.cpp - Ejemplo de creación de threads en C++
+// threads.cpp - Ejemplo de creación de hilos en C++
 //
 //  Compilar:
 //
@@ -6,7 +6,7 @@
 //
 
 #include <print>
-#include <sstream>      // Requerido para la conversion de std::thread::id
+#include <sstream>      // Requerido para la conversion de std::jthread::id
 #include <thread>
 
 void thread_function(int thread_id)
@@ -24,9 +24,9 @@ void thread_function(int thread_id)
 int main()
 {
     // Crear 3 hilos dentro del proceso
-    std::thread thread1( thread_function, 1 );
-    std::thread thread2( thread_function, 2 );
-    std::thread thread3( thread_function, 3 );
+    std::jthread thread1( thread_function, 1 );
+    std::jthread thread2( thread_function, 2 );
+    std::jthread thread3( thread_function, 3 );
 
     std::println( "[Main] Todos los hilos creados" );
 
@@ -38,8 +38,6 @@ int main()
         thread3.get_id(), thread3.native_handle() );
 
     // Esperar a que los hilos terminen antes de continuar.
-    // Si salimos de main() sin esperar, el proceso terminará y todos los hilos morirán inmediatamente,
-    // sin tener tiempo de terminar adecuadamente. 
     thread1.join();
     thread2.join();
     thread3.join(); 

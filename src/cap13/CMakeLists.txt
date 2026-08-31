@@ -1,6 +1,6 @@
-add_executable(jthreads-factorial jthreads-factorial.cpp)
 add_executable(threads threads.cpp)
 add_executable(threads-factorial threads-factorial.cpp)
+add_executable(threads-cancel-factorial threads-cancel-factorial.cpp)
 
 if(CMAKE_USE_PTHREADS_INIT)
     add_executable(pthreads pthreads.cpp)
