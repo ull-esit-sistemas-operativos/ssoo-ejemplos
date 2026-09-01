@@ -35,7 +35,7 @@ void echo(const std::vector<std::string>& words)
     for (auto it = words.begin() + 1; it != words.end(); ++it) {
         std::print( "{} ", *it);
     }
-    std::print("\n");
+    std::println();
 }
 
 void run(const std::vector<std::string>& words)
