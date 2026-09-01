@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/cpp:1-ubuntu-24.04
+FROM mcr.microsoft.com/devcontainers/cpp:3-ubuntu24.04
 
 ARG REINSTALL_CMAKE_VERSION_FROM_SOURCE="none"
 
@@ -14,11 +14,12 @@ RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
 # RUN su vscode -c "${VCPKG_ROOT}/vcpkg install <your-port-name-here>"
 
 # [Optional] Uncomment this section to install additional packages.
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends \
-        g++-14 \
-        ltrace
+RUN apt update && export DEBIAN_FRONTEND=noninteractive \
+    && apt -y install software-properties-common \
+    && add-apt-repository ppa:ubuntu-toolchain-r/test \
+    && apt -y install --no-install-recommends \
+        g++-15 strace ltrace htop memstat iotop sysstat procps lsof net-tools netcat-openbsd
 
-# Setup GCC/G++ 14 as default
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100 \
-    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
+# Setup GCC/G++ 15 as default
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 100 \
+    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-15 100
