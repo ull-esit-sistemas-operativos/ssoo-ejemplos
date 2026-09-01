@@ -18,7 +18,7 @@ RUN apt update && export DEBIAN_FRONTEND=noninteractive \
     && apt -y install software-properties-common \
     && add-apt-repository ppa:ubuntu-toolchain-r/test \
     && apt -y install --no-install-recommends \
-        g++-15 strace ltrace htop memstat iotop sysstat procps lsof net-tools netcat-openbsd
+        g++-15 strace ltrace
 
 # Setup GCC/G++ 15 as default
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 100 \
