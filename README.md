@@ -46,8 +46,8 @@ Concretamente los ejemplos incluidos actualmente son:
  * `src/cap19/` — **19. Sistemas de archivos**
    * `file-copy.cpp` — Copia de archivos con `read()` y `write()`.
    * `file-attribs.cpp` — Leer y mostrar los atributos de archivo.
-   * `filelock-server.c` — Ejemplo del uso de bloqueo de archivos.
-   * `filelock-stop.cpp` — Programa de control del ejemplo del uso de bloqueo de archivos.
+   * `filelock.cpp` — Ejemplo del uso de bloqueo de archivos.
+   * `filelock-control.cpp` — Programa de control del ejemplo del uso de bloqueo de archivos.
    * `dir-list.cpp` — Listar el contenido de un directorio.
  * `src/otros/` — **Otros ejemplos**
    * `yash.cpp` — Ejemplo muy básico del funcionamiento interno de una shell.

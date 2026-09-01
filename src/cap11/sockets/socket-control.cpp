@@ -1,4 +1,4 @@
-// socket-client.cpp - Programa de control del ejemplo del uso de sockets para comunicar procesos
+// socket-control.cpp - Programa de control del ejemplo del uso de sockets para comunicar procesos
 //
 //  El programa de ejemplo utiliza alarm() y las señales del sistema para mostrar periódicamente la hora. Además,
 //  escucha en un socket de dominio UNIX al que puede mandar órdenes el programa de control.

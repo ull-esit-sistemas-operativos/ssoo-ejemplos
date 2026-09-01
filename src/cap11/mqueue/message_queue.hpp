@@ -14,6 +14,8 @@
 
 namespace examples
 {
+    // Clase RAII para colas de mensajes POSIX. Si se abre con 'server_mode', el objeto es responsable de crear la
+    // cola y de borrarla al destruirse; en otro caso solo la abre y la cierra, sin borrarla.
     class message_queue
     {
     public:

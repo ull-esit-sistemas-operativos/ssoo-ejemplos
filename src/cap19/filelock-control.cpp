@@ -1,4 +1,4 @@
-// filelock-stop.cpp - Programa de control del ejemplo del uso de bloqueos de archivos
+// filelock-control.cpp - Programa de control del ejemplo del uso de bloqueos de archivos
 //
 //  El programa servidor utiliza alarm() y las señales del sistema para mostrar periódicamente la hora. Además,
 //  crea un archivo con el PID del proceso. Este archivo es bloqueado durante su creación para que solo un servidor
@@ -11,18 +11,20 @@
 //  servicio dentro de /var/run. Allí colocan un archivo '.pid' con el PID del proceso, así como otros recursos
 //  necesarios para la comunicación con el servicio, como sockets de dominio UNIX o FIFO.
 //  El archivo '.pid' permite a los clientes saber si el servicio está en ejecución y mandarle señales para detenerlo
-//  o reiniciarlo. 
+//  o reiniciarlo.
 //
 //  Compilar:
 //
-//      g++ -o filelock-stop filelock-stop.cpp
+//      g++ -o filelock-control filelock-control.cpp
 //
 
+#include <array>
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo <stdlib.h> como
+#include <charconv>
 #include <cstring>      // <cstdlib>. La primera es para usar con C, mientras que la segunda es la recomendada en C++
                         // pues mete las funciones en el espacio de nombres 'std', como el resto de la
                         // librería estándar de C++.
-#include <fstream>      
+#include <fstream>
 #include <print>
 #include <string>
 #include <system_error>
@@ -30,9 +32,7 @@
 #include <unistd.h>
 #include <signal.h>
 
-using namespace std::literals;
-
-const std::string PID_FILENAME = "filelock-server.pid"s;
+#include "filelock-common.hpp"
 
 int main()
 {

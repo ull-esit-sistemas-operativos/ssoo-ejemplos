@@ -1,4 +1,4 @@
-// fifo-server.h - Cabecera común del ejemplo del uso de tuberías con nombre para comunicar procesos
+// fifo-common.hpp - Cabecera común del ejemplo del uso de tuberías con nombre para comunicar procesos
 //
 
 #pragma once

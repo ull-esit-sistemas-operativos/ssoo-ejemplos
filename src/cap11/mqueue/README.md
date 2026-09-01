@@ -7,8 +7,8 @@ Cada cola de mensajes se identifica con un nombre, similar al de una tubería co
 En [`message_queue.hpp`](message_queue.hpp) se puede ver un ejemplo de una clase desarrollada en C++ para utilizar colas de mensajes POSIX.
 En los distintos métodos se puede ver cómo se utilizan las funciones de la librería del sistema —[`mq_open()`](https://man7.org/linux/man-pages/man3/mq_open.3.html), [`mq_send()`](https://man7.org/linux/man-pages/man3/mq_send.3.html), [`mq_receive()`](https://man7.org/linux/man-pages/man3/mq_receive.3.html), [`mq_close()`](https://man7.org/linux/man-pages/man3/mq_close.3.html) y [`mq_unlink()`](https://man7.org/linux/man-pages/man3/mq_unlink.3.html)— para crear la cola y enviar y recibir mensajes.
 
-En [`mqueue-server.cpp`](mqueue-server.cpp) y [`mqueue-client.cpp`](mqueue-client.cpp) se ilustra cómo se utiliza la clase en [`message_queue.hpp`](message_queue.hpp).
+En [`mqueue.cpp`](mqueue.cpp) y [`mqueue-control.cpp`](mqueue-control.cpp) se ilustra cómo se utiliza la clase en [`message_queue.hpp`](message_queue.hpp).
 El primero es un programa que muestra la hora del sistema periódicamente, mientras que el segundo se puede comunicar con el primero a través de una cola de mensajes para controlarlo.
 
-El ejemplo es muy sencillo, así que, por el momento, lo único que puede hacer [`mqueue-client.cpp`](mqueue-client.cpp) es pedirle a [`mqueue-server.cpp`](mqueue-server.cpp) que termine y para eso utiliza una cola de mensajes.
-No costaría nada añadir otras órdenes, como pedir que cambie la hora del sistema o la periodicidad con la que la que `mqueue-server.cpp` muestra la hora.
+El ejemplo es muy sencillo, así que, por el momento, lo único que puede hacer [`mqueue-control.cpp`](mqueue-control.cpp) es pedirle a [`mqueue.cpp`](mqueue.cpp) que termine y para eso utiliza una cola de mensajes.
+No costaría nada añadir otras órdenes, como pedir que cambie la hora del sistema o la periodicidad con la que la que `mqueue.cpp` muestra la hora.

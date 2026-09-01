@@ -1,11 +1,11 @@
-// mqueue-server.cpp - Servidor del ejemplo del uso de colas de mensajes para comunicar procesos
+// mqueue.cpp - Servidor del ejemplo del uso de colas de mensajes para comunicar procesos
 //
 //  El programa servidor utiliza alarm() y las señales del sistema para mostrar periódicamente la hora. Además, crea
 //  una cola de mensajes a la que puede mandar órdenes el cliente.
 //
 //  Compilar:
 //
-//      g++ -lrt -o mqueue-server mqueue-server.cpp ../../common/timeserver.cpp
+//      g++ -lrt -o mqueue mqueue.cpp ../../common/timeserver.cpp
 //
 
 #include <print>
@@ -13,7 +13,7 @@
 #include <system_error>
 
 #include "common/timeserver.hpp"
-#include "mqueue-server.hpp"
+#include "mqueue-common.hpp"
 
 // Como no hay funciones para usar los colas de mensajes en C++, tenemos que usar directamente la librería del sistema.
 // Abstrayendo su uso detrás de clases, simplificamos el resto del código del programa, facilitamos el manejo de
