@@ -1,0 +1,4 @@
+{
+    "C_Cpp.default.cppStandard": "c++23",
+    "C_Cpp.default.compilerArgs": ["-std=c++23"]
+}
