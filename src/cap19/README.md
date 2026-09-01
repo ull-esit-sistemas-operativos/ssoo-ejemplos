@@ -236,6 +236,12 @@ Además, crea un archivo con el PID del proceso.
 Este archivo es bloqueado durante su creación para que solo un proceso pueda escribir su PID en él.
 Esto permite a otros procesos del mismo programa detectar si el archivo ya existe y terminar inmediatamente, asegurando que solo hay un proceso de ese mismo programa ejecutándose a la vez.
 
+El bloqueo se consigue con la función [`lockf()`](https://manpages.debian.org/stretch/manpages-es/lockf.3.es.html), que bloquea la región del archivo que va desde la posición actual del descriptor hasta el final.
+Como leer y escribir el PID mueve esa posición, antes de liberar el bloqueo hay que devolverla al principio del archivo con [`lseek()`](https://manpages.debian.org/stretch/manpages-es/lseek.2.es.html); de lo contrario se liberaría una región distinta de la que se bloqueó.
+Si el proceso que dejó su PID en el archivo ya no existe, se usa [`ftruncate()`](https://manpages.debian.org/stretch/manpages-es/ftruncate.2.es.html) para vaciar el archivo antes de escribir en él el nuevo PID.
+Para saber si el proceso dueño de un PID sigue en ejecución se comprueba con [`access()`](https://manpages.debian.org/stretch/manpages-es/access.2.es.html) si existe su entrada correspondiente en `/proc`.
+Por último, [`unlink()`](https://manpages.debian.org/stretch/manpages-es/unlink.2.es.html) se encarga de borrar el archivo con el PID cuando el proceso termina.
+
 A diferencia de los otros ejemplos de comunicación entre procesos de este capítulo, el programa de control no dispone de un canal propio para comunicarse con el servidor, sino que le envía la señal `SIGTERM`.
 Por eso [filelock.cpp](filelock.cpp) espera esta señal --y `SIGALRM`-- con `sigwait()` en el hilo principal, en lugar de usar un manejador de señales asíncrono como en el resto de los ejemplos.
 
