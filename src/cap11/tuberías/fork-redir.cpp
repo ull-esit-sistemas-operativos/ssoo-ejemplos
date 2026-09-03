@@ -120,7 +120,7 @@ int protected_main()
         }
 
         // Contar el número de líneas de la salida del comando
-        int num_of_lines = std::count_if( stdout_buffer.begin(), stdout_buffer.end(),
+        auto num_of_lines = std::count_if( stdout_buffer.begin(), stdout_buffer.end(),
             [](char c) { return c == '\n'; } );
 
         std::println( "La salida de 'ls' tiene {} líneas", num_of_lines );

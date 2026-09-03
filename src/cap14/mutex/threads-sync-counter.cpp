@@ -36,7 +36,7 @@ void increment_counter (increment_counter_thread_args& args)
 
 int main()
 {
-    increment_counter_thread_args thread_args = { .counter = 0 };
+    increment_counter_thread_args thread_args = { .counter = 0, .mutex = {} };
 
     // Crear algunos hilos independientes cada uno de los cuales ejecutará increment_counter()    
     std::thread thread1(increment_counter, std::ref(thread_args));

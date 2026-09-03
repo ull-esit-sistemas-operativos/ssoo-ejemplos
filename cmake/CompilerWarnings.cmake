@@ -2,7 +2,7 @@
 # https://github.com/cpp-best-practices/cmake_template/blob/main/cmake/CompilerWarnings.cmake
 
 if(MSVC)
-    set(PROJECT_WARNINGS
+    set(PROJECT_WARNINGS_COMMON
         /W4 # Baseline reasonable warnings
         /w14242 # 'identifier': conversion from 'type1' to 'type2', possible loss of data
         /w14254 # 'operator': conversion from 'type1:field_bits' to 'type2:field_bits', possible loss of data
@@ -25,36 +25,37 @@ if(MSVC)
         /w14905 # wide string literal cast to 'LPSTR'
         /w14906 # string literal cast to 'LPWSTR'
         /w14928 # illegal copy-initialization; more than one user-defined conversion has been implicitly applied
+    )
+    set(PROJECT_WARNINGS_CXX_ONLY
         /permissive- # standards conformance mode for MSVC compiler.
     )
 elseif(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
-    set(PROJECT_WARNINGS
+    set(PROJECT_WARNINGS_COMMON
         -Wall
         -Wextra # reasonable and standard
         -Wshadow # warn the user if a variable declaration shadows one from a parent context
-        -Wnon-virtual-dtor # warn the user if a class with virtual functions has a non-virtual destructor. This helps
-        # catch hard to track down memory errors
-        -Wold-style-cast # warn for c-style casts
         -Wcast-align # warn for potential performance problem casts
         -Wunused # warn on anything being unused
-        -Woverloaded-virtual # warn if you overload (not override) a virtual function
-        -Wpedantic # warn if non-standard C++ is used
+        -Wpedantic # warn if non-standard C/C++ is used
         -Wconversion # warn on type conversions that may lose data
         -Wnull-dereference # warn if a null dereference is detected
         -Wdouble-promotion # warn if float is implicit promoted to double
         -Wformat=2 # warn on security issues around functions that format output (ie printf)
         -Wimplicit-fallthrough # warn on statements that fallthrough without an explicit annotation
     )
+    set(PROJECT_WARNINGS_CXX_ONLY
+        -Wnon-virtual-dtor # warn the user if a class with virtual functions has a non-virtual destructor. This helps
+        # catch hard to track down memory errors
+        -Wold-style-cast # warn for c-style casts
+        -Woverloaded-virtual # warn if you overload (not override) a virtual function
+    )
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(PROJECT_WARNINGS
+    set(PROJECT_WARNINGS_COMMON
         -Wall
         -Wextra
         -Wshadow
-        -Wnon-virtual-dtor
-        -Wold-style-cast
         -Wcast-align
         -Wunused
-        -Woverloaded-virtual
         -Wpedantic
         -Wconversion
         -Wnull-dereference
@@ -65,6 +66,11 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         -Wduplicated-cond # warn if if / else chain has duplicated conditions
         -Wduplicated-branches # warn if if / else branches have duplicated code
         -Wlogical-op # warn about logical operations being used where bitwise were probably wanted
+    )
+    set(PROJECT_WARNINGS_CXX_ONLY
+        -Wnon-virtual-dtor
+        -Wold-style-cast
+        -Woverloaded-virtual
         -Wuseless-cast # warn if you perform a cast to the same type
         -Wsuggest-override # warn if an overridden member function is not marked 'override' or 'final'
     )
@@ -72,7 +78,10 @@ else()
     message(AUTHOR_WARNING "No se han definido avisos del compilador para: ${CMAKE_CXX_COMPILER_ID}")
 endif()
 
-add_compile_options(${PROJECT_WARNINGS})
+add_compile_options(
+    ${PROJECT_WARNINGS_COMMON}
+    "$<$<COMPILE_LANGUAGE:CXX>:${PROJECT_WARNINGS_CXX_ONLY}>"
+)
 
 if(NOT MSVC)
     add_compile_options(-fmessage-length=0)

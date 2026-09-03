@@ -11,7 +11,7 @@
 
 const int ALARM_DEFAULT_TIME = 5 /* seg. */; 
 
-void alarm_signal_handler(int signum)
+void alarm_signal_handler([[maybe_unused]] int signum)
 {
     time_t current_time = time( NULL );
     

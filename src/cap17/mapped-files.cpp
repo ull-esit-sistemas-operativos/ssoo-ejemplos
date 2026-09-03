@@ -38,7 +38,7 @@ int protected_main(int argc, char* argv[])
     // Obtener el tamaño del archivo.
     // La función lseek() sirve para mover el puntero de lectura/escritura de un archivo y retorna la posición
     // a la que se ha movido. Si se mueve al final del archivo, se obtiene el tamaño del archivo.
-    int file_size = lseek( fd, 0, SEEK_END );
+    off_t file_size = lseek( fd, 0, SEEK_END );
 
     // Mapear `length` bytes del archivo desde el byte 0 en la memoria del proceso, solo para lectura.
     // Como `length` es el tamaño del archivo, se mapea todo el archivo.

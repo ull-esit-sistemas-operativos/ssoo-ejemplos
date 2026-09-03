@@ -45,7 +45,7 @@ void setupSerial(int fd, termios &oldtio)
     tcsetattr( fd, TCSANOW, &newtio );
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     int fd = open( DEVICE_PATH, O_RDWR | O_NOCTTY );
     if (fd < 0) {

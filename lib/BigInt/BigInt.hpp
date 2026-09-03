@@ -1147,9 +1147,9 @@ BigInt BigInt::operator+(const BigInt& num) const {
     short carry = 0, sum;
     // add the two values
     for (long i = static_cast<long>(larger.size()) - 1; i >= 0; i--) {
-        sum = larger[i] - '0' + smaller[i] - '0' + carry;
+        sum = static_cast<short>(larger[i] - '0' + smaller[i] - '0' + carry);
         result.value = std::to_string(sum % 10) + result.value;
-        carry = sum / (short) 10;
+        carry = static_cast<short>(sum / 10);
     }
     if (carry)
         result.value = std::to_string(carry) + result.value;
@@ -1265,7 +1265,7 @@ BigInt BigInt::operator*(const BigInt& num) const {
         std::tie(larger, smaller) = get_larger_and_smaller(this->value, num.value);
 
         size_t half_length = larger.size() / 2;
-        auto half_length_ceil = (size_t) ceil(larger.size() / 2.0);
+        auto half_length_ceil = static_cast<size_t>(ceil(static_cast<double>(larger.size()) / 2.0));
 
         BigInt num1_high, num1_low;
         num1_high = larger.substr(0, half_length);

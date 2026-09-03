@@ -41,9 +41,9 @@ int main()
     int return_code = 0;
     pthread_t thread1, thread2, thread3;
 
-    thread_args thread1_args { .id = 1 };
-    thread_args thread2_args { .id = 2 };
-    thread_args thread3_args { .id = 3 };
+    thread_args thread1_args { .id = 1, .result = 0 };
+    thread_args thread2_args { .id = 2, .result = 0 };
+    thread_args thread3_args { .id = 3, .result = 0 };
  
     // Crear 3 hilos dentro del proceso
     return_code = pthread_create( &thread1, nullptr, thread_function, &thread1_args );

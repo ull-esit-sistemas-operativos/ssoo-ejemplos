@@ -38,7 +38,17 @@ void term_signal_handler(int signum)
 
 void segv_signal_handler(int signum)
 {
-    const char* message = "¡Algo ha ido mal! Señal SIGSEGV recibida.\n";
+    const char* message;
+
+    if (signum == SIGSEGV)
+    {
+        message = "¡Algo ha ido mal! Señal SIGSEGV recibida.\n";
+    }
+    else
+    {
+        message = "Señal desconocida recibida.\n";
+    }
+
     write( STDOUT_FILENO, message, std::strlen(message) );
 
     // No podemos ignorar el problema, ya que si salimos de aquí sin hacer nada, se reintentará la instrucción
