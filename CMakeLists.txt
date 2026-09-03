@@ -17,12 +17,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include(CheckPIESupported)
 check_pie_supported()
 
-# Opciones de nivel de aviso del compilador
-if(MSVC)
-    add_compile_options(/W4 /permissive-)
-else()
-    add_compile_options(-Wall -fmessage-length=0)
-endif()
+# Opciones de nivel de aviso del compilador y sanitizadores en tiempo de ejecución
+include(cmake/CompilerWarnings.cmake)
+include(cmake/Sanitizers.cmake)
 
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 find_package(Threads REQUIRED)
