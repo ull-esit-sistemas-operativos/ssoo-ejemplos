@@ -41,7 +41,8 @@ int main()
 
         int status = 42;
         std::println( "[HIJO] Salgo con {} ¡Adiós!", status );
-        return status;
+
+        _exit( status );
     }
     else
     {

@@ -10,7 +10,8 @@ En [`signals.cpp`](signals.cpp) se puede ver un programa de ejemplo que muestra 
 - Instala un manejador para `SIGTERM`, `SIGINT` y `SIGHUP` que se limita a imprimir qué señal ha llegado.
   Se usa `SA_RESTART` porque el programa está esperando la pulsación de una tecla con `getc()` y no interesa que deje de esperar cuando llega una de estas señales.
 
-- Instala otro manejador para `SIGSEGV` que imprime un mensaje y termina el programa de forma ordenada con `exit()`, en vez de dejar que ocurra la terminación abrupta por defecto.
+- Instala otro manejador para `SIGSEGV` que imprime un mensaje y termina el programa con `_exit()`, en vez de dejar que ocurra la terminación abrupta por defecto.
+  Se usa `_exit()` y no `exit()` porque esta última no es una función segura en señales.
 
 - Tras pulsar una tecla, provoca deliberadamente una violación de segmento escribiendo a través de un puntero nulo, para que se pueda ver en acción el manejador de `SIGSEGV`.
 

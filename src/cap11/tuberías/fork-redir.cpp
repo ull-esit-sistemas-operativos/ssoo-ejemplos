@@ -87,7 +87,8 @@ int protected_main()
         execl( "/bin/ls", "ls", "-l", NULL );
         
         std::println( stderr, "[HIJO] Error ({}) al ejecutar el programa: {}", errno, std::strerror(errno) );
-        return EXIT_FAILURE;
+
+        _exit( EXIT_FAILURE );
     }
     else if (child > 0)
     {   

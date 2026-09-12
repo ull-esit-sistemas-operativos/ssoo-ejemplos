@@ -22,7 +22,7 @@ else
 }
 ```
 
-El archivo [fork.c](fork.c) contiene un ejemplo del uso de `fork()`. 
+El archivo [fork.cpp](fork.cpp) contiene un ejemplo del uso de `fork()`. 
 
 ## Uso de exec()
 
@@ -47,7 +47,7 @@ else
 }
 ```
 
-El archivo [fork-exec.c](fork-exec.c) contiene un ejemplo del uso de `fork()` y `exec()` para ejecutar otro proceso con otro programa.
+El archivo [fork-exec.cpp](fork-exec.cpp) contiene un ejemplo del uso de `fork()` y `exec()` para ejecutar otro proceso con otro programa.
 
 ### Variantes de exec()
 
@@ -96,8 +96,6 @@ Existen distintas variantes de la función `exec()` que permiten pasar argumento
     execvp("ls", args);
     ```
 
-En el mismo sentido, también existen las funciones `execvpe()` y `execlpe()` que permiten pasar variables de entorno, al tiempo que permiten buscar el programa en el `PATH` del sistema.
-
 En todos los casos, el último argumento debe ser `nullptr`, que indica el final de la lista de argumentos.
 
 ## Terminación del programa
@@ -112,6 +110,28 @@ if (alguna_condicion_de_error) {
 ```
 
 Como veremos a continuación, el valor pasado a `exit()` o `return` se puede leer en el proceso padre al esperar a que termine el proceso hijo.
+
+### Terminación de un proceso hijo
+
+Lo anterior es cierto para terminar un programa, pero no para el proceso hijo creado con `fork()`, que no está terminando un programa sino descartando una copia del programa del proceso padre.
+Ese hijo debe salir siempre con [`_exit()`](https://manpages.debian.org/stretch/manpages-es/_exit.2.es.html) —o con `std::_Exit()`, su equivalente en C++—, nunca con `return` ni con `exit()`.
+
+Esto solo es un problema mientras el hijo ejecuta el mismo programa que el padre.
+Si carga otro programa con `exec()`, en cuanto la llamada tiene éxito la imagen del proceso se sustituye entera y el problema desaparece.
+Pero sigue siendo importante tenerlo en cuenta en el código que va desde el `fork()` hasta el `exec()`, y también si esta última falla.
+
+El motivo es que `exit()` ejecuta antes las operaciones de cierre del programa: las funciones registradas con `atexit()`, los destructores de los objetos globales y el vaciado de los búferes de entrada y salida.
+El hijo tiene una copia de todo ese estado, pero los efectos de esas operaciones salen del proceso, porque actúan sobre recursos que comparte con el padre.
+Por ejemplo, el hijo hereda una copia de lo que el padre tuviera pendiente de escribir en la salida estándar y, al vaciarla, esos mensajes aparecen por duplicado.
+
+```cpp
+pid_t pid = fork();
+if (pid == 0)
+{
+    // En el proceso hijo
+    _exit(42);      // Nunca return ni exit()
+}
+```
 
 ## Uso de wait() y waitpid()
 
@@ -167,7 +187,7 @@ pid_t pid = fork();
 if (pid == 0)
 {
     // Hacemos terminar el proceso hijo con el código de salida 42.
-    std::exit(42);
+    _exit(42);
 }
 else
 {
@@ -193,7 +213,7 @@ if (pid == 0)
     execl("/bin/ls", "ls", "-l", "/etc", nullptr);
 
     // Si llegamos aquí, hubo un error al ejecutar exec.
-    std::exit(128);
+    _exit(127);
 }
 else
 {
@@ -211,4 +231,5 @@ else
 En el ejemplo anterior, si el comando `ls` se puede ejecutar, el valor de `child_exit_status` será el código de salida del comando `ls`.
 Por lo general, el código de salida será 0 si el comando se ejecutó correctamente y otro valor si hubo algún error.
 
-Pero si `execl()` falla, el valor de `child_exit_status` será 128, que es el valor que se pasa a `exit()` en caso de error.
+Pero si `execl()` falla, el valor de `child_exit_status` será 127, que es el valor que se pasa a `_exit()` en caso de error.
+Se usa 127 por seguir la convención de la _shell_, que usa este valor para informar de que no encontró el comando, y así no se confunde con los códigos de salida que puede devolver el programa ejecutado.

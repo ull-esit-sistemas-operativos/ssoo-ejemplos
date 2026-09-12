@@ -36,7 +36,8 @@ int main()
         {
             std::println( stderr, "[HIJO] Error ({}) al ejecutar el programa: {}", errno, std::strerror(errno) );
         }
-        return 127;
+
+        _exit( 127 );
     }
     else
     {

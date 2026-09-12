@@ -56,8 +56,8 @@ void segv_signal_handler(int signum)
     //
     // Esta señal nos da la oportunidad de realizar tareas críticas antes de terminar.
 
-    // RECUERDA: No es buena idea terminar así un programa en C++, pero esto es solo un ejemplo.
-    std::exit(1);
+    // RECUERDA: No es buena idea terminar así un programa en C++.
+    _exit(1);
 }
 
 int main()

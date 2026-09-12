@@ -74,7 +74,7 @@ int main()
         // de cómo sería. 
         munmap( memory_region, sizeof(memory_content) );
 
-        return EXIT_SUCCESS;
+        _exit( EXIT_SUCCESS );
     }
     else if (child > 0)
     {

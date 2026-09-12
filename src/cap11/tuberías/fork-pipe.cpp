@@ -55,13 +55,13 @@ int main()
             std::println( stderr, "Error ({}) al escribir en la tubería: {}", errno, strerror(errno) );
             
             close( fds[1] );
-            return EXIT_FAILURE;
+            _exit( EXIT_FAILURE );
         }
 
         // Al terminar el proceso todos los recursos se liberan y la entrada de tubería del hijo se cierra. Si ese
         // es el último descriptor abierto de la entrada a la tubería, el padre recibirá un fin de archivo (EOF)
         // cuando no quede nada más por leer.
-        return EXIT_SUCCESS;
+        _exit( EXIT_SUCCESS );
     }
     else if (child > 0)
     {

@@ -56,7 +56,7 @@ void run(const std::vector<std::string>& words)
         int result = execvp(words[0].c_str(), argv);
         if (result < 0) {
             std::println(stderr, "No se pudo ejecutar el comando: {}", std::strerror(errno));
-            exit(0);                                    // terminar el proceso para no tener dos shell
+            _exit(127);                                 // terminar el proceso para no tener dos shell
         }
     }
     else if (pid > 0) {
