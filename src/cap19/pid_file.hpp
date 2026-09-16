@@ -144,7 +144,10 @@ namespace examples
         {
             std::string pid_string = std::to_string( pid );
 
-            if ( ftruncate( fd_, 0 ) < 0 || write( fd_, pid_string.data(), pid_string.size() ) < 0 )
+            // ftruncate() cambia el tamaño del archivo pero no mueve la posición del descriptor, que read_pid()
+            // ha dejado tras el PID que leyera. Hay que volver al principio antes de escribir.
+            if ( ftruncate( fd_, 0 ) < 0 || lseek( fd_, 0, SEEK_SET ) < 0 ||
+                 write( fd_, pid_string.data(), pid_string.size() ) < 0 )
             {
                 throw std::system_error( errno, std::system_category(), "Fallo al escribir el PID" );
             }

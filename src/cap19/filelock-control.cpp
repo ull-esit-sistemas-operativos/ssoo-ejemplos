@@ -58,12 +58,23 @@ int main()
     std::array<char, 20> buffer;
     pidfile_stream.read( buffer.data(), sizeof(buffer) );
     
-    // Convertir el PID lido como cadena en un número
-    pid_t server_pid;
-    std::from_chars(buffer.data(), buffer.data() + pidfile_stream.gcount(), server_pid);
+    // Convertir el PID leído como cadena en un número.
+    pid_t server_pid = 0;
+    auto [ptr, ec] = std::from_chars( buffer.data(), buffer.data() + pidfile_stream.gcount(), server_pid );
+
+    if (ec != std::errc{} || server_pid <= 0)
+    {
+        std::println( stderr, "Error: '{}' no contiene un PID válido.", PID_FILENAME );
+        return EXIT_FAILURE;
+    }
 
     std::println( "Cerrando el servidor..." );
-    kill( server_pid, SIGTERM );
+
+    if ( kill( server_pid, SIGTERM ) < 0 )
+    {
+        std::println( stderr, "Error: No se pudo enviar la señal al proceso {}: {}", server_pid, strerror(errno) );
+        return EXIT_FAILURE;
+    }
 
     std::println( "¡Adiós!" );
 
