@@ -1,6 +1,6 @@
 // file-attribs.cpp - Ejemplo de acceso a los atributos de un archivo
 //
-// El programa muestra los atributos de un archivo indicado por el usuario a través de la línea de comandos.
+//  El programa muestra los atributos de un archivo indicado por el usuario a través de la línea de comandos.
 //
 //  Compilar:
 //

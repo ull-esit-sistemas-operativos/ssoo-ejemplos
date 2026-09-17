@@ -66,9 +66,11 @@ Concretamente los ejemplos incluidos actualmente son:
    * `posix/file-copy.cpp` — Copia de archivos con `read()` y `write()`.
    * `win32/file-copy.cpp` — Copia de archivos en Windows con `ReadFile()` y `WriteFile()`.
    * `posix/file-attribs.cpp` — Leer y mostrar los atributos de archivo.
+   * `win32/file-attribs.cpp` — Leer y mostrar los atributos de archivo en Windows con `GetFileInformationByHandle()`.
    * `posix/filelock.cpp` — Ejemplo del uso de bloqueo de archivos.
    * `posix/filelock-control.cpp` — Programa de control del ejemplo del uso de bloqueo de archivos.
    * `posix/dir-list.cpp` — Listar el contenido de un directorio.
+   * `win32/dir-list.cpp` — Listar el contenido de un directorio en Windows con `FindFirstFile()` y `FindNextFile()`.
  * `src/otros/` — **Otros ejemplos**
    * `posix/yash.cpp` — Ejemplo muy básico del funcionamiento interno de una shell.
 

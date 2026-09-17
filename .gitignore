@@ -1,1 +1,9 @@
 /build
+
+# Los scripts que comprueban los comandos de compilación documentados compilan los ejemplos en su propio
+# directorio, así que conviene ignorar lo que puedan dejarse atrás.
+*.o
+*.obj
+*.exe
+*.pdb
+*.ilk

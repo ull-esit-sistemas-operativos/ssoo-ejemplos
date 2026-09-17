@@ -7,7 +7,7 @@
 //
 //  Compilar:
 //
-//      cl /std:c++latest /utf-8 mapped-files.cpp shlwapi.lib
+//      cl /std:c++latest /EHsc /utf-8 mapped-files.cpp shlwapi.lib
 //
 
 #include <cstdint>

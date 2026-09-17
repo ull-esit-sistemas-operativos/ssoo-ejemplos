@@ -16,6 +16,8 @@
   - [Operaciones con directorios](#operaciones-con-directorios)
   - [Bloqueos de archivo](#bloqueos-de-archivo)
   - [En Windows](#en-windows)
+    - [Atributos de archivo](#atributos-de-archivo)
+    - [Listar un directorio](#listar-un-directorio)
 
 ## Operaciones con archivos
 
@@ -280,3 +282,50 @@ Hay un detalle en el que los dos sistemas no se comportan igual.
 En POSIX, `open()` abre un directorio sin protestar y es la comprobación con `S_ISREG()` la que descubre que no es un archivo regular.
 En Windows, `CreateFile()` se niega a abrirlo, así que el programa termina antes de llegar a la comprobación.
 Esta sigue siendo necesaria, pero para detectar otras cosas que no son archivos del disco, como la consola o una tubería.
+
+### Atributos de archivo
+
+La información que da `stat()` en POSIX se obtiene en Windows abriendo el archivo y preguntando por ella con [`GetFileInformationByHandle()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfileinformationbyhandle).
+Basta con abrirlo pidiendo `FILE_READ_ATTRIBUTES` —no hace falta poder leer su contenido, igual que a `stat()` tampoco le hace falta—, pero hay que añadir `FILE_FLAG_BACKUP_SEMANTICS` para que `CreateFile()` acepte abrir un directorio.
+
+| `struct stat` | `BY_HANDLE_FILE_INFORMATION` |
+| --- | --- |
+| `st_dev` | `dwVolumeSerialNumber` |
+| `st_ino` | `nFileIndexHigh` y `nFileIndexLow` |
+| `st_size` | `nFileSizeHigh` y `nFileSizeLow` |
+| `st_nlink` | `nNumberOfLinks` |
+| `st_mode` | `dwFileAttributes` |
+| `st_atime` | `ftLastAccessTime` |
+| `st_mtime` | `ftLastWriteTime` |
+| `st_ctime` | — |
+| — | `ftCreationTime` |
+| `st_uid`, `st_gid` | — |
+| `st_blocks`, `st_blksize` | — |
+
+Las diferencias son tan interesantes como las coincidencias:
+
+- Windows guarda la **fecha de creación** del archivo, que POSIX no tiene.
+  Y POSIX guarda `st_ctime`, la fecha en la que cambiaron los atributos por última vez, que Windows no guarda.
+- Las fechas no se cuentan igual. `FILETIME` cuenta intervalos de 100 nanosegundos desde el 1 de enero de **1601**, mientras que `time_t` cuenta segundos desde el 1 de enero de **1970**.
+- `dwFileAttributes` **no son permisos**.
+  Sus marcas dicen cómo hay que tratar el archivo —de solo lectura, oculto, del sistema, etc.— pero no quién puede usarlo.
+  Windows no tiene un propietario, un grupo y nueve bits de permisos como POSIX, sino una lista de control de acceso (ACL) con una entrada por usuario o grupo, que se consulta aparte con `GetSecurityInfo()`.
+
+El ejemplo está en [win32/file-attribs.cpp](win32/file-attribs.cpp).
+
+### Listar un directorio
+
+En POSIX el directorio se abre con `opendir()` y luego se lee entrada a entrada con `readdir()`.
+La API Win32 junta las dos operaciones en una sola función: [`FindFirstFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findfirstfilea) abre el directorio y devuelve la primera entrada, así que el bucle del ejemplo debe ser un `do ... while` en lugar de un `while`.
+
+| POSIX | Win32 |
+| --- | --- |
+| `opendir()` | [`FindFirstFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findfirstfilea) |
+| `readdir()` | [`FindNextFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findnextfilea) |
+| `closedir()` | [`FindClose()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findclose) |
+
+Además, `FindFirstFile()` no recibe el nombre de un directorio sino un **patrón de búsqueda**, así que hay que añadirle `\*` para que devuelva todas las entradas.
+Y como `FindNextFile()` devuelve falso tanto al ocurrido.
+En POSIX `readdir()` los distingue dejando `errno` a cero al terminar.
+
+El ejemplo está en [win32/dir-list.cpp](win32/dir-list.cpp).

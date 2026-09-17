@@ -42,8 +42,8 @@ jobs:
       - name: Compilar
         run: cmake --build build --config Debug
 
-  check-build-commands:
-    name: Comprobar comandos de compilación documentados
+  check-build-commands-posix:
+    name: Comprobar comandos de compilación documentados de POSIX
     runs-on: ubuntu-latest
 
     steps:
@@ -58,3 +58,14 @@ jobs:
 
       - name: Compilar cada ejemplo con el comando de su cabecera
         run: .github/scripts/check-build-commands.sh
+
+  check-build-commands-windows:
+    name: Comprobar comandos de compilación documentados de Windows API
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compilar cada ejemplo de Win32 con el comando de su cabecera
+        run: .github/scripts/check-build-commands.ps1
+        shell: pwsh

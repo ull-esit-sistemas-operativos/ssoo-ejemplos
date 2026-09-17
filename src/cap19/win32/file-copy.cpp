@@ -7,7 +7,7 @@
 //
 //  Compilar:
 //
-//      cl /std:c++latest /utf-8 file-copy.cpp
+//      cl /std:c++latest /EHsc /utf-8 file-copy.cpp
 //
 
 #include <cstdio>       // Cabecera para BUFSIZ
@@ -76,7 +76,7 @@ int protected_main(int argc, char* argv[])
     DWORD bytes_read;
     while (true)
     {
-        // ReadFile() avisa de los errores con su valor de retorno y señala el final del archivo devolviendo cierto
+        // ReadFile() avisa de los errores con su valor de retorno y señala el final del archivo devolviendo TRUE
         // y 0 bytes leídos. En POSIX ambas cosas van en el valor de retorno de read(): -1 y 0 respectivamente.
         if (! ReadFile( source_handle, buffer, static_cast<DWORD>(sizeof(buffer)), &bytes_read, nullptr ))
         {
