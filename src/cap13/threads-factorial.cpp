@@ -13,6 +13,7 @@
 #include <thread>
 
 #include <common/bigint-factorial.hpp>
+#include <common/native_handle.hpp>
 
 void factorial_thread (BigInt& result, BigInt number, BigInt lower_bound)
 {
@@ -35,10 +36,10 @@ int main()
     BigInt thread1_result, thread2_result;
 
     std::jthread thread1(factorial_thread, std::ref(thread1_result), number, thread1_lower_bound);
-    std::println( "[HILO PRINCIPAL] Hilo creado: {} (0x{:x})", thread1.get_id(), thread1.native_handle() );
+    std::println( "[HILO PRINCIPAL] Hilo creado: {} (0x{:x})", thread1.get_id(), native_handle_value( thread1 ) );
 
     std::jthread thread2(factorial_thread, std::ref(thread2_result), thread2_number, 2);
-    std::println( "[HILO PRINCIPAL] Hilo creado: {} (0x{:x})", thread2.get_id(), thread2.native_handle() );
+    std::println( "[HILO PRINCIPAL] Hilo creado: {} (0x{:x})", thread2.get_id(), native_handle_value( thread2 ) );
 
     // Esperar a que los hilos terminen antes de continuar.
     thread1.join();

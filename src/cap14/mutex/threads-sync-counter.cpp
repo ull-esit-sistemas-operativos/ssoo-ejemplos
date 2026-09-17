@@ -4,13 +4,15 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -o threads-sync-counter threads-sync-counter.cpp
+//      g++ -I../../ -o threads-sync-counter threads-sync-counter.cpp
 //
 
 #include <mutex>
 #include <print>
 #include <sstream>      // Requerido para la conversion de std::thread::id
 #include <thread>
+
+#include <common/native_handle.hpp>
 
 struct increment_counter_thread_args
 {
@@ -40,10 +42,10 @@ int main()
 
     // Crear algunos hilos independientes cada uno de los cuales ejecutará increment_counter()    
     std::thread thread1(increment_counter, std::ref(thread_args));
-    std::println( "Hilo creado: {} (0x{:x})", thread1.get_id(), thread1.native_handle() );
+    std::println( "Hilo creado: {} (0x{:x})", thread1.get_id(), native_handle_value( thread1 ) );
 
     std::thread thread2(increment_counter, std::ref(thread_args));
-    std::println( "Hilo creado: {} (0x{:x})", thread2.get_id(), thread2.native_handle() );
+    std::println( "Hilo creado: {} (0x{:x})", thread2.get_id(), native_handle_value( thread2 ) );
 
     // Esperar a que los hilos terminen antes de continuar.
     // Si salimos de main() sin esperar, el proceso terminará y todos los hilos morirán inmediatamente,

@@ -7,7 +7,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -o threads-sync-factorial threads-sync-factorial.cpp
+//      g++ -I../../ -I../../../lib -o threads-sync-factorial threads-sync-factorial.cpp
 //
 
 #include <functional>
@@ -19,6 +19,7 @@
 #include <vector>
 
 #include <common/bigint-factorial.hpp>
+#include <common/native_handle.hpp>
 
 struct factorial_thread_results
 {   
@@ -49,10 +50,10 @@ int main()
     factorial_thread_results thread_results;
 
     std::thread thread1(factorial_thread, std::ref(thread_results), number, thread1_lower_bound);
-    std::println( "[HILO PRINCIPAL] Hilo creado: {} (0x{:x})", thread1.get_id(), thread1.native_handle() );
+    std::println( "[HILO PRINCIPAL] Hilo creado: {} (0x{:x})", thread1.get_id(), native_handle_value( thread1 ) );
 
     std::thread thread2(factorial_thread, std::ref(thread_results), thread2_number, 2);
-    std::println( "[HILO PRINCIPAL] Hilo creado: {} (0x{:x})", thread2.get_id(), thread2.native_handle() );
+    std::println( "[HILO PRINCIPAL] Hilo creado: {} (0x{:x})", thread2.get_id(), native_handle_value( thread2 ) );
 
     // Esperar a que los hilos terminen antes de continuar.
     // Si salimos de main() sin esperar, el proceso terminará y todos los hilos morirán inmediatamente,

@@ -1,1 +1,3 @@
-add_executable(yash yash.cpp)
+if(UNIX)
+    add_executable(yash yash.cpp)
+endif()

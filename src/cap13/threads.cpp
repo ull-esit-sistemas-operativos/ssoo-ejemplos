@@ -2,12 +2,14 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -o threads threads.cpp
+//      g++ -I../ -o threads threads.cpp
 //
 
 #include <print>
 #include <sstream>      // Requerido para la conversion de std::jthread::id
 #include <thread>
+
+#include <common/native_handle.hpp>
 
 void thread_function(int thread_id)
 {
@@ -31,11 +33,11 @@ int main()
     std::println( "[Main] Todos los hilos creados" );
 
     std::println( "[Main] Hilo 1 - Id: {}, Manejador del sistema: 0x{:x}",
-        thread1.get_id(), thread1.native_handle() );
+        thread1.get_id(), native_handle_value( thread1 ) );
     std::println( "[Main] Hilo 2 - Id: {}, Manejador del sistema: 0x{:x}",
-        thread2.get_id(), thread2.native_handle() );
+        thread2.get_id(), native_handle_value( thread2 ) );
     std::println( "[Main] Hilo 3 - Id: {}, Manejador del sistema: 0x{:x}",
-        thread3.get_id(), thread3.native_handle() );
+        thread3.get_id(), native_handle_value( thread3 ) );
 
     // Esperar a que los hilos terminen antes de continuar.
     thread1.join();

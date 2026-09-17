@@ -14,6 +14,12 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Indicar a MSVC que los archivos de código fuente están codificados en UTF-8.
+# GCC y Clang lo asumen de forma predeterminada.
+if(MSVC)
+    add_compile_options(/utf-8)
+endif()
+
 include(CheckPIESupported)
 check_pie_supported()
 
