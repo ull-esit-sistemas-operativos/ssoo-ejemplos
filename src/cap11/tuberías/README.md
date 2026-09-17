@@ -268,3 +268,31 @@ En Windows es al revés: no se hereda nada salvo que se pida, y se pide en tres 
 | Fin de archivo: `read()` devuelve 0 | `ReadFile()` falla con `ERROR_BROKEN_PIPE` |
 
 Los ejemplos están en [win32/createprocess-pipe.cpp](win32/createprocess-pipe.cpp) y [win32/createprocess-redir.cpp](win32/createprocess-redir.cpp).
+
+### Tuberías con nombre
+
+Windows API llama a las tuberías con nombre *named pipes* y las crea con [`CreateNamedPipe()`](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createnamedpipea).
+Al cliente se le parecen mucho a un archivo —las abre con `CreateFile()`, como cualquier otro—, pero al servidor no tanto.
+
+| POSIX | Win32 |
+| --- | --- |
+| `mkfifo()` + `open()` | [`CreateNamedPipe()`](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createnamedpipea) |
+| — | [`ConnectNamedPipe()`](https://learn.microsoft.com/en-us/windows/win32/api/namedpipeapi/nf-namedpipeapi-connectnamedpipe) |
+| `open()` en el cliente | [`CreateFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea) |
+| `close()` | [`DisconnectNamedPipe()`](https://learn.microsoft.com/en-us/windows/win32/api/namedpipeapi/nf-namedpipeapi-disconnectnamedpipe) y `CloseHandle()` |
+| `unlink()` | — |
+
+Las diferencias de fondo son tres.
+
+**No están en el sistema de archivos.** Una tubería FIFO de POSIX es un archivo más, con su ruta y sus permisos, que hay que borrar con `unlink()` cuando ya no hace falta.
+Las de Windows viven en un espacio de nombres propio, al que se llega con rutas de la forma `\.\pipe\<nombre>`, y desaparecen solas al cerrarse su último manejador.
+Ese `.` indica el equipo local, y ahí puede ir el nombre de otro equipo, pues estas tuberías funcionan también a través de la red.
+
+**Están orientadas a la conexión.** En POSIX la tubería no distingue clientes: cualquiera que abra el archivo escribe en ella y lo que llega se mezcla.
+En Windows el servidor espera con `ConnectNamedPipe()` a que llegue un cliente, lo atiende, y lo despide con `DisconnectNamedPipe()` para poder atender al siguiente.
+Por eso el bucle del ejemplo tiene dos niveles: uno para los clientes y otro para los comandos de cada cliente.
+
+**Hay que decir de antemano cómo se va a usar la tubería.** `CreateNamedPipe()` recibe en qué sentido van los datos, si se tratan como una secuencia de bytes o como mensajes sueltos, y cuántos clientes puede haber a la vez.
+En POSIX la FIFO es siempre un flujo de bytes y esas decisiones no existen.
+
+Los ejemplos están en [win32/namedpipe.cpp](win32/namedpipe.cpp) y [win32/namedpipe-control.cpp](win32/namedpipe-control.cpp).

@@ -47,7 +47,7 @@ Concretamente los ejemplos incluidos actualmente son:
    * `mqueue/` — Ejemplo de comunicación entre procesos mediante colas de mensajes POSIX.
    * `signals/` — Ejemplo básico de manejo de señales POSIX.
    * `sockets/` — Ejemplo de comunicación entre procesos mediante _sockets_.
-   * `tuberías/` — Ejemplos de comunicación entre procesos mediante tuberías anónimas y con nombre, y de redirección de la E/S estándar. Incluye las versiones con la API Win32 de los ejemplos de tuberías anónimas y de redirección.
+   * `tuberías/` — Ejemplos de comunicación entre procesos mediante tuberías anónimas y con nombre, y de redirección de la E/S estándar. También las versiones con la API Win32, incluida la de tuberías con nombre.
  * `src/cap12/` — **12. Memoria compartida**
    * `posix/anom-shared-memory.cpp` — Comunicación entre procesos padre e hijo mediante memoria compartida anónima.
    * `posix/shared-memory.cpp` — Ejemplo de comunicación entre procesos mediante memoria compartida.
