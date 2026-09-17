@@ -8,4 +8,7 @@ add_posix_example(dir-list SOURCES posix/dir-list.cpp)
 add_win32_example(dir-list SOURCES win32/dir-list.cpp)
 
 add_posix_example(filelock SOURCES posix/filelock.cpp)
+add_win32_example(filelock SOURCES win32/filelock.cpp)
+
 add_posix_example(filelock-control SOURCES posix/filelock-control.cpp)
+add_win32_example(filelock-control SOURCES win32/filelock-control.cpp)

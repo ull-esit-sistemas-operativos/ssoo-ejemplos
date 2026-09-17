@@ -147,3 +147,28 @@ Así devuelve su resultado parcial como cualquier otro valor de retorno, se dest
 La otra diferencia está en el destructor.
 El de `std::jthread` pide la cancelación del hilo con [`request_stop()`](https://en.cppreference.com/w/cpp/thread/jthread/request_stop) y luego espera a que termine antes de destruirse.
 Por eso en este ejemplo las llamadas a `request_stop()` y `join()` del hilo principal serían innecesarias si nos bastara con cancelar los hilos al salir de `main()`.
+
+## En Windows
+
+Windows API crea hilos con [`CreateThread()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createthread).
+
+| POSIX Threads | Win32 |
+| --- | --- |
+| `pthread_create()` | [`CreateThread()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createthread) |
+| `pthread_join()` | [`WaitForSingleObject()`](https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject) + [`GetExitCodeThread()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getexitcodethread) + `CloseHandle()` |
+| `pthread_self()` | [`GetCurrentThreadId()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getcurrentthreadid) |
+| `pthread_detach()` | `CloseHandle()` sin esperar |
+| `pthread_cancel()` | — |
+
+Tres diferencias que se ven en el ejemplo:
+
+- **Un hilo es un objeto del sistema como cualquier otro**, con su manejador, así que se espera por él con las mismas funciones que por un proceso, un semáforo o un temporizador.
+  Y como se puede esperar por varios objetos a la vez con `WaitForMultipleObjects()`, no hace falta un `pthread_join()` por hilo.
+  A cambio, hay que cerrar su manejador, que es algo que en POSIX Threads hace el propio `pthread_join()`.
+- **La función del hilo devuelve un número**, no un puntero, y se recoge con `GetExitCodeThread()`.
+  Por eso la versión de Windows no necesita el campo donde la de POSIX guarda el resultado para poder devolver su dirección.
+- **No hay cancelación de hilos.** `TerminateThread()` existe, pero la propia documentación de Microsoft desaconseja usarla pues detiene el hilo a medias, sin liberar lo que tuviera reservado.
+  La única manera razonable es la cancelación cooperativa, que es justo lo que enseña [`threads-cancel-factorial.cpp`](threads-cancel-factorial.cpp) con `std::stop_token`.
+  Por eso no hemos implementado una versión de Windows de [`posix/pthreads-cancel-factorial.cpp`](posix/pthreads-cancel-factorial.cpp).
+
+El ejemplo está en [win32/createthread.cpp](win32/createthread.cpp).

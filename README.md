@@ -57,6 +57,7 @@ Concretamente los ejemplos incluidos actualmente son:
    * `posix/pthreads.cpp` — Creación de hilos mediante POSIX Threads.
    * `posix/pthreads-cancel-factorial.cpp` — Cancelación de hilos mediante POSIX Threads: Cálculo del factorial de un número.
    * `posix/pthreads-factorial.cpp` — Uso de hilos mediante POSIX Threads: Cálculo del factorial de un número.
+   * `win32/createthread.cpp` — Creación de hilos en Windows mediante `CreateThread()`.
    * `threads.cpp` — Creación de hilos con `std::jthread` en C++.
    * `threads-cancel-factorial.cpp` — Cancelación cooperativa de hilos con `std::jthread` en C++: Cálculo del factorial de un número.
    * `threads-factorial.cpp` — Uso de hilos con `std::jthread` en C++: Cálculo del factorial de un número.
@@ -73,6 +74,7 @@ Concretamente los ejemplos incluidos actualmente son:
    * `win32/file-attribs.cpp` — Leer y mostrar los atributos de archivo en Windows con `GetFileInformationByHandle()`.
    * `posix/filelock.cpp` — Ejemplo del uso de bloqueo de archivos.
    * `posix/filelock-control.cpp` — Programa de control del ejemplo del uso de bloqueo de archivos.
+   * `win32/filelock.cpp` y `win32/filelock-control.cpp` — El mismo ejemplo en Windows con `LockFileEx()`.
    * `posix/dir-list.cpp` — Listar el contenido de un directorio.
    * `win32/dir-list.cpp` — Listar el contenido de un directorio en Windows con `FindFirstFile()` y `FindNextFile()`.
  * `src/otros/` — **Otros ejemplos**

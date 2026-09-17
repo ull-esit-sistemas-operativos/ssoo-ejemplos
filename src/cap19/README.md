@@ -18,6 +18,7 @@
   - [En Windows](#en-windows)
     - [Atributos de archivo](#atributos-de-archivo)
     - [Listar un directorio](#listar-un-directorio)
+    - [Bloqueo de archivos](#bloqueo-de-archivos)
 
 ## Operaciones con archivos
 
@@ -329,3 +330,42 @@ Y como `FindNextFile()` devuelve falso tanto al ocurrido.
 En POSIX `readdir()` los distingue dejando `errno` a cero al terminar.
 
 El ejemplo está en [win32/dir-list.cpp](win32/dir-list.cpp).
+
+### Bloqueo de archivos
+
+Windows API bloquea rangos de bytes de un archivo con [`LockFileEx()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-lockfileex) y los libera con [`UnlockFileEx()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-unlockfileex).
+
+| POSIX | Win32 |
+| --- | --- |
+| `lockf(fd, F_LOCK, 0)` | [`LockFileEx()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-lockfileex) con `LOCKFILE_EXCLUSIVE_LOCK` |
+| `lockf(fd, F_ULOCK, 0)` | [`UnlockFileEx()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-unlockfileex) |
+| `ftruncate()` | [`SetEndOfFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-setendoffile) |
+| `lseek()` | [`SetFilePointer()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-setfilepointer) |
+| `access("/proc/<pid>", F_OK)` | [`OpenProcess()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-openprocess) + `WaitForSingleObject()` |
+| `kill(pid, SIGTERM)` | — |
+
+Dos diferencias importantes sobre el bloqueo en sí:
+
+- **Los bloqueos de Windows son obligatorios.** El sistema impide que otro proceso escriba en el rango bloqueado.
+  Los de POSIX que usa `lockf()` son solo **consultivos**: el sistema no impide nada, y únicamente sirven si todos los que tocan el archivo se molestan en comprobarlos.
+- **Se bloquea un rango, no «de aquí al final».** `lockf()` bloquea desde la posición actual del archivo, y por eso la versión de POSIX tiene que devolver la posición a cero antes de desbloquear.
+  `LockFileEx()` recibe el rango aparte, en una estructura `OVERLAPPED`, así que basta con dar el mismo rango que se bloqueó.
+
+Hay que tener en cuenta además que Windows da acceso exclusivo al abrir un archivo si no se dice lo contrario, así que el ejemplo abre el archivo del PID con `FILE_SHARE_READ | FILE_SHARE_WRITE`, pues de lo que trata es de que varios servidores lleguen a la vez y sea el bloqueo, y no el hecho de tener el archivo abierto, lo que decida cuál se queda.
+
+**Dónde se separan de verdad los dos sistemas es al pedirle al servidor que termine.** La versión de POSIX le manda la señal `SIGTERM` con `kill()`, y para eso le sirve el PID que lee del archivo.
+Windows no tiene señales: se puede matar un proceso con `TerminateProcess()`, pero eso lo detiene en seco, sin darle ocasión de recoger sus cosas, que es justo lo contrario de lo que hace `SIGTERM`.
+Lo habitual es usar un objeto del sistema por el que el servidor esté esperando, así que aquí el servidor crea al arrancar un **evento con nombre** y el programa de control lo activa con `SetEvent()`.
+
+El archivo con el PID sigue haciendo falta, eso sí, para lo demás: saber si el servidor está en ejecución y que solo arranque uno.
+
+> 💡 En Windows realmente no es  común utilizar archivo PID, como si ocurre en los sistemas POSIX.
+> La existencia de objetos del sistema con nombre, permite utilizar otros mecanismos de sincronización.
+> Por ejemplo, es habitual usar un _mutex_ con nombre cuando se quiere asegurar que solo hay un proceso ejecutándose a la vez. 
+> Mientras que los eventos con nombre se pueden usar para avisar a un proceso de que debe terminar, como en este ejemplo.
+
+Por lo mismo, el servidor no puede esperar con `sigwait()` a que llegue una señal.
+En su lugar espera con [`WaitForMultipleObjects()`](https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects) por dos objetos: un temporizador esperable, que hace el papel de `alarm()` y que se repite solo sin necesidad de reprogramarlo, y el evento de terminación.
+La pulsación de Ctrl+C, que es lo más parecido a `SIGINT`, llega a través de un manejador registrado con [`SetConsoleCtrlHandler()`](https://learn.microsoft.com/en-us/windows/win32/api/consoleapi/nf-consoleapi-setconsolectrlhandler) que activa ese mismo evento.
+
+Los ejemplos están en [win32/filelock.cpp](win32/filelock.cpp) y [win32/filelock-control.cpp](win32/filelock-control.cpp), con la clase en [win32/pid_file.hpp](win32/pid_file.hpp).
