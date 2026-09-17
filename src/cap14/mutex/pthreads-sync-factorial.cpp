@@ -7,7 +7,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -o pthreads-sync-factorial pthreads-sync-factorial.cpp
+//      g++ -I../../ -I../../../lib -o pthreads-sync-factorial pthreads-sync-factorial.cpp
 //
 
 #include <cerrno>

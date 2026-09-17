@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -o mapped-files-cpp mapped-files.cpp
+//      g++ -o mapped-files mapped-files.cpp
 //
 
 #include <algorithm>

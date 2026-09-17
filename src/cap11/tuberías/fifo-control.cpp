@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -o fifo-control-cpp fifo-control.cpp
+//      g++ -o fifo-control fifo-control.cpp
 //
 
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo <stdlib.h> como

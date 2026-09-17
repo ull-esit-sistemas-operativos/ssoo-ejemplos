@@ -10,7 +10,7 @@
 //
 //  Compilar:
 //
-//      g++ -o socket socket.cpp ../common/timeserver.cpp
+//      g++ -I../../ -o socket socket.cpp ../../common/timeserver.cpp
 //
 
 #include <print>

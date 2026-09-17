@@ -8,7 +8,7 @@
 //
 //  Compilar:
 //
-//      g++ -lrt -o shared-memory-control shared-memory-control.cpp
+//      g++ -o shared-memory-control shared-memory-control.cpp -lrt
 //
 
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo <stdlib.h> como

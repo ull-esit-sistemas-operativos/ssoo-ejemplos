@@ -2,7 +2,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -o pthreads pthreads.cpp
+//      g++ -o pthreads pthreads.cpp
 //
 
 #include <cerrno>

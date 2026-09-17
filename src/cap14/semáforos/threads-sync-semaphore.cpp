@@ -4,7 +4,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -o threads-sync-semaphore threads-sync-semaphore.cpp
+//      g++ -o threads-sync-semaphore threads-sync-semaphore.cpp
 //
 
 #include <print>
