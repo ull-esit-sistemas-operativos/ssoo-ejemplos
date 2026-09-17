@@ -52,6 +52,7 @@ Concretamente los ejemplos incluidos actualmente son:
    * `posix/anom-shared-memory.cpp` — Comunicación entre procesos padre e hijo mediante memoria compartida anónima.
    * `posix/shared-memory.cpp` — Ejemplo de comunicación entre procesos mediante memoria compartida.
    * `posix/shared-memory-control.cpp` — Programa de control del ejemplo de comunicación entre procesos mediante memoria compartida.
+   * `win32/shared-memory.cpp` y `win32/shared-memory-control.cpp` — Los mismos ejemplos en Windows con `CreateFileMapping()` y semáforos con nombre.
  * `src/cap13/` — **13. Hilos**
    * `posix/pthreads.cpp` — Creación de hilos mediante POSIX Threads.
    * `posix/pthreads-cancel-factorial.cpp` — Cancelación de hilos mediante POSIX Threads: Cálculo del factorial de un número.

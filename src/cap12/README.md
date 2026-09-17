@@ -86,3 +86,44 @@ De momento la única orden que entiende [`shared-memory.cpp`](posix/shared-memor
 
 Al terminar, el programa que creó la región la borra del sistema con [`shm_unlink()`](https://man7.org/linux/man-pages/man3/shm_unlink.3.html).
 Si no lo hiciera, la región seguiría existiendo después de que el proceso muera —en Linux se puede comprobar listando el directorio `/dev/shm`— y el programa no podría volver a arrancar, porque `shm_open()` se llama con `O_EXCL` y fallaría al encontrarla ya creada.
+
+## En Windows
+
+Windows API crea la memoria compartida con las mismas funciones que usa para mapear archivos, [`CreateFileMapping()`](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createfilemappinga) y [`MapViewOfFile()`](https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-mapviewoffile), solo que pasando `INVALID_HANDLE_VALUE` en lugar de un archivo: entonces la región no es respalda por ningún archivo del disco, sino por el archivo de paginación del sistema.
+
+| POSIX | Win32 |
+| --- | --- |
+| `shm_open()` + `ftruncate()` | [`CreateFileMapping()`](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createfilemappinga) con `INVALID_HANDLE_VALUE` |
+| `shm_open()` sin `O_CREAT` | [`OpenFileMapping()`](https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-openfilemappinga) |
+| `mmap()` | [`MapViewOfFile()`](https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-mapviewoffile) |
+| `munmap()` | [`UnmapViewOfFile()`](https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-unmapviewoffile) |
+| `shm_unlink()` | — |
+| `sem_init()` | [`CreateSemaphore()`](https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-createsemaphorea) |
+| `sem_wait()` | [`WaitForSingleObject()`](https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject) |
+| `sem_post()` | [`ReleaseSemaphore()`](https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-releasesemaphore) |
+
+Hay tres diferencias entre estas API que obligan a cambiar el ejemplo, no solo los nombres de las funciones.
+
+**Los semáforos van en la memoria compartida.** En POSIX, `sem_t` es un objeto que se debe colocar dentro de la propia región compartida e inicializar con `sem_init()` indicando que se comparte entre procesos; por eso la estructura `memory_content` de la versión de POSIX lleva los dos semáforos dentro.
+Sin embargo, los semáforos de Windows API son objetos del sistema, como la propia región de memoria, y los procesos los comparten de la misma manera: poniéndoles un nombre. Así que en la versión de Windows la estructura solo lleva los datos, y los semáforos se crean aparte con `CreateSemaphore()` y se abren con `OpenSemaphore()`.
+
+**No hace falta borrar nada al terminar.** Un objeto de memoria compartida de POSIX se queda en el sistema hasta que alguien lo borra con `shm_unlink()`, aunque no lo esté usando nadie.
+En Windows, los objetos del sistema con nombre desaparecen solos en cuanto se cierra el último manejador que les quedaba abierto.
+
+**Crear no falla si ya existe.** `CreateFileMapping()` no tiene un equivalente del flag `O_EXCL`: si ya hay un objeto con ese nombre, devuelve un manejador del que ya había en lugar de fallar.
+Para detectar que ya hay otro servidor en ejecución hay que preguntar después con `GetLastError()` si el código es `ERROR_ALREADY_EXISTS`.
+
+
+En Windows, los nombres de los objetos del sistema van en un espacio de nombres propio, no en el sistema de archivos.
+El prefijo `Local\` los limita a la sesión del usuario actual; con `Global\` serían visibles para todo el sistema, pero crearlos ahí requiere privilegios.
+
+Los ejemplos están en [win32/shared-memory.cpp](win32/shared-memory.cpp) y [win32/shared-memory-control.cpp](win32/shared-memory-control.cpp).
+
+### El servidor de tiempo
+
+Los ejemplos de POSIX muestran la hora periódicamente con `alarm()` y un manejador para la señal `SIGALRM`, en [`../common/timeserver.cpp`](../common/timeserver.cpp).
+La versión de Windows, [`../common/timeserver-win32.cpp`](../common/timeserver-win32.cpp), usa un temporizador del sistema creado con [`CreateTimerQueueTimer()`](https://learn.microsoft.com/en-us/windows/win32/api/threadpoollegacyapiset/nf-threadpoollegacyapiset-createtimerqueuetimer), que se repite solo: no hay que volver a programarlo cada vez, como hay que hacer con `alarm()` desde el propio manejador.
+
+La diferencia más interesante es dónde se ejecuta el aviso.
+En POSIX es un manejador de señales, que interrumpe al programa en cualquier punto, así que dentro solo se pueden usar las funciones seguras en señales —de ahí que `timeserver.cpp` muestre la hora con `write()` y no con `std::println()`—.
+En Windows el aviso llega en un hilo del sistema, que no interrumpe a nadie, así que se puede usar la librería estándar de C++ con total libertad.
