@@ -61,8 +61,10 @@ Concretamente los ejemplos incluidos actualmente son:
    * `semáforos/` — Ejemplo de la implementación de un semáforo en C++ a partir de un mutex y una variable de condición.
  * `src/cap17/` — **17. Memoria virtual**
    * `posix/mapped-files.cpp` — Archivos mapeados en memoria con `mmap()`.
+   * `win32/mapped-files.cpp` — Archivos mapeados en memoria en Windows con `CreateFileMapping()` y `MapViewOfFile()`.
  * `src/cap19/` — **19. Sistemas de archivos**
    * `posix/file-copy.cpp` — Copia de archivos con `read()` y `write()`.
+   * `win32/file-copy.cpp` — Copia de archivos en Windows con `ReadFile()` y `WriteFile()`.
    * `posix/file-attribs.cpp` — Leer y mostrar los atributos de archivo.
    * `posix/filelock.cpp` — Ejemplo del uso de bloqueo de archivos.
    * `posix/filelock-control.cpp` — Programa de control del ejemplo del uso de bloqueo de archivos.

@@ -1,19 +1,21 @@
 # Sistemas de archivos
 
 **Tabla de contenidos**
-- [Operaciones con archivos](#operaciones-con-archivos)
-  - [Abrir archivos](#abrir-archivos)
-    - [Opciones de apertura](#opciones-de-apertura)
-    - [Permisos de los nuevos archivos](#permisos-de-los-nuevos-archivos)
-  - [Cerrar descriptores de archivo](#cerrar-descriptores-de-archivo)
-  - [Leer y escribir datos](#leer-y-escribir-datos)
-    - [Ejemplo de `open()`, `read()` y `write()`](#ejemplo-de-open-read-y-write)
-  - [Acceder a los atributos de un archivo](#acceder-a-los-atributos-de-un-archivo)
-    - [Ejemplo de `stat()`](#ejemplo-de-stat)
-    - [Comprobar si dos archivos son el mismo](#comprobar-si-dos-archivos-son-el-mismo)
-    - [Acceso a los permisos y al tipo de archivo](#acceso-a-los-permisos-y-al-tipo-de-archivo)
-- [Operaciones con directorios](#operaciones-con-directorios)
-- [Bloqueos de archivo](#bloqueos-de-archivo)
+- [Sistemas de archivos](#sistemas-de-archivos)
+  - [Operaciones con archivos](#operaciones-con-archivos)
+    - [Abrir archivos](#abrir-archivos)
+      - [Opciones de apertura](#opciones-de-apertura)
+      - [Permisos de los nuevos archivos](#permisos-de-los-nuevos-archivos)
+    - [Cerrar descriptores de archivo](#cerrar-descriptores-de-archivo)
+    - [Leer y escribir datos](#leer-y-escribir-datos)
+      - [Ejemplo de `open()`, `read()` y `write()`](#ejemplo-de-open-read-y-write)
+    - [Acceder a los atributos de un archivo](#acceder-a-los-atributos-de-un-archivo)
+      - [Ejemplo de `stat()`](#ejemplo-de-stat)
+      - [Comprobar si dos archivos son el mismo](#comprobar-si-dos-archivos-son-el-mismo)
+      - [Acceso a los permisos y al tipo de archivo](#acceso-a-los-permisos-y-al-tipo-de-archivo)
+  - [Operaciones con directorios](#operaciones-con-directorios)
+  - [Bloqueos de archivo](#bloqueos-de-archivo)
+  - [En Windows](#en-windows)
 
 ## Operaciones con archivos
 
@@ -250,3 +252,31 @@ El programa de control [filelock-control.cpp](posix/filelock-control.cpp) puede 
 Esta técnica es muy usada por los servicios del sistema.
 Frecuentemente, crean un subdirectorio con el nombre del servicio dentro del directorio `/var/run` y allí colocan un archivo `.pid` con el PID del proceso; así como otros recursos necesarios para la comunicación con el servicio, como *sockets* de dominio UNIX o FIFO.
 Este archivo `.pid` permite a los clientes saber si el servicio está en ejecución y mandarle señales para detenerlo o reiniciarlo.
+
+## En Windows
+
+Windows API ofrece las mismas operaciones sobre archivos que POSIX, con dos diferencias muy evidentes.
+
+La primera es que en lugar del descriptor de archivo —un entero— se usa un **manejador**, de tipo `HANDLE`.
+La segunda es que las funciones no dejan el motivo del error en `errno`, sino que hay que pedírselo al sistema con [`GetLastError()`](https://learn.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-getlasterror).
+Como `std::system_category()` sabe traducir los códigos de error de cada sistema, el manejo de errores de los ejemplos no cambia:
+
+```cpp
+throw std::system_error( static_cast<int>(GetLastError()), std::system_category(), "Fallo en CreateFile()" );
+```
+
+| POSIX | Win32 |
+| --- | --- |
+| `open()` | [`CreateFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea) |
+| `read()` | [`ReadFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile) |
+| `write()` | [`WriteFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile) |
+| `close()` | [`CloseHandle()`](https://learn.microsoft.com/en-us/windows/win32/api/handleapi/nf-handleapi-closehandle) |
+| `fstat()` | [`GetFileInformationByHandle()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfileinformationbyhandle) |
+| `S_ISREG()` | [`GetFileType()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfiletype) |
+
+En [win32/file-copy.cpp](win32/file-copy.cpp) está la misma copia de archivos del ejemplo anterior, resuelta con estas funciones.
+
+Hay un detalle en el que los dos sistemas no se comportan igual.
+En POSIX, `open()` abre un directorio sin protestar y es la comprobación con `S_ISREG()` la que descubre que no es un archivo regular.
+En Windows, `CreateFile()` se niega a abrirlo, así que el programa termina antes de llegar a la comprobación.
+Esta sigue siendo necesaria, pero para detectar otras cosas que no son archivos del disco, como la consola o una tubería.

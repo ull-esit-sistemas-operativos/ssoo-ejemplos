@@ -4,11 +4,13 @@ El mapeo de archivos en memoria es una técnica de E/S eficiente que permite a l
 Esto se realiza con las llamadas al sistema `mmap()` y `munmap()`.
 
 **Tabla de contenidos**
-- [Mapear archivos](#mapear-archivos)
-  - [Uso de `mmap()`](#uso-de-mmap)
-- [Desmapear archivos](#desmapear-archivos)
-  - [Uso de `munmap()`](#uso-de-munmap)
-- [Ejemplo](#ejemplo)
+- [Archivos mapeados en memoria](#archivos-mapeados-en-memoria)
+  - [Mapear archivos](#mapear-archivos)
+    - [Uso de `mmap()`](#uso-de-mmap)
+  - [Desmapear archivos](#desmapear-archivos)
+    - [Uso de `munmap()`](#uso-de-munmap)
+  - [Ejemplo](#ejemplo)
+  - [En Windows](#en-windows)
 
 ## Mapear archivos
 
@@ -106,3 +108,21 @@ close(fd);
 ## Ejemplo
 
 El archivo [mapped-files.cpp](posix/mapped-files.cpp) contiene un ejemplo del uso de `mmap()` y `munmap()` para hacer la copia de un archivo.
+
+## En Windows
+
+Windows API también permite mapear archivos en la memoria, pero necesita dos pasos en lugar de uno.
+Donde POSIX mapea el archivo directamente con `mmap()`, Windows necesita antes un **objeto de mapeo**, que es el objeto del sistema que representa al archivo como una región de memoria, y solo después se mapea ese objeto en el espacio de direcciones del proceso.
+
+| POSIX | Win32 |
+| --- | --- |
+| `open()` | [`CreateFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea) |
+| `lseek(fd, 0, SEEK_END)` | [`GetFileSizeEx()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfilesizeex) |
+| — | [`CreateFileMapping()`](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createfilemappinga) |
+| `mmap()` | [`MapViewOfFile()`](https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-mapviewoffile) |
+| `munmap()` | [`UnmapViewOfFile()`](https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-unmapviewoffile) |
+| `close()` | [`CloseHandle()`](https://learn.microsoft.com/en-us/windows/win32/api/handleapi/nf-handleapi-closehandle) |
+
+En ambos sistemas el mapeo sobrevive al cierre del archivo, así que se pueden cerrar los manejadores en cuanto la región está mapeada.
+
+En [win32/mapped-files.cpp](win32/mapped-files.cpp) está la misma cuenta de líneas, palabras y caracteres del ejemplo anterior, resuelta con estas funciones.
