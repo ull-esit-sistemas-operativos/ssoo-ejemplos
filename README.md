@@ -38,7 +38,7 @@ Concretamente los ejemplos incluidos actualmente son:
  * `src/cap06/` — **6. Interfaz de programación de aplicaciones**
    * `posix/syscall.s` — Llamadas al sistema en el simulador en Linux para x86-64.
    * `posix/softstack.c` — Ejemplo básico en C para mostrar la pila de software con `strace` o `ltrace`.
-   * `posix/softstack.cpp` — Ejemplo básico en C++ para mostrar la pila de software con `strace` o `ltrace`.
+   * `softstack.cpp` — Ejemplo básico en C++ para mostrar la pila de software con `strace` o `ltrace`.
  * `src/cap09/` — **9. Procesos**
    * `posix/fork.cpp` — Creación de procesos mediante `fork()`.
    * `posix/fork-exec.cpp` — Ejecutar otros programas mediante `fork()` y `exec()`.

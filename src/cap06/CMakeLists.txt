@@ -1,5 +1,7 @@
 add_posix_example(softstack-c SOURCES posix/softstack.c)
-add_posix_example(softstack-cpp SOURCES posix/softstack.cpp)
+
+# La versión en C++ solo usa la librería estándar, así que se compila en cualquier sistema.
+add_portable_example(softstack-cpp SOURCES softstack.cpp)
 
 # El ejemplo en ensamblador está escrito para el ensamblador de GNU.
 if(CMAKE_ASM_COMPILER_ID STREQUAL "GNU" OR CMAKE_ASM_COMPILER_ID STREQUAL "Clang")
