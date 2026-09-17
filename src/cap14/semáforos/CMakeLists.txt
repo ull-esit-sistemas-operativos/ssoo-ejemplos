@@ -1,1 +1,1 @@
-add_executable(threads-sync-semaphore threads-sync-semaphore.cpp)
+add_portable_example(threads-sync-semaphore SOURCES threads-sync-semaphore.cpp)

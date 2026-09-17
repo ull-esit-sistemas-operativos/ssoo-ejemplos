@@ -27,6 +27,9 @@ check_pie_supported()
 include(cmake/CompilerWarnings.cmake)
 include(cmake/Sanitizers.cmake)
 
+# Funciones con las que cada capítulo declara sus ejemplos según la API del sistema para la que están escritos.
+include(cmake/AddExample.cmake)
+
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 find_package(Threads REQUIRED)
 

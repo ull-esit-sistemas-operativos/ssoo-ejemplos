@@ -190,7 +190,7 @@ if (result < 0)
 5. Conversión necesaria porque `bind()` espera un puntero al formato genérico de direcciones `sockaddr`, pero `local_address` es `sockaddr_un`.
 6. Tamaño de la estructura `sockaddr_un` que contiene la dirección.
 
-En el archivo [`sockets.cpp`](src/sockets.cpp) se muestra un ejemplo completo de cómo crear un _socket_ de dominio UNIX y asignarle una dirección.
+En el archivo [`socket.cpp`](posix/socket.cpp) se muestra un ejemplo completo de cómo crear un _socket_ de dominio UNIX y asignarle una dirección.
 
 ## Enviar un mensaje
 

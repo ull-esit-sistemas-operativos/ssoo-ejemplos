@@ -1,11 +1,6 @@
-if(UNIX)
-    add_executable(anom-shared-memory anom-shared-memory.cpp)
-    target_include_directories(anom-shared-memory PRIVATE ${CMAKE_SOURCE_DIR}/src)
+add_posix_example(anom-shared-memory SOURCES posix/anom-shared-memory.cpp)
 
-    add_executable(shared-memory shared-memory.cpp ../common/timeserver.cpp)
-    target_include_directories(shared-memory PRIVATE ${CMAKE_SOURCE_DIR}/src)
-    target_link_libraries(shared-memory rt)
-
-    add_executable(shared-memory-control shared-memory-control.cpp)
-    target_link_libraries(shared-memory-control rt)
-endif()
+add_posix_example(shared-memory
+    SOURCES posix/shared-memory.cpp ${PROJECT_SOURCE_DIR}/src/common/timeserver.cpp
+    LIBRARIES rt)
+add_posix_example(shared-memory-control SOURCES posix/shared-memory-control.cpp LIBRARIES rt)

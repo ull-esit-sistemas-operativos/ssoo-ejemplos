@@ -8,7 +8,7 @@ Compararlos es la forma más rápida de ver qué trabajo hace por nosotros la li
 
 ## Crear hilos y esperar a que terminen
 
-En [`threads.cpp`](threads.cpp) y [`pthreads.cpp`](pthreads.cpp) el hilo principal crea tres hilos, les pasa un identificador a cada uno y espera a que terminen.
+En [`threads.cpp`](threads.cpp) y [`pthreads.cpp`](posix/pthreads.cpp) el hilo principal crea tres hilos, les pasa un identificador a cada uno y espera a que terminen.
 
 La diferencia está en cómo se le pasan los argumentos a la **función principal** del hilo.
 En C++ se indican con su tipo, detrás del nombre de la función, al construir el objeto [`std::jthread`](https://en.cppreference.com/w/cpp/thread/jthread):
@@ -66,7 +66,7 @@ Con `std::thread` en su lugar, el programa abortaría con `std::terminate()`, po
 
 ## Repartir un cálculo entre varios hilos
 
-En [`threads-factorial.cpp`](threads-factorial.cpp) y [`pthreads-factorial.cpp`](pthreads-factorial.cpp) se calcula el factorial del número que indique el usuario, repartiendo el trabajo entre dos hilos: uno multiplica desde _N_ hasta _N_/2 y el otro desde _N_/2 - 1 hasta 2.
+En [`threads-factorial.cpp`](threads-factorial.cpp) y [`pthreads-factorial.cpp`](posix/pthreads-factorial.cpp) se calcula el factorial del número que indique el usuario, repartiendo el trabajo entre dos hilos: uno multiplica desde _N_ hasta _N_/2 y el otro desde _N_/2 - 1 hasta 2.
 Cuando ambos terminan, el hilo principal multiplica los dos resultados parciales.
 
 El cálculo usa la clase `BigInt` de [`../../lib/BigInt`](../../lib/BigInt), para que el resultado no se desborde, y las funciones comunes de [`../common/bigint-factorial.hpp`](../common/bigint-factorial.hpp).
@@ -74,7 +74,7 @@ El cálculo usa la clase `BigInt` de [`../../lib/BigInt`](../../lib/BigInt), par
 ## Cancelar hilos
 
 Cancelar un hilo es terminarlo antes de que acabe su trabajo.
-En [`threads-cancel-factorial.cpp`](threads-cancel-factorial.cpp) y [`pthreads-cancel-factorial.cpp`](pthreads-cancel-factorial.cpp) se calcula otra vez el factorial con dos hilos, pero el hilo principal los cancela si el cálculo tarda más de cinco segundos.
+En [`threads-cancel-factorial.cpp`](threads-cancel-factorial.cpp) y [`pthreads-cancel-factorial.cpp`](posix/pthreads-cancel-factorial.cpp) se calcula otra vez el factorial con dos hilos, pero el hilo principal los cancela si el cálculo tarda más de cinco segundos.
 Prueba a introducir un número pequeño y otro muy grande, para ver los dos casos.
 
 Los dos ejemplos resuelven el mismo problema de formas muy distintas.

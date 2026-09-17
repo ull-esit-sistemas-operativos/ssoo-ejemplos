@@ -1,3 +1,1 @@
-if(UNIX)
-    add_executable(mapped-files mapped-files.cpp)
-endif()
+add_posix_example(mapped-files SOURCES posix/mapped-files.cpp)

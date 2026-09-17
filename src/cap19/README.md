@@ -123,7 +123,7 @@ En ese caso, cuando `read()` retorne 0 --por lo que el `buffer` devuelto por `re
 
 #### Ejemplo de `open()`, `read()` y `write()`
 
-En el archivo [file-copy.cpp](file-copy.cpp) se muestra un ejemplo de cómo copiar un archivo en otro usando las funciones `open()`, `read()` y `write()`.
+En el archivo [file-copy.cpp](posix/file-copy.cpp) se muestra un ejemplo de cómo copiar un archivo en otro usando las funciones `open()`, `read()` y `write()`.
 
 ### Acceder a los atributos de un archivo
 
@@ -170,7 +170,7 @@ struct stat {
 
 #### Ejemplo de `stat()`
 
-En el archivo [file-attribs.cpp](file-attribs.cpp) se muestra un ejemplo de cómo obtener y mostrar información de un archivo usando la función `stat()`.
+En el archivo [file-attribs.cpp](posix/file-attribs.cpp) se muestra un ejemplo de cómo obtener y mostrar información de un archivo usando la función `stat()`.
 
 #### Comprobar si dos archivos son el mismo
 
@@ -223,13 +223,13 @@ mode_t file_permissions = st.st_mode & ~S_IFMT;
 
 ## Operaciones con directorios
 
-El archivo [dir-list.cpp](dir-list.cpp) contiene un programa que lista todos los archivos de un directorio usando las funciones `opendir()`, `readdir()` y `closedir()`.
+El archivo [dir-list.cpp](posix/dir-list.cpp) contiene un programa que lista todos los archivos de un directorio usando las funciones `opendir()`, `readdir()` y `closedir()`.
 
 ## Bloqueos de archivo
 
-El archivo [filelock.cpp](filelock.cpp) contiene un ejemplo de cómo se pueden utilizar los bloqueos de archivo para sincronizar el acceso a un archivo compartido entre varios procesos.
+El archivo [filelock.cpp](posix/filelock.cpp) contiene un ejemplo de cómo se pueden utilizar los bloqueos de archivo para sincronizar el acceso a un archivo compartido entre varios procesos.
 
-En [`pid_file.hpp`](pid_file.hpp) se puede ver una clase desarrollada en C++ que encapsula la creación, el bloqueo y el borrado del archivo con el PID, siguiendo el mismo patrón que [`message_queue.hpp`](../cap11/mqueue/message_queue.hpp) en el ejemplo de colas de mensajes.
+En [`pid_file.hpp`](posix/pid_file.hpp) se puede ver una clase desarrollada en C++ que encapsula la creación, el bloqueo y el borrado del archivo con el PID, siguiendo el mismo patrón que [`message_queue.hpp`](../cap11/mqueue/posix/message_queue.hpp) en el ejemplo de colas de mensajes.
 
 El programa utiliza `alarm()` y las señales del sistema para mostrar periódicamente la hora.
 Además, crea un archivo con el PID del proceso.
@@ -243,9 +243,9 @@ Para saber si el proceso dueño de un PID sigue en ejecución se comprueba con [
 Por último, [`unlink()`](https://manpages.debian.org/stretch/manpages-es/unlink.2.es.html) se encarga de borrar el archivo con el PID cuando el proceso termina.
 
 A diferencia de los otros ejemplos de comunicación entre procesos de este capítulo, el programa de control no dispone de un canal propio para comunicarse con el servidor, sino que le envía la señal `SIGTERM`.
-Por eso [filelock.cpp](filelock.cpp) espera esta señal --y `SIGALRM`-- con `sigwait()` en el hilo principal, en lugar de usar un manejador de señales asíncrono como en el resto de los ejemplos.
+Por eso [filelock.cpp](posix/filelock.cpp) espera esta señal --y `SIGALRM`-- con `sigwait()` en el hilo principal, en lugar de usar un manejador de señales asíncrono como en el resto de los ejemplos.
 
-El programa de control [filelock-control.cpp](filelock-control.cpp) puede usar este archivo para conocer el PID para enviar una señal al servidor y hacer que termine.
+El programa de control [filelock-control.cpp](posix/filelock-control.cpp) puede usar este archivo para conocer el PID para enviar una señal al servidor y hacer que termine.
 
 Esta técnica es muy usada por los servicios del sistema.
 Frecuentemente, crean un subdirectorio con el nombre del servicio dentro del directorio `/var/run` y allí colocan un archivo `.pid` con el PID del proceso; así como otros recursos necesarios para la comunicación con el servicio, como *sockets* de dominio UNIX o FIFO.

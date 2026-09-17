@@ -1,3 +1,1 @@
-if(UNIX)
-    add_executable(yash yash.cpp)
-endif()
+add_posix_example(yash SOURCES posix/yash.cpp)

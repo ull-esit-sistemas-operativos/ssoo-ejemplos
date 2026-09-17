@@ -16,7 +16,7 @@ En este directorio hay un ejemplo de cada una.
 Una región **anónima** no tiene nombre en el sistema, así que solo pueden acceder a ella los procesos que la hereden de quien la creó.
 En la práctica, eso obliga a reservarla antes de [`fork()`](https://man7.org/linux/man-pages/man2/fork.2.html), para que el proceso hijo la reciba junto con el resto del espacio de direcciones del padre.
 
-En [`anom-shared-memory.cpp`](anom-shared-memory.cpp) el programa pide un número al usuario, lanza un proceso hijo para que calcule su factorial y lee el resultado de la región compartida.
+En [`anom-shared-memory.cpp`](posix/anom-shared-memory.cpp) el programa pide un número al usuario, lanza un proceso hijo para que calcule su factorial y lee el resultado de la región compartida.
 La región se reserva con [`mmap()`](https://man7.org/linux/man-pages/man2/mmap.2.html), pasando `MAP_ANONYMOUS | MAP_SHARED` y `-1` como descriptor de archivo, porque no hay ningún archivo que respalde la región reservada:
 
 ```cpp
@@ -51,11 +51,11 @@ Lo que hay que compartir es únicamente lo que se escribe **después** de crear 
 
 Una región **con nombre** se identifica con una ruta y es pública para el resto del sistema, así que dos procesos sin ningún parentesco entre ellos pueden abrirla y comunicarse a través de ella.
 
-En [`shared-memory.cpp`](shared-memory.cpp) hay un programa que muestra la hora del sistema periódicamente y que puede ser controlado a distancia por [`shared-memory-control.cpp`](shared-memory-control.cpp), que se une a la misma región para darle órdenes.
+En [`shared-memory.cpp`](posix/shared-memory.cpp) hay un programa que muestra la hora del sistema periódicamente y que puede ser controlado a distancia por [`shared-memory-control.cpp`](posix/shared-memory-control.cpp), que se une a la misma región para darle órdenes.
 Es el mismo ejemplo que usamos para ilustrar el uso de tuberías, colas de mensajes y _sockets_ del capítulo anterior, pero resuelto ahora con memoria compartida.
 El código que muestra la hora está en [`../common/timeserver.cpp`](../common/timeserver.cpp) y se comparte entre todos ellos.
 
-En lo que ambos programas tienen que ponerse de acuerdo —el nombre de la región y la estructura de su contenido— está en [`shared-memory-common.hpp`](shared-memory-common.hpp):
+En lo que ambos programas tienen que ponerse de acuerdo —el nombre de la región y la estructura de su contenido— está en [`shared-memory-common.hpp`](posix/shared-memory-common.hpp):
 
 ```cpp
 struct memory_content
@@ -82,7 +82,7 @@ Para enviar las órdenes, en `command_buffer` el programa de control copia el co
 - `ready` indica que hay un comando pendiente de leer, así que se inicializa a 0.
   El programa controlado espera en él antes de leer `command_buffer`, y el programa de control lo incrementa después de escribir.
 
-De momento la única orden que entiende [`shared-memory.cpp`](shared-memory.cpp) es `QUIT`, que le pide que termine, pero no costaría nada añadir otras.
+De momento la única orden que entiende [`shared-memory.cpp`](posix/shared-memory.cpp) es `QUIT`, que le pide que termine, pero no costaría nada añadir otras.
 
 Al terminar, el programa que creó la región la borra del sistema con [`shm_unlink()`](https://man7.org/linux/man-pages/man3/shm_unlink.3.html).
 Si no lo hiciera, la región seguiría existiendo después de que el proceso muera —en Linux se puede comprobar listando el directorio `/dev/shm`— y el programa no podría volver a arrancar, porque `shm_open()` se llama con `O_EXCL` y fallaría al encontrarla ya creada.

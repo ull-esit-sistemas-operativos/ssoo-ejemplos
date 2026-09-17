@@ -22,7 +22,7 @@ else
 }
 ```
 
-El archivo [fork.cpp](fork.cpp) contiene un ejemplo del uso de `fork()`. 
+El archivo [fork.cpp](posix/fork.cpp) contiene un ejemplo del uso de `fork()`. 
 
 ## Uso de exec()
 
@@ -47,7 +47,7 @@ else
 }
 ```
 
-El archivo [fork-exec.cpp](fork-exec.cpp) contiene un ejemplo del uso de `fork()` y `exec()` para ejecutar otro proceso con otro programa.
+El archivo [fork-exec.cpp](posix/fork-exec.cpp) contiene un ejemplo del uso de `fork()` y `exec()` para ejecutar otro proceso con otro programa.
 
 ### Variantes de exec()
 

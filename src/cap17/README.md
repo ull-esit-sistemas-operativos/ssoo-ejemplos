@@ -105,4 +105,4 @@ close(fd);
 
 ## Ejemplo
 
-El archivo [mmapped-files.cpp](mmapped-files.cpp) contiene un ejemplo del uso de `mmap()` y `munmap()` para hacer la copia de un archivo.
+El archivo [mapped-files.cpp](posix/mapped-files.cpp) contiene un ejemplo del uso de `mmap()` y `munmap()` para hacer la copia de un archivo.

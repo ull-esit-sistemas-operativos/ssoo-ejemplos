@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -std=c++23 -I../ -o anom-shared-memory anom-shared-memory.cpp
+//      g++ -std=c++23 -I../../ -o anom-shared-memory anom-shared-memory.cpp
 //
 
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo  <stdlib.h> como

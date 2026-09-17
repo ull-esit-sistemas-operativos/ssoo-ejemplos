@@ -1,8 +1,6 @@
-if(UNIX)
-    add_executable(fifo fifo.cpp ${PROJECT_SOURCE_DIR}/src/common/timeserver.cpp)
-    add_executable(fifo-control fifo-control.cpp)
+add_posix_example(fifo
+    SOURCES posix/fifo.cpp ${PROJECT_SOURCE_DIR}/src/common/timeserver.cpp)
+add_posix_example(fifo-control SOURCES posix/fifo-control.cpp)
 
-    add_executable(fork-pipe fork-pipe.cpp)
-
-    add_executable(fork-redir fork-redir.cpp)
-endif()
+add_posix_example(fork-pipe SOURCES posix/fork-pipe.cpp)
+add_posix_example(fork-redir SOURCES posix/fork-redir.cpp)

@@ -5,7 +5,7 @@ Un proceso puede mandar una señal a otro con la llamada al sistema [`kill()`](h
 
 Cada señal tiene un efecto por defecto —normalmente terminar el proceso que la recibe—, pero un proceso puede declarar su propio **manejador de señal** con [`sigaction()`](https://manpages.debian.org/stretch/manpages-es/sigaction.2.es.html) para tratarla de otra forma.
 
-En [`signals.cpp`](signals.cpp) se puede ver un programa de ejemplo que muestra cómo manejar señales del sistema y que sirve para ver cómo funcionan:
+En [`signals.cpp`](posix/signals.cpp) se puede ver un programa de ejemplo que muestra cómo manejar señales del sistema y que sirve para ver cómo funcionan:
 
 - Instala un manejador para `SIGTERM`, `SIGINT` y `SIGHUP` que se limita a imprimir qué señal ha llegado.
   Se usa `SA_RESTART` porque el programa está esperando la pulsación de una tecla con `getc()` y no interesa que deje de esperar cuando llega una de estas señales.

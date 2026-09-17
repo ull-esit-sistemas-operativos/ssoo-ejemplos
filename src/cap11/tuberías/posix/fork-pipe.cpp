@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -std=c++23 -I../../ -o fork-pipe fork-pipe.cpp
+//      g++ -std=c++23 -I../../../ -o fork-pipe fork-pipe.cpp
 //
 
 #include <array>        // Recomendada para crear arrays de tamaño fijo compatibles con C

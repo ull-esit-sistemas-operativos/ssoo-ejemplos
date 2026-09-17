@@ -8,7 +8,7 @@
 //
 //  Compilar:
 //
-//      g++ -std=c++23 -I../ -I../../lib -o pthreads-cancel-factorial pthreads-cancel-factorial.cpp
+//      g++ -std=c++23 -I../../ -I../../../lib -o pthreads-cancel-factorial pthreads-cancel-factorial.cpp
 //
 
 #include <cerrno>

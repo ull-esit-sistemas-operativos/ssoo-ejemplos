@@ -10,7 +10,7 @@ Aquí hay dos ejemplos, cada uno en dos versiones: una con los _mutex_ de [POSIX
 
 ## Un contador compartido
 
-En [`pthreads-sync-counter.cpp`](pthreads-sync-counter.cpp) y [`threads-sync-counter.cpp`](threads-sync-counter.cpp) dos hilos incrementan un millón de veces cada uno el mismo contador.
+En [`pthreads-sync-counter.cpp`](posix/pthreads-sync-counter.cpp) y [`threads-sync-counter.cpp`](threads-sync-counter.cpp) dos hilos incrementan un millón de veces cada uno el mismo contador.
 
 Sin protección, el resultado final casi nunca es el esperado, porque `counter++` no es una operación indivisible: se descompone en leer el valor, incrementarlo y volver a guardarlo, y ambos hilos pueden entrelazar esos pasos perdiendo incrementos por el camino.
 El resultado es correcto siempre que cada hilo adquiera el mismo _mutex_ antes del incremento:
@@ -37,7 +37,7 @@ Es interesante comentar las llamadas al _mutex_ y volver a ejecutar el programa,
 
 ## Un vector de resultados parciales
 
-En [`pthreads-sync-factorial.cpp`](pthreads-sync-factorial.cpp) y [`threads-sync-factorial.cpp`](threads-sync-factorial.cpp) se calcula el factorial del número que indique el usuario, repartiendo el trabajo entre dos hilos: uno multiplica desde _N_ hasta _N_/2 y el otro desde _N_/2 - 1 hasta 2.
+En [`pthreads-sync-factorial.cpp`](posix/pthreads-sync-factorial.cpp) y [`threads-sync-factorial.cpp`](threads-sync-factorial.cpp) se calcula el factorial del número que indique el usuario, repartiendo el trabajo entre dos hilos: uno multiplica desde _N_ hasta _N_/2 y el otro desde _N_/2 - 1 hasta 2.
 
 A diferencia de los ejemplos del capítulo anterior, los hilos no devuelven su resultado, sino que lo guardan en un `std::vector` compartido:
 

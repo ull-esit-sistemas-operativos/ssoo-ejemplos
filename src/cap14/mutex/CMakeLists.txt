@@ -1,7 +1,7 @@
-add_executable(threads-sync-counter threads-sync-counter.cpp)
-add_executable(threads-sync-factorial threads-sync-factorial.cpp)
+add_portable_example(threads-sync-counter SOURCES threads-sync-counter.cpp)
+add_portable_example(threads-sync-factorial SOURCES threads-sync-factorial.cpp)
 
 if(CMAKE_USE_PTHREADS_INIT)
-    add_executable(pthreads-sync-counter pthreads-sync-counter.cpp)
-    add_executable(pthreads-sync-factorial pthreads-sync-factorial.cpp)
+    add_posix_example(pthreads-sync-counter SOURCES posix/pthreads-sync-counter.cpp)
+    add_posix_example(pthreads-sync-factorial SOURCES posix/pthreads-sync-factorial.cpp)
 endif()

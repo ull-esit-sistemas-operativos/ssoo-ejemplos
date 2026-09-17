@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -std=c++23 -I../ -I../../lib -o pthreads-factorial pthreads-factorial.cpp
+//      g++ -std=c++23 -I../../ -I../../../lib -o pthreads-factorial pthreads-factorial.cpp
 //
 
 #include <cerrno>

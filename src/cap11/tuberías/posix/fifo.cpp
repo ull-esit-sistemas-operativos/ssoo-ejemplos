@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -std=c++23 -I../../ -o fifo fifo.cpp ../../common/timeserver.cpp
+//      g++ -std=c++23 -I../../../ -o fifo fifo.cpp ../../../common/timeserver.cpp
 //
 
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo <stdlib.h> como

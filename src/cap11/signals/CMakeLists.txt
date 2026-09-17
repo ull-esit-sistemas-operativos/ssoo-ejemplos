@@ -1,3 +1,1 @@
-if(UNIX)
-    add_executable(signals signals.cpp)
-endif()
+add_posix_example(signals SOURCES posix/signals.cpp)

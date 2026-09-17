@@ -1,7 +1,6 @@
-if(UNIX)
-    add_executable(file-copy file-copy.cpp)
-    add_executable(file-attribs file-attribs.cpp)
-    add_executable(filelock-control filelock-control.cpp)
-    add_executable(filelock filelock.cpp)
-    add_executable(dir-list dir-list.cpp)
-endif()
+add_posix_example(file-copy SOURCES posix/file-copy.cpp)
+add_posix_example(file-attribs SOURCES posix/file-attribs.cpp)
+add_posix_example(dir-list SOURCES posix/dir-list.cpp)
+
+add_posix_example(filelock SOURCES posix/filelock.cpp)
+add_posix_example(filelock-control SOURCES posix/filelock-control.cpp)

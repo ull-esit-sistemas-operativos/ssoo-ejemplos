@@ -47,7 +47,7 @@ std::println("Descriptor de archivo para escritura: {}", pipefd[1]);
 Como los descriptores de archivo abiertos se heredan de procesos padre a procesos hijo, estas tuberías se pueden utilizar para la comunicación entre procesos ellos.
 Al hacer `fork()` tras llamar a `pipe()` ambos procesos tendrán acceso a los descriptores de archivo de la tubería, por lo que pueden comunicarse entre ellos.
 
-En el archivo [`fork-pipe.cpp`](fork-pipe.cpp) se muestra un ejemplo de cómo crear una tubería sin nombre y comunicar dos procesos mediante ella.
+En el archivo [`fork-pipe.cpp`](posix/fork-pipe.cpp) se muestra un ejemplo de cómo crear una tubería sin nombre y comunicar dos procesos mediante ella.
 
 ## Creación de tuberías con nombre
 
@@ -82,7 +82,7 @@ close(fd);
 unlink("/tmp/myfifo");
 ```
 
-En los archivos [`fifo.cpp`](fifo.cpp) y [`fifo-control.cpp`](fifo-control.cpp) se muestra un ejemplo de cómo crear una tubería con nombre y comunicar dos procesos mediante ella.
+En los archivos [`fifo.cpp`](posix/fifo.cpp) y [`fifo-control.cpp`](posix/fifo-control.cpp) se muestra un ejemplo de cómo crear una tubería con nombre y comunicar dos procesos mediante ella.
 
 ## Cerrar descriptores de archivo de tuberías
 
@@ -226,4 +226,4 @@ std::cin >> input;
 close(pipefd[0]);
 ```
 
-En el archivo [`fork-redir.cpp`](fork-redir.cpp) se muestra un ejemplo de cómo redirigir la salida estándar de un proceso hijo a una tubería y leerla en el proceso padre.
+En el archivo [`fork-redir.cpp`](posix/fork-redir.cpp) se muestra un ejemplo de cómo redirigir la salida estándar de un proceso hijo a una tubería y leerla en el proceso padre.
