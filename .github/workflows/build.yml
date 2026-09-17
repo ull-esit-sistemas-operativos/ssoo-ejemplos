@@ -1,0 +1,60 @@
+# Compila los ejemplos en Linux y en Windows, para que ninguno de los dos se quede atrás.
+#
+name: Compilar los ejemplos
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  cmake-build:
+    name: CMake en ${{ matrix.nombre }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      # Si falla la compilación en un sistema, interesa ver igualmente el resultado en el otro.
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            nombre: Linux con GCC
+          - os: windows-latest
+            nombre: Windows con MSVC
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # La misma versión de GCC que instala el contenedor: .devcontainer/Dockerfile.
+      - name: Instalar GCC 15
+        if: runner.os == 'Linux'
+        run: |
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt-get install -y --no-install-recommends g++-15
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 100
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-15 100
+
+      - name: Configurar
+        run: cmake -B build
+
+      - name: Compilar
+        run: cmake --build build --config Debug
+
+  check-build-commands:
+    name: Comprobar comandos de compilación documentados
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar GCC 15
+        run: |
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt-get install -y --no-install-recommends g++-15
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 100
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-15 100
+
+      - name: Compilar cada ejemplo con el comando de su cabecera
+        run: .github/scripts/check-build-commands.sh
