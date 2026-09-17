@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -I../../lib -o threads-factorial threads-factorial.cpp
+//      g++ -std=c++23 -I../ -I../../lib -o threads-factorial threads-factorial.cpp
 //
 
 #include <print>

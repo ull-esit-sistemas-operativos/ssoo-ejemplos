@@ -4,7 +4,7 @@
 //
 //  Compilar:
 //
-//      g++ -o pthreads-sync-counter pthreads-sync-counter.cpp
+//      g++ -std=c++23 -o pthreads-sync-counter pthreads-sync-counter.cpp
 //
 
 #include <cerrno>

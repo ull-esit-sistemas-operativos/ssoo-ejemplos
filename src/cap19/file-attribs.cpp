@@ -4,7 +4,7 @@
 //
 //  Compilar:
 //
-//      g++ -o file-attribs file-attribs.cpp
+//      g++ -std=c++23 -o file-attribs file-attribs.cpp
 //
 
 #include <chrono>

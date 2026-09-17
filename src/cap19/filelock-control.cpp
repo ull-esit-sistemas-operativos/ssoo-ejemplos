@@ -15,7 +15,7 @@
 //
 //  Compilar:
 //
-//      g++ -o filelock-control filelock-control.cpp
+//      g++ -std=c++23 -o filelock-control filelock-control.cpp
 //
 
 #include <array>

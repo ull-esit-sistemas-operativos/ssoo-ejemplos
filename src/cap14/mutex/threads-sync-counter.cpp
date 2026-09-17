@@ -4,7 +4,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../../ -o threads-sync-counter threads-sync-counter.cpp
+//      g++ -std=c++23 -I../../ -o threads-sync-counter threads-sync-counter.cpp
 //
 
 #include <mutex>

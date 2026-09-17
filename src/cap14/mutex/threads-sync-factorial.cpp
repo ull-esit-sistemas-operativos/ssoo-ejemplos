@@ -7,7 +7,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../../ -I../../../lib -o threads-sync-factorial threads-sync-factorial.cpp
+//      g++ -std=c++23 -I../../ -I../../../lib -o threads-sync-factorial threads-sync-factorial.cpp
 //
 
 #include <functional>

@@ -1,6 +1,6 @@
 // yash.cpp - Ejemplo de muy básico del funcionamiento de una shell
 //
-//      g++ -o yash yash.cpp
+//      g++ -std=c++23 -o yash yash.cpp
 //
 
 #include <cerrno>

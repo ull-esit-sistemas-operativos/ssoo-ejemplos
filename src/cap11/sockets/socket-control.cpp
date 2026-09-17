@@ -10,7 +10,7 @@
 //
 //  Compilar:
 //
-//      g++ -o socket-control socket-control.cpp
+//      g++ -std=c++23 -o socket-control socket-control.cpp
 //
 
 #include <print>

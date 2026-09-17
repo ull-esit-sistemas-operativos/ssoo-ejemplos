@@ -2,7 +2,7 @@
 //
 //  Compilar:
 //
-//      g++ -o fork-redir fork-redir.cpp
+//      g++ -std=c++23 -o fork-redir fork-redir.cpp
 //
 
 #include <array>        // Recomendada para crear arrays de tamaño fijo compatibles con C

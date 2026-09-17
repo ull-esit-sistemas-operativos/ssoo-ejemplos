@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -o mqueue-control mqueue-control.cpp -lrt
+//      g++ -std=c++23 -o mqueue-control mqueue-control.cpp -lrt
 //
 
 #include <cerrno>

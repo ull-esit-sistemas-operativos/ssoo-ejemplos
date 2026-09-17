@@ -2,7 +2,7 @@
 //
 //  Compilar:
 //
-//      cl createprocess.cpp
+//      cl /std:c++latest /utf-8 createprocess.cpp
 //
 
 #include <cstdlib>

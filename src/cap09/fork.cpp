@@ -2,7 +2,7 @@
 //
 //  Compilar:
 //
-//      g++ -o fork fork.cpp
+//      g++ -std=c++23 -o fork fork.cpp
 //
 
 #include <cstdlib>

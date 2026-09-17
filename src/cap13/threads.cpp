@@ -2,7 +2,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -o threads threads.cpp
+//      g++ -std=c++23 -I../ -o threads threads.cpp
 //
 
 #include <print>

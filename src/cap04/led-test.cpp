@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -o led-test led-test.cpp
+//      g++ -std=c++23 -o led-test led-test.cpp
 //
 
 #include <cerrno>

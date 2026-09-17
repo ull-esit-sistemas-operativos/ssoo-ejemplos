@@ -2,7 +2,7 @@
 //
 //  Compilar:
 //
-//      g++ -o signals signals.cpp
+//      g++ -std=c++23 -o signals signals.cpp
 //
 //  Uso: Ejecutar el programa y enviarle una señal con el comando kill. 
 //  

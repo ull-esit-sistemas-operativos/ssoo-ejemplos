@@ -4,7 +4,7 @@
 //  directorio actual.
 //
 //  Compilar:
-//      g++ -o dir-list dir-list.cpp
+//      g++ -std=c++23 -o dir-list dir-list.cpp
 //
 
 #include <print>

@@ -22,7 +22,7 @@
 //
 //  Compilar:
 //
-//      g++ -o filelock filelock.cpp
+//      g++ -std=c++23 -o filelock filelock.cpp
 //
 
 #include <chrono>

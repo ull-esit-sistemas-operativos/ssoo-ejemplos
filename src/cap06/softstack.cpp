@@ -2,7 +2,7 @@
 //
 //  Compilar:
 //
-//      g++ -o softstack-cpp softstack.cpp
+//      g++ -std=c++23 -o softstack-cpp softstack.cpp
 //
 //  Uso:
 //

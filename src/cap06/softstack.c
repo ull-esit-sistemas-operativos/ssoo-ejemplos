@@ -2,7 +2,7 @@
 //
 //  Compilar:
 //
-//      gcc -o softstack-c softstack.c
+//      gcc -std=c11 -o softstack-c softstack.c
 //
 //  Uso:
 //

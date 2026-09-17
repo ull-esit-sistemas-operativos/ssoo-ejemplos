@@ -5,7 +5,7 @@
 //
 //  Compilar:
 //
-//      g++ -o file-copy file-copy.cpp
+//      g++ -std=c++23 -o file-copy file-copy.cpp
 //
 
 #include <print>

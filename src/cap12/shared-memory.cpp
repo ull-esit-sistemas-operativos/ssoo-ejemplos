@@ -8,7 +8,7 @@
 //
 //  Compilar:
 //
-//      g++ -I../ -o shared-memory shared-memory.cpp ../common/timeserver.cpp -lrt
+//      g++ -std=c++23 -I../ -o shared-memory shared-memory.cpp ../common/timeserver.cpp -lrt
 //
 
 #include <cerrno>       // La librería estándar de C está disponible tanto en cabeceras estilo <stdlib.h> como
