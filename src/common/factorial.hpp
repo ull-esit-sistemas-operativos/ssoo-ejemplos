@@ -5,8 +5,7 @@
 
 #include <iostream>
 #include <print>
-
-#include "factorial.hpp"
+#include <string_view>
 
 int get_user_input(std::string_view output_label)
 {

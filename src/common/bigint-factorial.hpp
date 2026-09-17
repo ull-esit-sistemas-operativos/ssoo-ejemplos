@@ -1,9 +1,12 @@
-// bigint_factorial.cpp - Funciones comunes a los ejemplos del factorial con BigInt.
+// bigint-factorial.hpp - Funciones comunes a los ejemplos del factorial con BigInt.
 //
+
+#pragma once
 
 #include <iostream>
 #include <print>
 #include <stop_token>
+#include <string_view>
 
 #include <BigInt/BigInt.hpp>
 
