@@ -227,3 +227,44 @@ close(pipefd[0]);
 ```
 
 En el archivo [`fork-redir.cpp`](posix/fork-redir.cpp) se muestra un ejemplo de cómo redirigir la salida estándar de un proceso hijo a una tubería y leerla en el proceso padre.
+## En Windows
+
+Windows API también tiene tuberías anónimas, que se crean con [`CreatePipe()`](https://learn.microsoft.com/en-us/windows/win32/api/namedpipeapi/nf-namedpipeapi-createpipe) y se leen y escriben con `ReadFile()` y `WriteFile()`.
+Lo que cambia realmente en estos ejemplos no es la tubería, sino la manera de crear el proceso con el que se comparte.
+
+### No hay fork()
+
+En Windows no se puede duplicar el proceso actual: [`CreateProcess()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessa) hace de una vez lo que en POSIX hacen `fork()` y `exec()` juntos, y siempre arranca un programa desde cero.
+Eso tiene tres consecuencias que se ven muy bien en los ejemplos:
+
+1. **El hijo no hereda la memoria del padre.** En [`fork-pipe.cpp`](posix/fork-pipe.cpp) el hijo ya tiene dentro el número que escribió el usuario y el descriptor de la tubería, porque es una copia del padre.
+   En la versión de Windows hay que pasárselos por la línea de comandos.
+2. **No hay un código «entre medias» donde preparar las cosas.** En POSIX, el código que va del `fork()` al `exec()` se ejecuta ya dentro del hijo, y es ahí donde [`fork-redir.cpp`](posix/fork-redir.cpp) redirige la salida estándar con `dup2()`.
+   En Windows todo hay que pedirlo por adelantado, al crear el proceso.
+3. **El hijo puede terminar con `return`.** La regla de terminar el hijo con `_exit()` es para no vaciar por duplicado los búferes heredados del padre.
+   Un proceso creado con `CreateProcess()` no hereda ninguno, así que el problema no existe.
+
+Para que el hijo ejecute el mismo código que el padre, como hace `fork()`, en [win32/createprocess-pipe.cpp](win32/createprocess-pipe.cpp) el programa se lanza a sí mismo con un argumento de línea de comandos que le dice a la copia que le toca hacer de hijo.
+
+### La herencia se pide, no se hereda
+
+En POSIX el hijo hereda todos los descriptores del padre salvo que se diga lo contrario, y por eso los ejemplos cierran con `close()` los extremos de la tubería que no necesitan.
+En Windows es al revés: no se hereda nada salvo que se pida, y se pide en tres sitios a la vez.
+
+1. Al crear la tubería, pasando una `SECURITY_ATTRIBUTES` con `bInheritHandle = TRUE`.
+2. Quitando la marca de heredable, con [`SetHandleInformation()`](https://learn.microsoft.com/en-us/windows/win32/api/handleapi/nf-handleapi-sethandleinformation), al extremo que el hijo no debe heredar.
+3. Poniendo a `TRUE` el parámetro `bInheritHandles` de `CreateProcess()`, sin el cual no se hereda ningún manejador por mucho que se hayan marcado.
+
+### Correspondencia entre las funciones
+
+| POSIX | Win32 |
+| --- | --- |
+| `pipe()` | [`CreatePipe()`](https://learn.microsoft.com/en-us/windows/win32/api/namedpipeapi/nf-namedpipeapi-createpipe) |
+| `fork()` + `exec()` | [`CreateProcess()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessa) |
+| `close()` de lo que no se hereda | [`SetHandleInformation()`](https://learn.microsoft.com/en-us/windows/win32/api/handleapi/nf-handleapi-sethandleinformation) antes de crear el proceso |
+| `dup2()` sobre `STDOUT_FILENO` | `STARTF_USESTDHANDLES` y `hStdOutput` en `STARTUPINFO` |
+| `wait()` | [`WaitForSingleObject()`](https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject) |
+| `WEXITSTATUS()` | [`GetExitCodeProcess()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getexitcodeprocess) |
+| Fin de archivo: `read()` devuelve 0 | `ReadFile()` falla con `ERROR_BROKEN_PIPE` |
+
+Los ejemplos están en [win32/createprocess-pipe.cpp](win32/createprocess-pipe.cpp) y [win32/createprocess-redir.cpp](win32/createprocess-redir.cpp).

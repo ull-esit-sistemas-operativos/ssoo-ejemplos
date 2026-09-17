@@ -24,6 +24,9 @@ Dentro de cada capítulo, el subdirectorio en el que está cada ejemplo indica p
 
 De esta manera, un mismo ejemplo resuelto con las dos APIs aparece con el mismo nombre en `posix/` y en `win32/`, y se pueden comparar uno al lado del otro.
 
+La excepción son los ejemplos que llevan el nombre de la función que ilustran, como `fork.cpp` o `fork-pipe.cpp`: su versión de Windows lleva el nombre de la función equivalente de la API Win32, porque es lo que cambia de una a otra.
+Así, `posix/fork-exec.cpp` se corresponde con `win32/createprocess.cpp`.
+
 Además, en `src/common/` está el código que comparten varios ejemplos y en `lib/` las librerías de terceros que utilizan.
 
 ## Ejemplos incluidos
@@ -44,7 +47,7 @@ Concretamente los ejemplos incluidos actualmente son:
    * `mqueue/` — Ejemplo de comunicación entre procesos mediante colas de mensajes POSIX.
    * `signals/` — Ejemplo básico de manejo de señales POSIX.
    * `sockets/` — Ejemplo de comunicación entre procesos mediante _sockets_.
-   * `tuberías/` — Ejemplos de comunicación entre procesos mediante tuberías anónimas y con nombre, y de redirección de la E/S estándar.
+   * `tuberías/` — Ejemplos de comunicación entre procesos mediante tuberías anónimas y con nombre, y de redirección de la E/S estándar. Incluye las versiones con la API Win32 de los ejemplos de tuberías anónimas y de redirección.
  * `src/cap12/` — **12. Memoria compartida**
    * `posix/anom-shared-memory.cpp` — Comunicación entre procesos padre e hijo mediante memoria compartida anónima.
    * `posix/shared-memory.cpp` — Ejemplo de comunicación entre procesos mediante memoria compartida.
