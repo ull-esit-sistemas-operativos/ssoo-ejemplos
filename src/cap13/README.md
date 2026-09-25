@@ -152,9 +152,18 @@ Por eso en este ejemplo las llamadas a `request_stop()` y `join()` del hilo prin
 
 La API de Windows crea hilos con [`CreateThread()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createthread).
 
+Sin embargo, un programa que use la librería de tiempo de ejecución de C o C++ (la *C runtime library* o CRT) desde sus hilos —y en C y C++ eso es casi cualquier programa que use `printf()`, `std::println()`, `errno`, `strtok()`, `rand()`, etc.— no debe llamar a `CreateThread()` directamente, sino a [`_beginthreadex()`](https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/beginthread-beginthreadex) de la propia CRT.
+El motivo es que la CRT guarda datos propios de cada hilo, como el valor de `errno` o el estado de `strtok()`, y necesita prepararlos cuando el hilo empieza y liberarlos cuando termina, algo de lo que el sistema operativo no sabe nada.
+`_beginthreadex()` hace ese trabajo alrededor de la función del hilo y crea el hilo llamando a `CreateThread()` por debajo.
+Es también lo que usa `std::thread` en la implementación de Microsoft de la librería estándar de C++.
+
+Las versiones antiguas de la CRT tenían una fuga de memoria con cada hilo creado con `CreateThread()` que usara funciones de la CRT.
+Las actuales ya liberan esos recursos aunque el hilo no se haya creado con `_beginthreadex()`, pero la recomendación de la documentación de Microsoft se mantiene, porque la CRT aún hace otras cosas al crear el hilo que se pierden si se usa `CreateThread()`, como preparar el soporte de señales de C para ese hilo.
+POSIX no tiene este problema, porque en los sistemas UNIX la librería de C forma parte del sistema y `pthread_create()` pertenece a ella.
+
 | POSIX Threads | Windows |
 | --- | --- |
-| `pthread_create()` | [`CreateThread()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createthread) |
+| `pthread_create()` | [`_beginthreadex()`](https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/beginthread-beginthreadex), que usa [`CreateThread()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createthread) |
 | `pthread_join()` | [`WaitForSingleObject()`](https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject) + [`GetExitCodeThread()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getexitcodethread) + `CloseHandle()` |
 | `pthread_self()` | [`GetCurrentThreadId()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getcurrentthreadid) |
 | `pthread_detach()` | `CloseHandle()` sin esperar |
@@ -171,4 +180,4 @@ Tres diferencias que se ven en el ejemplo:
   La única manera razonable es la cancelación cooperativa, que es justo lo que enseña [`threads-cancel-factorial.cpp`](threads-cancel-factorial.cpp) con `std::stop_token`.
   Por eso no hemos implementado una versión de Windows de [`posix/pthreads-cancel-factorial.cpp`](posix/pthreads-cancel-factorial.cpp).
 
-El ejemplo está en [windows/createthread.cpp](windows/createthread.cpp).
+El ejemplo está en [windows/beginthreadex.cpp](windows/beginthreadex.cpp).

@@ -57,7 +57,7 @@ Concretamente los ejemplos incluidos actualmente son:
    * `posix/pthreads.cpp` — Creación de hilos mediante POSIX Threads.
    * `posix/pthreads-cancel-factorial.cpp` — Cancelación de hilos mediante POSIX Threads: Cálculo del factorial de un número.
    * `posix/pthreads-factorial.cpp` — Uso de hilos mediante POSIX Threads: Cálculo del factorial de un número.
-   * `windows/createthread.cpp` — Creación de hilos en Windows mediante `CreateThread()`.
+   * `windows/beginthreadex.cpp` — Creación de hilos en Windows mediante `_beginthreadex()`.
    * `threads.cpp` — Creación de hilos con `std::jthread` en C++.
    * `threads-cancel-factorial.cpp` — Cancelación cooperativa de hilos con `std::jthread` en C++: Cálculo del factorial de un número.
    * `threads-factorial.cpp` — Uso de hilos con `std::jthread` en C++: Cálculo del factorial de un número.
