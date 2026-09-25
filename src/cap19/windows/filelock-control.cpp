@@ -6,7 +6,7 @@
 //
 //  El programa de control puede usar este archivo para saber si el servidor está en ejecución y pedirle que termine.
 //
-//  Es la versión con la API Win32 del ejemplo de ../posix/filelock-control.cpp
+//  Es la versión con la API de Windows del ejemplo de ../posix/filelock-control.cpp
 //
 //  Compilar:
 //
@@ -19,7 +19,7 @@
 #include <print>
 #include <string>
 
-#include <windows.h>    // Cabecera principal de la API Win32 del sistema operativo
+#include <windows.h>    // Cabecera principal de la API de Windows
 
 #include "filelock-common.hpp"
 

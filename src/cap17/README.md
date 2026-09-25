@@ -111,10 +111,10 @@ El archivo [mapped-files.cpp](posix/mapped-files.cpp) contiene un ejemplo del us
 
 ## En Windows
 
-Windows API también permite mapear archivos en la memoria, pero necesita dos pasos en lugar de uno.
+La API de Windows también permite mapear archivos en la memoria, pero necesita dos pasos en lugar de uno.
 Donde POSIX mapea el archivo directamente con `mmap()`, Windows necesita antes un **objeto de mapeo**, que es el objeto del sistema que representa al archivo como una región de memoria, y solo después se mapea ese objeto en el espacio de direcciones del proceso.
 
-| POSIX | Win32 |
+| POSIX | Windows |
 | --- | --- |
 | `open()` | [`CreateFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea) |
 | `lseek(fd, 0, SEEK_END)` | [`GetFileSizeEx()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfilesizeex) |
@@ -125,4 +125,4 @@ Donde POSIX mapea el archivo directamente con `mmap()`, Windows necesita antes u
 
 En ambos sistemas el mapeo sobrevive al cierre del archivo, así que se pueden cerrar los manejadores en cuanto la región está mapeada.
 
-En [win32/mapped-files.cpp](win32/mapped-files.cpp) está la misma cuenta de líneas, palabras y caracteres del ejemplo anterior, resuelta con estas funciones.
+En [windows/mapped-files.cpp](windows/mapped-files.cpp) está la misma cuenta de líneas, palabras y caracteres del ejemplo anterior, resuelta con estas funciones.

@@ -1,6 +1,6 @@
 // pid_file.hpp - Clase para el manejo del archivo de PID de un servidor
 //
-//  Es la versión con la API Win32 de ../posix/pid_file.hpp
+//  Es la versión con la API de Windows de ../posix/pid_file.hpp
 //
 
 #pragma once
@@ -12,7 +12,7 @@
 #include <string>
 #include <system_error>
 
-#include <windows.h>    // Cabecera principal de la API Win32 del sistema operativo
+#include <windows.h>    // Cabecera principal de la API de Windows
 
 namespace examples
 {

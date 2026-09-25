@@ -1,6 +1,6 @@
 // createprocess-redir.cpp - Ejemplo del uso de tuberías para redirigir la E/S estándar
 //
-//  Es la versión con la API Win32 del ejemplo de ../posix/fork-redir.cpp
+//  Es la versión con la API de Windows del ejemplo de ../posix/fork-redir.cpp
 //
 //  Compilar:
 //
@@ -13,7 +13,7 @@
 #include <string>
 #include <system_error>
 
-#include <windows.h>    // Cabecera principal de la API Win32 del sistema operativo
+#include <windows.h>    // Cabecera principal de la API de Windows
 
 // Programa que se va a ejecutar en el proceso hijo y cuya salida se va a leer.
 char COMMAND_LINE[] = "cmd.exe /c dir";
@@ -25,8 +25,8 @@ std::string read_all( HANDLE handle )
     std::array<char, 1024> read_buffer;
 
     // Para leer todo el contenido de la tubería, se lee en un bucle hasta que ReadFile() falla con
-    // ERROR_BROKEN_PIPE, que es como la API Win32 avisa de que se ha cerrado el último manejador de escritura de la
-    // tubería y, por tanto, de que no van a llegar más datos. En POSIX read() lo indica devolviendo 0.
+    // ERROR_BROKEN_PIPE, que es como la API de Windows avisa de que se ha cerrado el último manejador de escritura de
+    // la tubería y, por tanto, de que no van a llegar más datos. En POSIX read() lo indica devolviendo 0.
     while (true)
     {
         DWORD bytes_read;

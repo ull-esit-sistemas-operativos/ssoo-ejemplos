@@ -2,7 +2,7 @@
 //
 //  El programa muestra los atributos de un archivo indicado por el usuario a través de la línea de comandos.
 //
-//  Es la versión con la API Win32 del ejemplo de ../posix/file-attribs.cpp
+//  Es la versión con la API de Windows del ejemplo de ../posix/file-attribs.cpp
 //
 //  Compilar:
 //
@@ -15,7 +15,7 @@
 #include <string>
 #include <system_error>
 
-#include <windows.h>    // Cabecera principal de la API Win32 del sistema operativo
+#include <windows.h>    // Cabecera principal de la API de Windows
 
 // Varios campos de BY_HANDLE_FILE_INFORMATION son números de 64 bits partidos en dos mitades de 32 bits, porque la
 // estructura viene de una época en la que Windows era de 16 y 32 bits. Hay que recomponerlos.
@@ -47,9 +47,9 @@ int protected_main(int argc, char* argv[])
 
     // Abrir el archivo para obtener sus atributos.
     //
-    // A diferencia de stat(), la API Win32 necesita un manejador del archivo para dar toda esta información, así que
-    // hay que abrirlo antes. Eso sí, basta con pedir FILE_READ_ATTRIBUTES: no hace falta permiso de lectura sobre el
-    // contenido, igual que stat() tampoco lo necesita.
+    // A diferencia de stat(), la API de Windows necesita un manejador del archivo para dar toda esta información, así
+    // que hay que abrirlo antes. Eso sí, basta con pedir FILE_READ_ATTRIBUTES: no hace falta permiso de lectura sobre
+    // el contenido, igual que stat() tampoco lo necesita.
     //
     // FILE_FLAG_BACKUP_SEMANTICS es imprescindible para que CreateFile() acepte abrir un directorio; sin esa marca
     // se niega, y este programa debe funcionar también con directorios.
@@ -97,8 +97,8 @@ int protected_main(int argc, char* argv[])
     }
 
     // En POSIX el modo del archivo lleva, además del tipo, los permisos de lectura, escritura y ejecución para el
-    // propietario, el grupo y el resto. La API Win32 no tiene nada de eso: solo estas marcas, que dicen cómo hay que
-    // tratar el archivo, no quién puede usarlo.
+    // propietario, el grupo y el resto. La API de Windows no tiene nada de eso: solo estas marcas, que dicen cómo hay
+    // que tratar el archivo, no quién puede usarlo.
     std::string flags;
     if (file_info.dwFileAttributes & FILE_ATTRIBUTE_READONLY)   flags += "solo lectura, ";
     if (file_info.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN)     flags += "oculto, ";

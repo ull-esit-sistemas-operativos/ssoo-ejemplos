@@ -1,4 +1,4 @@
-# check-build-commands.ps1 - Comprueba los comandos de compilación documentados en los ejemplos de Windows API
+# check-build-commands.ps1 - Comprueba los comandos de compilación documentados en los ejemplos de la API de Windows
 #
 #  Es el equivalente para Windows de check-build-commands.sh: ejecuta el comando documentado bajo el epígrafe
 #  «Compilar:» en la cabecera de cada ejemplo, desde el directorio del ejemplo, y avisa de los que fallan.

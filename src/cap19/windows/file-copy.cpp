@@ -3,7 +3,7 @@
 //  Este programa copia un archivo a otro. Si el archivo de destino ya existe, se sobreescribe.
 //  Si el archivo de origen no existe, se muestra un mensaje de error.
 //
-//  Es la versión con la API Win32 del ejemplo de ../posix/file-copy.cpp
+//  Es la versión con la API de Windows del ejemplo de ../posix/file-copy.cpp
 //
 //  Compilar:
 //
@@ -14,7 +14,7 @@
 #include <print>
 #include <system_error>
 
-#include <windows.h>    // Cabecera principal de la API Win32 del sistema operativo
+#include <windows.h>    // Cabecera principal de la API de Windows
 
 int protected_main(int argc, char* argv[])
 {
@@ -32,7 +32,7 @@ int protected_main(int argc, char* argv[])
                                         FILE_ATTRIBUTE_NORMAL, nullptr );
     if (source_handle == INVALID_HANDLE_VALUE)
     {
-        // Las funciones de la API Win32 no dejan el motivo del error en 'errno', como las de POSIX, sino que hay
+        // Las funciones de la API de Windows no dejan el motivo del error en 'errno', como las de POSIX, sino que hay
         // que pedírselo al sistema con GetLastError(). std::system_category() sabe traducir los códigos de error
         // de cada sistema, así que el resto del programa no cambia.
         throw std::system_error( static_cast<int>(GetLastError()), std::system_category(),

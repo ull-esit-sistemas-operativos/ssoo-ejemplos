@@ -1,6 +1,6 @@
-// createthread.cpp - Ejemplo de creación de hilos con la API Win32
+// createthread.cpp - Ejemplo de creación de hilos con la API de Windows
 //
-//  Es la versión con la API Win32 del ejemplo de ../posix/pthreads.cpp
+//  Es la versión con la API de Windows del ejemplo de ../posix/pthreads.cpp
 //
 //  Compilar:
 //
@@ -10,7 +10,7 @@
 #include <array>
 #include <print>
 
-#include <windows.h>    // Cabecera principal de la API Win32 del sistema operativo
+#include <windows.h>    // Cabecera principal de la API de Windows
 
 struct thread_args
 {
@@ -18,7 +18,7 @@ struct thread_args
     int result;
 };
 
-// La función principal de un hilo de Windows API devuelve un DWORD, mientras que la de POSIX Threads devuelve un
+// La función principal de un hilo de la API de Windows devuelve un DWORD, mientras que la de POSIX Threads devuelve un
 // puntero. Por eso aquí no hace falta el campo 'result' de la versión de POSIX para tener dónde guardar el
 // resultado: el valor cabe en el propio valor de retorno y se recoge con GetExitCodeThread().
 DWORD WINAPI thread_function(LPVOID arg)
@@ -49,7 +49,7 @@ int main()
     // Crear 3 hilos dentro del proceso.
     //
     // A diferencia de pthread_create(), que devuelve el código de error, CreateThread() devuelve el manejador del
-    // hilo, o un manejador nulo si no pudo crearlo. El motivo, como en el resto de la API Win32, hay que pedírselo
+    // hilo, o un manejador nulo si no pudo crearlo. El motivo, como en el resto de la API de Windows, hay que pedírselo
     // al sistema con GetLastError().
     for (size_t i = 0; i < threads.size(); ++i)
     {

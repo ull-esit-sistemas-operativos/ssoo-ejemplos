@@ -229,7 +229,7 @@ close(pipefd[0]);
 En el archivo [`fork-redir.cpp`](posix/fork-redir.cpp) se muestra un ejemplo de cómo redirigir la salida estándar de un proceso hijo a una tubería y leerla en el proceso padre.
 ## En Windows
 
-Windows API también tiene tuberías anónimas, que se crean con [`CreatePipe()`](https://learn.microsoft.com/en-us/windows/win32/api/namedpipeapi/nf-namedpipeapi-createpipe) y se leen y escriben con `ReadFile()` y `WriteFile()`.
+La API de Windows también tiene tuberías anónimas, que se crean con [`CreatePipe()`](https://learn.microsoft.com/en-us/windows/win32/api/namedpipeapi/nf-namedpipeapi-createpipe) y se leen y escriben con `ReadFile()` y `WriteFile()`.
 Lo que cambia realmente en estos ejemplos no es la tubería, sino la manera de crear el proceso con el que se comparte.
 
 ### No hay fork()
@@ -244,7 +244,7 @@ Eso tiene tres consecuencias que se ven muy bien en los ejemplos:
 3. **El hijo puede terminar con `return`.** La regla de terminar el hijo con `_exit()` es para no vaciar por duplicado los búferes heredados del padre.
    Un proceso creado con `CreateProcess()` no hereda ninguno, así que el problema no existe.
 
-Para que el hijo ejecute el mismo código que el padre, como hace `fork()`, en [win32/createprocess-pipe.cpp](win32/createprocess-pipe.cpp) el programa se lanza a sí mismo con un argumento de línea de comandos que le dice a la copia que le toca hacer de hijo.
+Para que el hijo ejecute el mismo código que el padre, como hace `fork()`, en [windows/createprocess-pipe.cpp](windows/createprocess-pipe.cpp) el programa se lanza a sí mismo con un argumento de línea de comandos que le dice a la copia que le toca hacer de hijo.
 
 ### La herencia se pide, no se hereda
 
@@ -257,7 +257,7 @@ En Windows es al revés: no se hereda nada salvo que se pida, y se pide en tres 
 
 ### Correspondencia entre las funciones
 
-| POSIX | Win32 |
+| POSIX | Windows |
 | --- | --- |
 | `pipe()` | [`CreatePipe()`](https://learn.microsoft.com/en-us/windows/win32/api/namedpipeapi/nf-namedpipeapi-createpipe) |
 | `fork()` + `exec()` | [`CreateProcess()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessa) |
@@ -267,14 +267,14 @@ En Windows es al revés: no se hereda nada salvo que se pida, y se pide en tres 
 | `WEXITSTATUS()` | [`GetExitCodeProcess()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getexitcodeprocess) |
 | Fin de archivo: `read()` devuelve 0 | `ReadFile()` falla con `ERROR_BROKEN_PIPE` |
 
-Los ejemplos están en [win32/createprocess-pipe.cpp](win32/createprocess-pipe.cpp) y [win32/createprocess-redir.cpp](win32/createprocess-redir.cpp).
+Los ejemplos están en [windows/createprocess-pipe.cpp](windows/createprocess-pipe.cpp) y [windows/createprocess-redir.cpp](windows/createprocess-redir.cpp).
 
 ### Tuberías con nombre
 
-Windows API llama a las tuberías con nombre *named pipes* y las crea con [`CreateNamedPipe()`](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createnamedpipea).
+La API de Windows llama a las tuberías con nombre *named pipes* y las crea con [`CreateNamedPipe()`](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createnamedpipea).
 Al cliente se le parecen mucho a un archivo —las abre con `CreateFile()`, como cualquier otro—, pero al servidor no tanto.
 
-| POSIX | Win32 |
+| POSIX | Windows |
 | --- | --- |
 | `mkfifo()` + `open()` | [`CreateNamedPipe()`](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createnamedpipea) |
 | — | [`ConnectNamedPipe()`](https://learn.microsoft.com/en-us/windows/win32/api/namedpipeapi/nf-namedpipeapi-connectnamedpipe) |
@@ -295,4 +295,4 @@ Por eso el bucle del ejemplo tiene dos niveles: uno para los clientes y otro par
 **Hay que decir de antemano cómo se va a usar la tubería.** `CreateNamedPipe()` recibe en qué sentido van los datos, si se tratan como una secuencia de bytes o como mensajes sueltos, y cuántos clientes puede haber a la vez.
 En POSIX la FIFO es siempre un flujo de bytes y esas decisiones no existen.
 
-Los ejemplos están en [win32/namedpipe.cpp](win32/namedpipe.cpp) y [win32/namedpipe-control.cpp](win32/namedpipe-control.cpp).
+Los ejemplos están en [windows/namedpipe.cpp](windows/namedpipe.cpp) y [windows/namedpipe-control.cpp](windows/namedpipe-control.cpp).

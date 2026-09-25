@@ -60,12 +60,12 @@ jobs:
         run: .github/scripts/check-build-commands.sh
 
   check-build-commands-windows:
-    name: Comprobar comandos de compilación documentados de Windows API
+    name: Comprobar comandos de compilación documentados de la API de Windows
     runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Compilar cada ejemplo de Win32 con el comando de su cabecera
+      - name: Compilar cada ejemplo de la API de Windows con el comando de su cabecera
         run: .github/scripts/check-build-commands.ps1
         shell: pwsh

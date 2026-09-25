@@ -3,9 +3,9 @@
 # Cada ejemplo se declara con la función que corresponde a su API, de modo que el CMakeLists.txt de cada capítulo
 # es una lista sin condiciones en la que cada línea dice por sí misma en qué sistemas se compila el ejemplo:
 #
-#   add_portable_example(threads SOURCES threads.cpp)            # C++ estándar: en todos los sistemas.
-#   add_posix_example(fork SOURCES posix/fork.cpp)               # API POSIX: solo en sistemas UNIX.
-#   add_win32_example(createprocess SOURCES win32/createprocess.cpp) # API Win32: solo en Microsoft Windows.
+#   add_portable_example(threads SOURCES threads.cpp)                    # C++ estándar: en todos los sistemas.
+#   add_posix_example(fork SOURCES posix/fork.cpp)                       # API POSIX: solo en sistemas UNIX.
+#   add_windows_example(createprocess SOURCES windows/createprocess.cpp) # API de Windows: solo en Microsoft Windows.
 #
 # Todas aceptan una lista opcional de bibliotecas con las que enlazar el ejemplo:
 #
@@ -40,8 +40,8 @@ function(add_posix_example nombre)
     endif()
 endfunction()
 
-# Ejemplos escritos con la API Win32, que solo se compilan en Microsoft Windows.
-function(add_win32_example nombre)
+# Ejemplos escritos con la API de Windows, que solo se compilan en Microsoft Windows.
+function(add_windows_example nombre)
     if(WIN32)
         _ssoo_add_example(${nombre} ${ARGN})
     endif()

@@ -8,4 +8,4 @@ if(CMAKE_USE_PTHREADS_INIT)
     add_posix_example(pthreads-cancel-factorial SOURCES posix/pthreads-cancel-factorial.cpp)
 endif()
 
-add_win32_example(createthread SOURCES win32/createthread.cpp)
+add_windows_example(createthread SOURCES windows/createthread.cpp)

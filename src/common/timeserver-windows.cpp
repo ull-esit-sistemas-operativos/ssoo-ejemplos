@@ -1,9 +1,9 @@
-// timeserver-win32.cpp - Funciones comunes a los ejemplos del servidor de tiempo.
+// timeserver-windows.cpp - Funciones comunes a los ejemplos del servidor de tiempo.
 //
-//  Es la versión con la API Win32 de timeserver.cpp
+//  Es la versión con la API de Windows de timeserver.cpp
 //
 //  POSIX no tiene un temporizador periódico sencillo: alarm() programa un único aviso, que llega en forma de la
-//  señal SIGALRM y hay que volver a programar desde el propio manejador. La API Win32 sí lo tiene, así que aquí no
+//  señal SIGALRM y hay que volver a programar desde el propio manejador. La API de Windows sí lo tiene, así que aquí no
 //  hay que reprogramar nada: se indica cada cuánto debe repetirse y el sistema se encarga.
 //
 //  La diferencia importante está en dónde se ejecuta el aviso. En POSIX es un manejador de señales, que interrumpe

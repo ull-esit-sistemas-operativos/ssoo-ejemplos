@@ -3,7 +3,7 @@
 //  Este programa lista el contenido de un directorio. Si no se especifica un directorio, lista el contenido del
 //  directorio actual.
 //
-//  Es la versión con la API Win32 del ejemplo de ../posix/dir-list.cpp
+//  Es la versión con la API de Windows del ejemplo de ../posix/dir-list.cpp
 //
 //  Compilar:
 //      cl /std:c++latest /EHsc /utf-8 dir-list.cpp
@@ -13,7 +13,7 @@
 #include <string>
 #include <system_error>
 
-#include <windows.h>    // Cabecera principal de la API Win32 del sistema operativo
+#include <windows.h>    // Cabecera principal de la API de Windows
 
 int protected_main(int argc, char* argv[])
 {

@@ -3,7 +3,7 @@
 //  El programa solicita al usuario un número por la entrada estándar, lanza un proceso hijo para que calcule el
 //  factorial y lee de la tubería que los conecta el resultado para utilizarlo.
 //
-//  Es la versión con la API Win32 del ejemplo de ../posix/fork-pipe.cpp
+//  Es la versión con la API de Windows del ejemplo de ../posix/fork-pipe.cpp
 //
 //  En Windows no hay nada parecido a fork(): no se puede duplicar el proceso actual, solo lanzar un programa. Para
 //  que el hijo ejecute este mismo código, el padre se lanza a sí mismo con un argumento que le dice a la copia que
@@ -22,7 +22,7 @@
 #include <string_view>
 #include <system_error>
 
-#include <windows.h>    // Cabecera principal de la API Win32 del sistema operativo
+#include <windows.h>    // Cabecera principal de la API de Windows
 
 #include <common/factorial.hpp>
 
@@ -143,7 +143,7 @@ int parent_main()
     CloseHandle( write_handle );
 
     // ReadFile() lee los bytes disponibles en la tubería. Para leer todo hay que leer hasta que falle con
-    // ERROR_BROKEN_PIPE, que es como la API Win32 avisa de que se ha cerrado el último extremo de escritura. En
+    // ERROR_BROKEN_PIPE, que es como la API de Windows avisa de que se ha cerrado el último extremo de escritura. En
     // POSIX read() lo indica devolviendo 0, un fin de archivo como el de cualquier otro descriptor.
     std::array<char, 255> read_buffer;
     char* read_buffer_begin = read_buffer.data();

@@ -1,6 +1,6 @@
 // filelock-common.hpp - Cabecera común del ejemplo del uso de bloqueos de archivos
 //
-//  Es la versión con la API Win32 de ../posix/filelock-common.hpp
+//  Es la versión con la API de Windows de ../posix/filelock-common.hpp
 //
 
 #pragma once

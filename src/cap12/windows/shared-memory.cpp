@@ -6,11 +6,11 @@
 //  En general, los problemas de sincronización no son sencillos. Para simplicar, vamos a suponer que solo hay un
 //  cliente conectado al mismo tiempo. Así solo necesitaremos dos semáforos para implementar la sincronización.
 //
-//  Es la versión con la API Win32 del ejemplo de ../posix/shared-memory.cpp
+//  Es la versión con la API de Windows del ejemplo de ../posix/shared-memory.cpp
 //
 //  Compilar:
 //
-//      cl /std:c++latest /EHsc /utf-8 /I..\.. shared-memory.cpp ..\..\common\timeserver-win32.cpp
+//      cl /std:c++latest /EHsc /utf-8 /I..\.. shared-memory.cpp ..\..\common\timeserver-windows.cpp
 //
 
 #include <print>
@@ -18,7 +18,7 @@
 #include <string_view>
 #include <system_error>
 
-#include <windows.h>    // Cabecera principal de la API Win32 del sistema operativo
+#include <windows.h>    // Cabecera principal de la API de Windows
 
 #include <common/timeserver.hpp>
 #include "shared-memory-common.hpp"
@@ -64,7 +64,7 @@ int protected_main()
     // Crear los semáforos.
     //
     // Los de POSIX se inicializan con sem_init() dentro de la propia memoria compartida, que es lo que hace que los
-    // dos procesos vean el mismo. Los de la API Win32 son objetos del sistema, como la región de memoria, y se
+    // dos procesos vean el mismo. Los de la API de Windows son objetos del sistema, como la región de memoria, y se
     // comparten dándoles un nombre.
     HANDLE empty_semaphore = CreateSemaphoreA( nullptr, 1, 1, EMPTY_SEMAPHORE_NAME.c_str() );
     HANDLE ready_semaphore = CreateSemaphoreA( nullptr, 0, 1, READY_SEMAPHORE_NAME.c_str() );

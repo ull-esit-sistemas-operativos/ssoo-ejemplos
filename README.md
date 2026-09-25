@@ -20,12 +20,12 @@ Dentro de cada capítulo, el subdirectorio en el que está cada ejemplo indica p
 | --- | --- | --- |
 | La raíz del capítulo | La librería estándar de C++ | Todos los sistemas |
 | `posix/` | La [API POSIX](https://man7.org/linux/man-pages/man7/standards.7.html) | Sistemas UNIX |
-| `win32/` | La [API Win32](https://learn.microsoft.com/en-us/windows/win32/api/) | Microsoft Windows |
+| `windows/` | La [API de Windows](https://learn.microsoft.com/en-us/windows/win32/api/), antes llamada API Win32 | Microsoft Windows |
 
-De esta manera, un mismo ejemplo resuelto con las dos APIs aparece con el mismo nombre en `posix/` y en `win32/`, y se pueden comparar uno al lado del otro.
+De esta manera, un mismo ejemplo resuelto con las dos APIs aparece con el mismo nombre en `posix/` y en `windows/`, y se pueden comparar uno al lado del otro.
 
-La excepción son los ejemplos que llevan el nombre de la función que ilustran, como `fork.cpp` o `fork-pipe.cpp`: su versión de Windows lleva el nombre de la función equivalente de la API Win32, porque es lo que cambia de una a otra.
-Así, `posix/fork-exec.cpp` se corresponde con `win32/createprocess.cpp`.
+La excepción son los ejemplos que llevan el nombre de la función que ilustran, como `fork.cpp` o `fork-pipe.cpp`: su versión de Windows lleva el nombre de la función equivalente de la API de Windows, porque es lo que cambia de una a otra.
+Así, `posix/fork-exec.cpp` se corresponde con `windows/createprocess.cpp`.
 
 Además, en `src/common/` está el código que comparten varios ejemplos y en `lib/` las librerías de terceros que utilizan.
 
@@ -42,22 +42,22 @@ Concretamente los ejemplos incluidos actualmente son:
  * `src/cap09/` — **9. Procesos**
    * `posix/fork.cpp` — Creación de procesos mediante `fork()`.
    * `posix/fork-exec.cpp` — Ejecutar otros programas mediante `fork()` y `exec()`.
-   * `win32/createprocess.cpp` — Ejecutar otros programas en Windows mediante `CreateProcess()`.
+   * `windows/createprocess.cpp` — Ejecutar otros programas en Windows mediante `CreateProcess()`.
  * `src/cap11/` — **11. Comunicación mediante paso de mensajes**
    * `mqueue/` — Ejemplo de comunicación entre procesos mediante colas de mensajes POSIX.
    * `signals/` — Ejemplo básico de manejo de señales POSIX.
    * `sockets/` — Ejemplo de comunicación entre procesos mediante _sockets_.
-   * `tuberías/` — Ejemplos de comunicación entre procesos mediante tuberías anónimas y con nombre, y de redirección de la E/S estándar. También las versiones con la API Win32, incluida la de tuberías con nombre.
+   * `tuberías/` — Ejemplos de comunicación entre procesos mediante tuberías anónimas y con nombre, y de redirección de la E/S estándar. También las versiones con la API de Windows, incluida la de tuberías con nombre.
  * `src/cap12/` — **12. Memoria compartida**
    * `posix/anom-shared-memory.cpp` — Comunicación entre procesos padre e hijo mediante memoria compartida anónima.
    * `posix/shared-memory.cpp` — Ejemplo de comunicación entre procesos mediante memoria compartida.
    * `posix/shared-memory-control.cpp` — Programa de control del ejemplo de comunicación entre procesos mediante memoria compartida.
-   * `win32/shared-memory.cpp` y `win32/shared-memory-control.cpp` — Los mismos ejemplos en Windows con `CreateFileMapping()` y semáforos con nombre.
+   * `windows/shared-memory.cpp` y `windows/shared-memory-control.cpp` — Los mismos ejemplos en Windows con `CreateFileMapping()` y semáforos con nombre.
  * `src/cap13/` — **13. Hilos**
    * `posix/pthreads.cpp` — Creación de hilos mediante POSIX Threads.
    * `posix/pthreads-cancel-factorial.cpp` — Cancelación de hilos mediante POSIX Threads: Cálculo del factorial de un número.
    * `posix/pthreads-factorial.cpp` — Uso de hilos mediante POSIX Threads: Cálculo del factorial de un número.
-   * `win32/createthread.cpp` — Creación de hilos en Windows mediante `CreateThread()`.
+   * `windows/createthread.cpp` — Creación de hilos en Windows mediante `CreateThread()`.
    * `threads.cpp` — Creación de hilos con `std::jthread` en C++.
    * `threads-cancel-factorial.cpp` — Cancelación cooperativa de hilos con `std::jthread` en C++: Cálculo del factorial de un número.
    * `threads-factorial.cpp` — Uso de hilos con `std::jthread` en C++: Cálculo del factorial de un número.
@@ -66,17 +66,17 @@ Concretamente los ejemplos incluidos actualmente son:
    * `semáforos/` — Ejemplo de la implementación de un semáforo en C++ a partir de un mutex y una variable de condición.
  * `src/cap17/` — **17. Memoria virtual**
    * `posix/mapped-files.cpp` — Archivos mapeados en memoria con `mmap()`.
-   * `win32/mapped-files.cpp` — Archivos mapeados en memoria en Windows con `CreateFileMapping()` y `MapViewOfFile()`.
+   * `windows/mapped-files.cpp` — Archivos mapeados en memoria en Windows con `CreateFileMapping()` y `MapViewOfFile()`.
  * `src/cap19/` — **19. Sistemas de archivos**
    * `posix/file-copy.cpp` — Copia de archivos con `read()` y `write()`.
-   * `win32/file-copy.cpp` — Copia de archivos en Windows con `ReadFile()` y `WriteFile()`.
+   * `windows/file-copy.cpp` — Copia de archivos en Windows con `ReadFile()` y `WriteFile()`.
    * `posix/file-attribs.cpp` — Leer y mostrar los atributos de archivo.
-   * `win32/file-attribs.cpp` — Leer y mostrar los atributos de archivo en Windows con `GetFileInformationByHandle()`.
+   * `windows/file-attribs.cpp` — Leer y mostrar los atributos de archivo en Windows con `GetFileInformationByHandle()`.
    * `posix/filelock.cpp` — Ejemplo del uso de bloqueo de archivos.
    * `posix/filelock-control.cpp` — Programa de control del ejemplo del uso de bloqueo de archivos.
-   * `win32/filelock.cpp` y `win32/filelock-control.cpp` — El mismo ejemplo en Windows con `LockFileEx()`.
+   * `windows/filelock.cpp` y `windows/filelock-control.cpp` — El mismo ejemplo en Windows con `LockFileEx()`.
    * `posix/dir-list.cpp` — Listar el contenido de un directorio.
-   * `win32/dir-list.cpp` — Listar el contenido de un directorio en Windows con `FindFirstFile()` y `FindNextFile()`.
+   * `windows/dir-list.cpp` — Listar el contenido de un directorio en Windows con `FindFirstFile()` y `FindNextFile()`.
  * `src/otros/` — **Otros ejemplos**
    * `posix/yash.cpp` — Ejemplo muy básico del funcionamiento interno de una shell.
 

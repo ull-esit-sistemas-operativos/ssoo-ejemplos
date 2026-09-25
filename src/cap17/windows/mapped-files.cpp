@@ -3,7 +3,7 @@
 //  El programa mapea el archivo indicado por la línea de comandos en la memoria y calcula el el número de líneas,
 //  palabras y caracteres, como hace el comando wc.
 //
-//  Es la versión con la API Win32 del ejemplo de ../posix/mapped-files.cpp
+//  Es la versión con la API de Windows del ejemplo de ../posix/mapped-files.cpp
 //
 //  Compilar:
 //
@@ -14,7 +14,7 @@
 #include <print>
 #include <system_error>
 
-#include <windows.h>    // Cabecera principal de la API Win32 del sistema operativo
+#include <windows.h>    // Cabecera principal de la API de Windows
 #include <shlwapi.h>    // Cabecera para PathFindFileName()
 
 int protected_main(int argc, char* argv[])
@@ -37,7 +37,7 @@ int protected_main(int argc, char* argv[])
 
     // Obtener el tamaño del archivo.
     // En POSIX hay que deducirlo moviendo el puntero de lectura/escritura al final del archivo con lseek(), pero
-    // la API Win32 tiene una función que lo devuelve directamente.
+    // la API de Windows tiene una función que lo devuelve directamente.
     LARGE_INTEGER file_size;
     if (! GetFileSizeEx( file_handle, &file_size ))
     {

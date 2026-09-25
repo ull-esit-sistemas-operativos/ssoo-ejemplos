@@ -1,6 +1,6 @@
 // shared-memory-common.hpp - Cabecera común del ejemplo del uso de memoria compartida para comunicar procesos
 //
-//  Es la versión con la API Win32 de ../posix/shared-memory-common.hpp
+//  Es la versión con la API de Windows de ../posix/shared-memory-common.hpp
 //
 
 #pragma once
@@ -15,7 +15,7 @@ using namespace std::literals;
 // crearlos requiere privilegios.
 inline const std::string CONTROL_SHM_NAME = "Local\\ssoo-class-shm"s;
 
-// A diferencia de POSIX, los semáforos de Windows API no se pueden colocar dentro de la memoria compartida: son
+// A diferencia de POSIX, los semáforos de la API de Windows no se pueden colocar dentro de la memoria compartida: son
 // objetos del sistema y los procesos los comparten poniéndoles un nombre, igual que a la propia región de memoria.
 inline const std::string EMPTY_SEMAPHORE_NAME = "Local\\ssoo-class-shm-empty"s;
 inline const std::string READY_SEMAPHORE_NAME = "Local\\ssoo-class-shm-ready"s;

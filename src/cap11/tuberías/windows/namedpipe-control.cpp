@@ -3,7 +3,7 @@
 //  El programa de ejemplo utiliza un temporizador del sistema para mostrar periódicamente la hora. Además, crea una
 //  tubería con nombre a la que puede conectarse el programa de control para darle órdenes.
 //
-//  Es la versión con la API Win32 del ejemplo de ../posix/fifo-control.cpp
+//  Es la versión con la API de Windows del ejemplo de ../posix/fifo-control.cpp
 //
 //  Compilar:
 //
@@ -14,7 +14,7 @@
 #include <string>
 #include <system_error>
 
-#include <windows.h>    // Cabecera principal de la API Win32 del sistema operativo
+#include <windows.h>    // Cabecera principal de la API de Windows
 
 #include "namedpipe-common.hpp"
 

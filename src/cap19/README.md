@@ -258,7 +258,7 @@ Este archivo `.pid` permite a los clientes saber si el servicio está en ejecuci
 
 ## En Windows
 
-Windows API ofrece las mismas operaciones sobre archivos que POSIX, con dos diferencias muy evidentes.
+La API de Windows ofrece las mismas operaciones sobre archivos que POSIX, con dos diferencias muy evidentes.
 
 La primera es que en lugar del descriptor de archivo —un entero— se usa un **manejador**, de tipo `HANDLE`.
 La segunda es que las funciones no dejan el motivo del error en `errno`, sino que hay que pedírselo al sistema con [`GetLastError()`](https://learn.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-getlasterror).
@@ -268,7 +268,7 @@ Como `std::system_category()` sabe traducir los códigos de error de cada sistem
 throw std::system_error( static_cast<int>(GetLastError()), std::system_category(), "Fallo en CreateFile()" );
 ```
 
-| POSIX | Win32 |
+| POSIX | Windows |
 | --- | --- |
 | `open()` | [`CreateFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea) |
 | `read()` | [`ReadFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile) |
@@ -277,7 +277,7 @@ throw std::system_error( static_cast<int>(GetLastError()), std::system_category(
 | `fstat()` | [`GetFileInformationByHandle()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfileinformationbyhandle) |
 | `S_ISREG()` | [`GetFileType()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfiletype) |
 
-En [win32/file-copy.cpp](win32/file-copy.cpp) está la misma copia de archivos del ejemplo anterior, resuelta con estas funciones.
+En [windows/file-copy.cpp](windows/file-copy.cpp) está la misma copia de archivos del ejemplo anterior, resuelta con estas funciones.
 
 Hay un detalle en el que los dos sistemas no se comportan igual.
 En POSIX, `open()` abre un directorio sin protestar y es la comprobación con `S_ISREG()` la que descubre que no es un archivo regular.
@@ -312,14 +312,14 @@ Las diferencias son tan interesantes como las coincidencias:
   Sus marcas dicen cómo hay que tratar el archivo —de solo lectura, oculto, del sistema, etc.— pero no quién puede usarlo.
   Windows no tiene un propietario, un grupo y nueve bits de permisos como POSIX, sino una lista de control de acceso (ACL) con una entrada por usuario o grupo, que se consulta aparte con `GetSecurityInfo()`.
 
-El ejemplo está en [win32/file-attribs.cpp](win32/file-attribs.cpp).
+El ejemplo está en [windows/file-attribs.cpp](windows/file-attribs.cpp).
 
 ### Listar un directorio
 
 En POSIX el directorio se abre con `opendir()` y luego se lee entrada a entrada con `readdir()`.
-La API Win32 junta las dos operaciones en una sola función: [`FindFirstFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findfirstfilea) abre el directorio y devuelve la primera entrada, así que el bucle del ejemplo debe ser un `do ... while` en lugar de un `while`.
+La API de Windows junta las dos operaciones en una sola función: [`FindFirstFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findfirstfilea) abre el directorio y devuelve la primera entrada, así que el bucle del ejemplo debe ser un `do ... while` en lugar de un `while`.
 
-| POSIX | Win32 |
+| POSIX | Windows |
 | --- | --- |
 | `opendir()` | [`FindFirstFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findfirstfilea) |
 | `readdir()` | [`FindNextFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findnextfilea) |
@@ -329,13 +329,13 @@ Además, `FindFirstFile()` no recibe el nombre de un directorio sino un **patró
 Y como `FindNextFile()` devuelve falso tanto al ocurrido.
 En POSIX `readdir()` los distingue dejando `errno` a cero al terminar.
 
-El ejemplo está en [win32/dir-list.cpp](win32/dir-list.cpp).
+El ejemplo está en [windows/dir-list.cpp](windows/dir-list.cpp).
 
 ### Bloqueo de archivos
 
-Windows API bloquea rangos de bytes de un archivo con [`LockFileEx()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-lockfileex) y los libera con [`UnlockFileEx()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-unlockfileex).
+La API de Windows bloquea rangos de bytes de un archivo con [`LockFileEx()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-lockfileex) y los libera con [`UnlockFileEx()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-unlockfileex).
 
-| POSIX | Win32 |
+| POSIX | Windows |
 | --- | --- |
 | `lockf(fd, F_LOCK, 0)` | [`LockFileEx()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-lockfileex) con `LOCKFILE_EXCLUSIVE_LOCK` |
 | `lockf(fd, F_ULOCK, 0)` | [`UnlockFileEx()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-unlockfileex) |
@@ -368,4 +368,4 @@ Por lo mismo, el servidor no puede esperar con `sigwait()` a que llegue una señ
 En su lugar espera con [`WaitForMultipleObjects()`](https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects) por dos objetos: un temporizador esperable, que hace el papel de `alarm()` y que se repite solo sin necesidad de reprogramarlo, y el evento de terminación.
 La pulsación de Ctrl+C, que es lo más parecido a `SIGINT`, llega a través de un manejador registrado con [`SetConsoleCtrlHandler()`](https://learn.microsoft.com/en-us/windows/win32/api/consoleapi/nf-consoleapi-setconsolectrlhandler) que activa ese mismo evento.
 
-Los ejemplos están en [win32/filelock.cpp](win32/filelock.cpp) y [win32/filelock-control.cpp](win32/filelock-control.cpp), con la clase en [win32/pid_file.hpp](win32/pid_file.hpp).
+Los ejemplos están en [windows/filelock.cpp](windows/filelock.cpp) y [windows/filelock-control.cpp](windows/filelock-control.cpp), con la clase en [windows/pid_file.hpp](windows/pid_file.hpp).

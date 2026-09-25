@@ -3,11 +3,11 @@
 //  El programa de ejemplo utiliza un temporizador del sistema para mostrar periódicamente la hora. Además, crea una
 //  tubería con nombre a la que puede conectarse el programa de control para darle órdenes.
 //
-//  Es la versión con la API Win32 del ejemplo de ../posix/fifo.cpp
+//  Es la versión con la API de Windows del ejemplo de ../posix/fifo.cpp
 //
 //  Compilar:
 //
-//      cl /std:c++latest /EHsc /utf-8 /I..\..\.. namedpipe.cpp ..\..\..\common\timeserver-win32.cpp
+//      cl /std:c++latest /EHsc /utf-8 /I..\..\.. namedpipe.cpp ..\..\..\common\timeserver-windows.cpp
 //
 
 #include <array>
@@ -16,7 +16,7 @@
 #include <string_view>
 #include <system_error>
 
-#include <windows.h>    // Cabecera principal de la API Win32 del sistema operativo
+#include <windows.h>    // Cabecera principal de la API de Windows
 
 #include <common/timeserver.hpp>
 #include "namedpipe-common.hpp"
@@ -55,7 +55,7 @@ int protected_main()
         // Esperar a que un cliente se conecte.
         //
         // Este paso no existe en POSIX, donde la tubería no distingue clientes: cualquiera que abra el archivo
-        // escribe en ella y lo que llega se mezcla. Las tuberías con nombre de la API Win32 están orientadas a la
+        // escribe en ella y lo que llega se mezcla. Las tuberías con nombre de la API de Windows están orientadas a la
         // conexión, así que el servidor atiende a un cliente cada vez y sabe cuándo se va.
         if (! ConnectNamedPipe( pipe_handle, nullptr ) && GetLastError() != ERROR_PIPE_CONNECTED)
         {
@@ -71,7 +71,7 @@ int protected_main()
             DWORD bytes_read;
             if (! ReadFile( pipe_handle, buffer.data(), static_cast<DWORD>(buffer.size()), &bytes_read, nullptr ))
             {
-                // ERROR_BROKEN_PIPE es la forma que tiene la API Win32 de avisar de que el cliente ha cerrado su
+                // ERROR_BROKEN_PIPE es la forma que tiene la API de Windows de avisar de que el cliente ha cerrado su
                 // extremo. En POSIX eso es el fin de archivo que devuelve read(), o el nullptr de fgets().
                 if (GetLastError() == ERROR_BROKEN_PIPE) break;
 

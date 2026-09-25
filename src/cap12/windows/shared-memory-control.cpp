@@ -6,7 +6,7 @@
 //  En general, los problemas de sincronización no son sencillos. Para simplicar, vamos a suponer que solo hay un
 //  cliente conectado al mismo tiempo. Así solo necesitaremos dos semáforos para implementar la sincronización.
 //
-//  Es la versión con la API Win32 del ejemplo de ../posix/shared-memory-control.cpp
+//  Es la versión con la API de Windows del ejemplo de ../posix/shared-memory-control.cpp
 //
 //  Compilar:
 //
@@ -17,7 +17,7 @@
 #include <string>
 #include <system_error>
 
-#include <windows.h>    // Cabecera principal de la API Win32 del sistema operativo
+#include <windows.h>    // Cabecera principal de la API de Windows
 
 #include "shared-memory-common.hpp"
 

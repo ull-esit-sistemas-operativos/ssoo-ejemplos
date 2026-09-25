@@ -150,9 +150,9 @@ Por eso en este ejemplo las llamadas a `request_stop()` y `join()` del hilo prin
 
 ## En Windows
 
-Windows API crea hilos con [`CreateThread()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createthread).
+La API de Windows crea hilos con [`CreateThread()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createthread).
 
-| POSIX Threads | Win32 |
+| POSIX Threads | Windows |
 | --- | --- |
 | `pthread_create()` | [`CreateThread()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createthread) |
 | `pthread_join()` | [`WaitForSingleObject()`](https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject) + [`GetExitCodeThread()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getexitcodethread) + `CloseHandle()` |
@@ -171,4 +171,4 @@ Tres diferencias que se ven en el ejemplo:
   La única manera razonable es la cancelación cooperativa, que es justo lo que enseña [`threads-cancel-factorial.cpp`](threads-cancel-factorial.cpp) con `std::stop_token`.
   Por eso no hemos implementado una versión de Windows de [`posix/pthreads-cancel-factorial.cpp`](posix/pthreads-cancel-factorial.cpp).
 
-El ejemplo está en [win32/createthread.cpp](win32/createthread.cpp).
+El ejemplo está en [windows/createthread.cpp](windows/createthread.cpp).
