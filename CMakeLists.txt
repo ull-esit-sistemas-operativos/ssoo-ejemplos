@@ -2,8 +2,14 @@ cmake_minimum_required(VERSION 3.14)
 
 project(ssoo-ejemplos LANGUAGES C CXX ASM)
 
+# Compilar en configuración Debug si no se indica otra con -DCMAKE_BUILD_TYPE=... Los generadores multiconfiguración,
+# como el de Visual Studio, no usan CMAKE_BUILD_TYPE: ahí la configuración se elige con 'cmake --build --config ...'.
+get_property(generador_multiconfiguracion GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+if(NOT generador_multiconfiguracion AND NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Configuración de compilación: Debug, Release, RelWithDebInfo o MinSizeRel" FORCE)
+endif()
+
 # Generar los ejecutables en el directorio 'bin' del directorio de compilación
-set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 set(CMAKE_C_STANDARD 11)
@@ -23,9 +29,8 @@ endif()
 include(CheckPIESupported)
 check_pie_supported()
 
-# Opciones de nivel de aviso del compilador y sanitizadores en tiempo de ejecución
+# Opciones de nivel de aviso del compilador
 include(cmake/CompilerWarnings.cmake)
-include(cmake/Sanitizers.cmake)
 
 # Funciones con las que cada capítulo declara sus ejemplos según la API del sistema para la que están escritos.
 include(cmake/AddExample.cmake)

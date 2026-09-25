@@ -26,7 +26,7 @@ int main()
     mkstemp(filename);
 
     puts("Antes de abrir el archivo...");
-    int fd = open(filename, O_RDWR | O_CREAT);
+    int fd = open(filename, O_RDWR | O_CREAT, 0600);
     puts("Después de abrir el archivo...");
     close(fd);
 
