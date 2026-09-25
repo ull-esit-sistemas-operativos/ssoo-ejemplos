@@ -5,17 +5,19 @@ Cada proceso puede utilizar su _socket_ para recibir mensajes de otros procesos 
 Estos aspectos son responsabilidad del sistema operativo y del hardware de la red, pero no del programador de las aplicaciones.
 
 **Tabla de contenidos**
-- [Crear _sockets_](#crear-sockets)
-- [Cerrar descriptores de _sockets_](#cerrar-descriptores-de-sockets)
-- [Asignar una dirección al socket {#sec-bind}](#asignar-una-dirección-al-socket-sec-bind)
-  - [Direcciones `AF_INET`](#direcciones-af_inet)
-  - [Direcciones `AF_UNIX`](#direcciones-af_unix)
-- [Enviar un mensaje](#enviar-un-mensaje)
-- [Recibir un mensaje](#recibir-un-mensaje)
-- [_Sockets_ `SOCK_STREAM`](#sockets-sock_stream)
-  - [Escuchar conexiones](#escuchar-conexiones)
-  - [Aceptar conexiones](#aceptar-conexiones)
-  - [Envío y recepción de mensajes](#envío-y-recepción-de-mensajes)
+- [Sockets](#sockets)
+  - [Crear _sockets_](#crear-sockets)
+  - [Cerrar descriptores de _sockets_](#cerrar-descriptores-de-sockets)
+  - [Asignar una dirección al socket {#sec-bind}](#asignar-una-dirección-al-socket-sec-bind)
+    - [Direcciones `AF_INET`](#direcciones-af_inet)
+    - [Direcciones `AF_UNIX`](#direcciones-af_unix)
+  - [Enviar un mensaje](#enviar-un-mensaje)
+  - [Recibir un mensaje](#recibir-un-mensaje)
+  - [_Sockets_ `SOCK_STREAM`](#sockets-sock_stream)
+    - [Escuchar conexiones](#escuchar-conexiones)
+    - [Aceptar conexiones](#aceptar-conexiones)
+    - [Envío y recepción de mensajes](#envío-y-recepción-de-mensajes)
+  - [En Windows](#en-windows)
 
 ## Crear _sockets_
 
@@ -150,6 +152,9 @@ En este caso, como el número es 0, es indiferente usar `htons()` o simplemente 
 6. Conversión necesaria porque `bind()` espera un puntero al formato genérico de direcciones `sockaddr`, pero `local_address` es `sockaddr_in`.
 3. Tamaño de la estructura `sockaddr_in` que contiene la dirección.
 
+En el archivo [`socket.cpp`](posix/socket.cpp) se muestra un ejemplo completo de cómo crear un _socket_ `AF_INET` y asignarle una dirección.
+En él se usa `INADDR_LOOPBACK` en lugar de `INADDR_ANY`, para que solo los procesos del propio equipo puedan enviarle mensajes.
+
 ### Direcciones `AF_UNIX`
 
 La estructura `sockaddr_un` para _sockets_ `AF_UNIX` se declara de la siguiente forma:
@@ -189,8 +194,6 @@ if (result < 0)
 4. Descriptor del _socket_ al que `bind` debe asignar la dirección `local_address`.
 5. Conversión necesaria porque `bind()` espera un puntero al formato genérico de direcciones `sockaddr`, pero `local_address` es `sockaddr_un`.
 6. Tamaño de la estructura `sockaddr_un` que contiene la dirección.
-
-En el archivo [`socket.cpp`](posix/socket.cpp) se muestra un ejemplo completo de cómo crear un _socket_ de dominio UNIX y asignarle una dirección.
 
 ## Enviar un mensaje
 
@@ -414,3 +417,26 @@ if (bytes_read < 0)
 message_text.resize(bytes_read);
 std::println("Otro sistema envió el mensaje '{}'", message_text);
 ```
+## En Windows
+
+La interfaz de _sockets_ de Windows, [Winsock](https://learn.microsoft.com/en-us/windows/win32/winsock/windows-sockets-start-page-2), copia la interfaz de _sockets_ de BSD, que es la misma que la de POSIX.
+Las funciones se llaman igual y reciben los mismos argumentos, y las estructuras de direcciones como `sockaddr_in` son las mismas, así que el ejemplo de Windows es casi idéntico al de POSIX.
+
+Las diferencias son pocas, pero ninguna se puede pasar por alto:
+
+| POSIX | Windows |
+| --- | --- |
+| — | [`WSAStartup()`](https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsastartup) al principio y [`WSACleanup()`](https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsacleanup) al final |
+| `socket()` devuelve un `int`, que vale -1 si hay error | [`socket()`](https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-socket) devuelve un `SOCKET`, que vale `INVALID_SOCKET` si hay error |
+| Las demás funciones devuelven -1 si hay error | Las demás funciones devuelven `SOCKET_ERROR` si hay error |
+| `errno` | [`WSAGetLastError()`](https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsagetlasterror) |
+| `close()` | [`closesocket()`](https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-closesocket) |
+| `ssize_t recv(int, void*, size_t, int)` | `int recv(SOCKET, char*, int, int)` |
+| `sys/socket.h`, `netinet/in.h` y `arpa/inet.h` | `winsock2.h` |
+| No hay que enlazar con ninguna librería | Hay que enlazar con `ws2_32.lib` |
+
+La diferencia de fondo es que en POSIX los _sockets_ son parte del sistema operativo, igual que los archivos: un _socket_ es un descriptor de archivo más, y se cierra con `close()` como cualquier otro.
+En Windows, en cambio, son una librería que hay que inicializar con `WSAStartup()` antes de usar cualquiera de sus funciones.
+Por eso un `SOCKET` no es un descriptor de archivo, se cierra con su propia función y guarda el código de error de forma independiente.
+
+Los ejemplos están en [windows/socket.cpp](windows/socket.cpp) y [windows/socket-control.cpp](windows/socket-control.cpp).

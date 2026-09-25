@@ -1,39 +1,40 @@
 // socket-control.cpp - Programa de control del ejemplo del uso de sockets para comunicar procesos
 //
-//  El programa de ejemplo utiliza alarm() y las señales del sistema para mostrar periódicamente la hora. Además,
-//  escucha en un socket al que puede mandar órdenes el programa de control.
+//  El programa de ejemplo utiliza un temporizador del sistema para mostrar periódicamente la hora. Además, escucha en
+//  un socket al que puede mandar órdenes el programa de control.
 //
-//  Usamos sockets AF_INET y no de dominio UNIX para que el ejemplo sea casi idéntico al de la API de Windows, que
-//  solo admite sockets de dominio UNIX SOCK_STREAM. Además usamos sockets no orientados a conexión SOCK_DGRAM (UDP)
-//  porque preservan la separación entre mensajes, lo que simplifica el ejemplo. UDP no es fiable (pueden perderse
-//  mensajes y desordenarse) pero como el socket solo escucha en la interfaz de loopback, los mensajes nunca salen
-//  del equipo y en la práctica no se pierden.
+//  Es la versión con la API de Windows del ejemplo de ../posix/socket-control.cpp
 //
 //  Compilar:
 //
-//      g++ -std=c++23 -o socket-control socket-control.cpp
+//      cl /std:c++latest /EHsc /utf-8 socket-control.cpp ws2_32.lib
 //
 
 #include <print>
 #include <string>
 #include <system_error>
 
-#include <unistd.h>
-#include <arpa/inet.h>  // Cabecera de htons() y htonl()
-#include <netinet/in.h> // Cabecera de sockets AF_INET
-#include <sys/socket.h> // Cabecera de sockets
-#include <sys/types.h>
+// Cabecera de Winsock. Sus funciones están en la librería ws2_32.lib, con la que hay que enlazar el programa.
+#include <winsock2.h>
 
 #include "../socket-common.hpp"
 
 int protected_main()
 {
+    // Inicializar Winsock, que en Windows es una librería que hay que inicializar antes de usarla.
+    WSADATA wsa_data;
+    int error_code = WSAStartup( MAKEWORD(2, 2), &wsa_data );
+    if (error_code != 0)
+    {
+        throw std::system_error( error_code, std::system_category(), "Fallo en WSAStartup()" );
+    }
+
     // Crear un socket local para comunicarnos con el servidor. No hace falta asignarle dirección con bind(), porque
     // solo lo usamos para enviar: el sistema operativo le asignará un puerto libre cualquiera al llamar a sendto().
-    int sockfd = socket( AF_INET, SOCK_DGRAM, 0 );
-    if (sockfd < 0)
+    SOCKET sock = socket( AF_INET, SOCK_DGRAM, 0 );
+    if (sock == INVALID_SOCKET)
     {
-        throw std::system_error( errno, std::system_category(), "Fallo en socket()" );
+        throw std::system_error( WSAGetLastError(), std::system_category(), "Fallo en socket()" );
     }
 
     std::println( "Cerrando el servidor..." );
@@ -45,14 +46,15 @@ int protected_main()
     server_address.sin_port = htons( CONTROL_SOCKET_PORT );
 
     // Enviar el comando de terminar al socket del servidor.
-    ssize_t return_code = sendto( sockfd, QUIT_COMMAND.c_str(), QUIT_COMMAND.size(), 0,
+    int return_code = sendto( sock, QUIT_COMMAND.c_str(), static_cast<int>(QUIT_COMMAND.size()), 0,
         reinterpret_cast<sockaddr*>(&server_address), sizeof(server_address) );
-    if (return_code < 0)
+    if (return_code == SOCKET_ERROR)
     {
-        throw std::system_error( errno, std::system_category(), "Fallo en sendto()" );
+        throw std::system_error( WSAGetLastError(), std::system_category(), "Fallo en sendto()" );
     }
 
-    close( sockfd );
+    closesocket( sock );
+    WSACleanup();
 
     std::println( "¡Adiós!" );
 
