@@ -100,7 +100,7 @@ Los ejemplos se compilan de manera sencilla siguiendo estos pasos:
 En Microsoft Windows estos comandos deben ejecutarse desde la consola de **Developer Command Prompt**.
 
 En cada sistema solo se compilarán los ejemplos compatibles.
-Los ejecutables resultantes de la compilación son guardados en el directorio `build/bin/`.
+Los ejecutables resultantes de la compilación son guardados en el directorio `build/bin/` en Linux y en `build/bin/Debug/` en Windows.
 
 Cada ejemplo documenta además, en el comentario `Compilar:` de su cabecera, el comando con el que compilarlo a mano desde su propio directorio, sin usar CMake.
 
