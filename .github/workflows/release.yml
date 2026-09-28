@@ -1,0 +1,81 @@
+# Publica una versión con los ejemplos ya compilados para Ubuntu 24.04 y para Windows, al subir una etiqueta de curso.
+#
+name: Publicar versión
+
+on:
+  push:
+    tags: [ 'so*' ]
+
+jobs:
+  cmake-build:
+    name: Compilar para ${{ matrix.nombre }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            nombre: Ubuntu 24.04
+            sistema: ubuntu24.04
+          - os: windows-latest
+            nombre: Windows
+            sistema: windows
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # La misma versión de GCC que instala el contenedor: .devcontainer/Dockerfile.
+      - name: Instalar GCC 15
+        if: runner.os == 'Linux'
+        run: |
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt-get install -y --no-install-recommends g++-15
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 100
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-15 100
+
+      # Ubuntu 24.04 trae la libstdc++ de GCC 13, así que la de GCC 15 se enlaza estáticamente para que los ejecutables
+      # funcionen sin instalar nada más.
+      - name: Configurar
+        if: runner.os == 'Linux'
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_EXE_LINKER_FLAGS=-static-libstdc++ -static-libgcc"
+
+      # En Windows se enlaza estáticamente el runtime de MSVC, para que los ejecutables funcionen sin Visual Studio ni
+      # Visual C++ Redistributable. CMAKE_MSVC_RUNTIME_LIBRARY solo tiene efecto con la política CMP0091 activada, que
+      # cmake_minimum_required(VERSION 3.14) deja desactivada.
+      - name: Configurar
+        if: runner.os == 'Windows'
+        run: cmake -B build -DCMAKE_POLICY_DEFAULT_CMP0091=NEW '-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>'
+
+      - name: Compilar
+        run: cmake --build build --config Debug
+
+      - name: Empaquetar
+        if: runner.os == 'Linux'
+        run: cd build/bin && zip ../../ssoo-ejemplos-${{ github.ref_name }}-${{ matrix.sistema }}-x64.zip *
+
+      - name: Empaquetar
+        if: runner.os == 'Windows'
+        run: Compress-Archive -Path build/bin/Debug/*.exe, build/bin/Debug/*.pdb -DestinationPath ssoo-ejemplos-${{ github.ref_name }}-${{ matrix.sistema }}-x64.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.sistema }}
+          path: ssoo-ejemplos-*.zip
+
+  release:
+    name: Publicar la versión
+    needs: cmake-build
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+
+      - name: Crear la versión con los dos archivos zip
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${{ github.ref_name }}" ssoo-ejemplos-*.zip --repo "${{ github.repository }}" --title "${{ github.ref_name }}" --generate-notes

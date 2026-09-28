@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.14)
 
 project(ssoo-ejemplos LANGUAGES C CXX ASM)
 
@@ -23,10 +23,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 if(MSVC)
     add_compile_options(/utf-8)
 endif()
-
-# Enlazar estáticamente la librería de tiempo de ejecución de C y C++ de MSVC, para que los ejecutables solo dependan
-# de DLL del propio Windows y funcionen sin instalar Visual C++ Redistributable ni Visual Studio.
-set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 include(CheckPIESupported)
 check_pie_supported()
