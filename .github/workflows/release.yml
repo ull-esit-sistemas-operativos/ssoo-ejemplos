@@ -57,7 +57,7 @@ jobs:
         if: runner.os == 'Windows'
         run: Compress-Archive -Path build/bin/Debug/*.exe, build/bin/Debug/*.pdb -DestinationPath ssoo-ejemplos-${{ github.ref_name }}-${{ matrix.sistema }}-x64.zip
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.sistema }}
           path: ssoo-ejemplos-*.zip
