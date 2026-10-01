@@ -24,6 +24,23 @@ if(MSVC)
     add_compile_options(/utf-8)
 endif()
 
+# En Debug, activar las comprobaciones adicionales de la librería estándar de C++ (límites en operator[], front(),
+# back()...), para que los errores se detecten donde ocurren en lugar de corromper la memoria en silencio:
+#  - libstdc++ (GCC y Clang en Linux): _GLIBCXX_ASSERTIONS.
+#  - libc++ (Clang en macOS, LLVM >= 18): _LIBCPP_HARDENING_MODE.
+#  - MSVC: no hace falta; su runtime de Debug ya define _ITERATOR_DEBUG_LEVEL=2 (iteradores comprobados).
+# Cada macro se ignora en la librería que no la reconoce, así que se pueden definir ambas.
+#
+# No usamos opciones de hardening más agresivas, como _MSVC_STL_HARDENING o -fhardened (GCC >= 14), porque
+# son más adecuadas para software en producción. Más sobre el hardening de la librería estándar:
+# https://www.cppstories.com/2026/hardening-experiments/
+if(NOT MSVC)
+    add_compile_options(
+        "$<$<AND:$<CONFIG:Debug>,$<COMPILE_LANGUAGE:CXX>>:-D_GLIBCXX_ASSERTIONS>"
+        "$<$<AND:$<CONFIG:Debug>,$<COMPILE_LANGUAGE:CXX>>:-D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_DEBUG>"
+    )
+endif()
+
 include(CheckPIESupported)
 check_pie_supported()
 
