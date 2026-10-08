@@ -351,7 +351,7 @@ Si el hijo escribe algo en la salida estándar antes de redirigirla y la salida 
 Entonces, o se pierde al llamar a `exec()`, que sustituye la imagen del proceso con sus búferes incluidos, o acaba en el archivo si se vacía después de `dup2()`.
 Por eso conviene vaciar el búfer con `std::fflush(stdout)` antes de redirigir la salida.
 
-El archivo [fork-dup2.cpp](posix/fork-dup2.cpp) contiene un ejemplo completo que ejecuta `ls -l` con su salida estándar redirigida al archivo `salida.txt`.
+El archivo [fork-redir.cpp](posix/fork-redir.cpp) contiene un ejemplo completo que ejecuta `ls -l` con su salida estándar redirigida al archivo `salida.txt`.
 
 El mismo mecanismo permite redirigir la E/S estándar de un proceso a una tubería, para que otro proceso lea su salida o le envíe su entrada.
 Eso se ve en los ejemplos de tuberías del [capítulo 11](../cap11/tuberías/README.md#redirección-de-la-es-estándar-a-una-tubería).

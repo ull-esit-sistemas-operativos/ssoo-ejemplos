@@ -9,5 +9,5 @@ add_windows_example(namedpipe-control SOURCES windows/namedpipe-control.cpp)
 add_posix_example(fork-pipe SOURCES posix/fork-pipe.cpp)
 add_windows_example(createprocess-pipe SOURCES windows/createprocess-pipe.cpp)
 
-add_posix_example(fork-redir SOURCES posix/fork-redir.cpp)
-add_windows_example(createprocess-redir SOURCES windows/createprocess-redir.cpp)
+add_posix_example(fork-pipe-redir SOURCES posix/fork-pipe-redir.cpp)
+add_windows_example(createprocess-pipe-redir SOURCES windows/createprocess-pipe-redir.cpp)

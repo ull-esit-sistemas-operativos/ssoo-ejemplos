@@ -1,10 +1,10 @@
-// createprocess-redir.cpp - Ejemplo del uso de tuberías para redirigir la E/S estándar
+// createprocess-pipe-redir.cpp - Ejemplo del uso de tuberías para redirigir la E/S estándar
 //
-//  Es la versión con la API de Windows del ejemplo de ../posix/fork-redir.cpp
+//  Es la versión con la API de Windows del ejemplo de ../posix/fork-pipe-redir.cpp
 //
 //  Compilar:
 //
-//      cl /std:c++latest /EHsc /utf-8 createprocess-redir.cpp
+//      cl /std:c++latest /EHsc /utf-8 createprocess-pipe-redir.cpp
 //
 
 #include <algorithm>
