@@ -42,6 +42,7 @@ Concretamente los ejemplos incluidos actualmente son:
  * `src/cap09/` — **9. Procesos**
    * `posix/fork.cpp` — Creación de procesos mediante `fork()`.
    * `posix/fork-exec.cpp` — Ejecutar otros programas mediante `fork()` y `exec()`.
+   * `posix/fork-dup2.cpp` — Redirigir a un archivo la salida estándar de otro programa mediante `fork()`, `exec()` y `dup2()`.
    * `windows/createprocess.cpp` — Ejecutar otros programas en Windows mediante `CreateProcess()`.
  * `src/cap11/` — **11. Comunicación mediante paso de mensajes**
    * `mqueue/` — Ejemplo de comunicación entre procesos mediante colas de mensajes POSIX.

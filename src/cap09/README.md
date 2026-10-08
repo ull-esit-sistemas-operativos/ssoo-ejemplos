@@ -233,3 +233,125 @@ Por lo general, el código de salida será 0 si el comando se ejecutó correctam
 
 Pero si `execl()` falla, el valor de `child_exit_status` será 127, que es el valor que se pasa a `_exit()` en caso de error.
 Se usa 127 por seguir la convención de la _shell_, que usa este valor para informar de que no encontró el comando, y así no se confunde con los códigos de salida que puede devolver el programa ejecutado.
+
+## Redirección de la E/S estándar
+
+Los descriptores de archivo abiertos de un proceso se heredan al crear un proceso hijo con `fork()` y se conservan al cambiar de programa con `exec()`.
+Gracias a eso, el código que se ejecuta en el hijo entre `fork()` y `exec()` puede cambiar a dónde apuntan la entrada, la salida y la salida de error estándar, y el programa ejecutado las usará sin saberlo.
+Así es como la _shell_ implementa redirecciones como `ls -l > salida.txt`.
+
+### Duplicar descriptores de archivo
+
+Los descriptores de archivo se pueden copiar, haciendo que varios descriptores de archivo apunten al mismo archivo o recurso.
+
+Para hacerlo se utiliza la función [`dup2()`](https://manpages.debian.org/stretch/manpages-es/dup.2.es.html), que copia el descriptor de archivo `oldfd` en el descriptor de archivo `newfd`.
+
+```c
+int dup2(int oldfd, int newfd);
+```
+
+Si `newfd` ya estaba abierto, se cierra antes de copiar el descriptor de archivo.
+Y si `dup2()` tiene éxito, devuelve `newfd`.
+
+Por ejemplo, si se abre un archivo y se copia el descriptor de archivo en el 42, ahora el archivo tiene dos descriptores de archivo abiertos, uno en el valor de `fd` y otro en 42.
+
+```cpp
+int fd = open("archivo.txt", O_RDONLY);
+if (fd < 0)
+{
+    // Error al abrir el archivo...
+}
+
+// Copiar el descriptor de archivo en el 42
+int fd2 = dup2(fd, 42);
+
+// Leer datos del archivo con el descriptor de archivo 42
+// Hubiera sido lo mismo usar fd2, ya que es igual a 42 al volver de dup2()
+std::array<char, 1024> buffer;
+ssize_t bytes_read = read(42, buffer.data(), buffer.size());
+if (bytes_read < 0)
+{
+    // Error al leer del archivo...
+}
+
+close(fd);
+close(42);
+```
+
+Ambos descriptores comparten la misma posición en el archivo, por lo que leer o escribir con uno de ellos avanza también la del otro.
+
+### Redirección de la E/S estándar a un archivo
+
+Los tres primeros descriptores de archivo de un proceso tienen un significado especial:
+
+| Descriptor | Constante | Uso |
+| --- | --- | --- |
+| 0 | `STDIN_FILENO` | Entrada estándar |
+| 1 | `STDOUT_FILENO` | Salida estándar |
+| 2 | `STDERR_FILENO` | Salida de error estándar |
+
+Por eso, si con `dup2()` se copia el descriptor de un archivo sobre uno de ellos, se redirige la E/S estándar del proceso a ese archivo.
+Por ejemplo, para redirigir la salida estándar de un proceso a un archivo:
+
+```cpp
+int fd = open("salida.txt", O_WRONLY | O_CREAT | O_TRUNC, 0666);
+if (fd < 0)
+{
+    // Error al abrir el archivo...
+}
+
+// Redirigir la salida estándar al archivo
+dup2(fd, STDOUT_FILENO);
+
+// Ya no necesitamos el descriptor original. El archivo sigue abierto a través de STDOUT_FILENO.
+close(fd);
+
+std::println("Este mensaje se escribirá en el archivo 'salida.txt'");
+```
+
+Se puede hacer lo mismo para redirigir la entrada estándar del proceso desde un archivo, duplicando el descriptor de archivo sobre `STDIN_FILENO`, o la salida de error estándar a un archivo, duplicándolo sobre `STDERR_FILENO`.
+
+Es importante que el archivo se abra en el modo adecuado para la operación que se va a realizar.
+Si se va a redirigir la salida estándar o de error a un archivo, el archivo debe abrirse en modo escritura, para poder escribir en él la salida del programa.
+Si se va a redirigir la entrada estándar desde un archivo, el archivo debe abrirse en modo lectura, para poder leer de él la entrada del programa.
+
+### Redirección junto con fork() y exec()
+
+Lo habitual es hacer la redirección en el proceso hijo, justo antes de llamar a `exec()`.
+Así solo se cambia la E/S estándar del hijo, mientras que la del padre queda intacta:
+
+```cpp
+pid_t pid = fork();
+if (pid == 0)
+{
+    int fd = open("salida.txt", O_WRONLY | O_CREAT | O_TRUNC, 0666);
+    if (fd < 0)
+    {
+        _exit(EXIT_FAILURE);
+    }
+
+    dup2(fd, STDOUT_FILENO);
+    close(fd);
+
+    // 'ls' hereda la salida estándar redirigida y escribe en 'salida.txt'.
+    execl("/bin/ls", "ls", "-l", nullptr);
+
+    // Si llegamos aquí, hubo un error al ejecutar exec.
+    _exit(127);
+}
+else
+{
+    int status;
+    waitpid(pid, &status, 0);
+}
+```
+
+Hay que tener cuidado con los búferes de la librería estándar.
+Si el hijo escribe algo en la salida estándar antes de redirigirla y la salida no es una terminal, ese texto puede quedarse en el búfer.
+Entonces, o se pierde al llamar a `exec()`, que sustituye la imagen del proceso con sus búferes incluidos, o acaba en el archivo si se vacía después de `dup2()`.
+Por eso conviene vaciar el búfer con `std::fflush(stdout)` antes de redirigir la salida.
+
+El archivo [fork-dup2.cpp](posix/fork-dup2.cpp) contiene un ejemplo completo que ejecuta `ls -l` con su salida estándar redirigida al archivo `salida.txt`.
+
+El mismo mecanismo permite redirigir la E/S estándar de un proceso a una tubería, para que otro proceso lea su salida o le envíe su entrada.
+Eso se ve en los ejemplos de tuberías del [capítulo 11](../cap11/tuberías/README.md#redirección-de-la-es-estándar-a-una-tubería).
