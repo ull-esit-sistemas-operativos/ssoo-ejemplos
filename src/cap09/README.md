@@ -353,5 +353,50 @@ Por eso conviene vaciar el búfer con `std::fflush(stdout)` antes de redirigir l
 
 El archivo [fork-redir.cpp](posix/fork-redir.cpp) contiene un ejemplo completo que ejecuta `ls -l` con su salida estándar redirigida al archivo `salida.txt`.
 
+### En Windows
+
+En Windows no hay `fork()` ni `dup2()`, y `CreateProcess()` hace de una sola vez lo que en POSIX hacen `fork()` y `exec()` juntos.
+Es decir, no hay un código «entre medias», ejecutándose en el hijo, donde hacer la redirección, sino que hay que pedir la redirección por adelantado, al crear el proceso:
+
+1. Se abre el archivo con [`CreateFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea), pasando una `SECURITY_ATTRIBUTES` con `bInheritHandle = TRUE` para que el manejador se pueda heredar.
+2. Se indica en la estructura `STARTUPINFO` la marca `STARTF_USESTDHANDLES` y los manejadores que el hijo usará como entrada, salida y salida de error estándar, en `hStdInput`, `hStdOutput` y `hStdError`.
+3. Se llama a `CreateProcess()` con el parámetro `bInheritHandles` a `TRUE`, sin el cual el hijo no hereda ningún manejador.
+
+```cpp
+SECURITY_ATTRIBUTES sa = {
+    .nLength = sizeof(SECURITY_ATTRIBUTES),
+    .lpSecurityDescriptor = nullptr,
+    .bInheritHandle = TRUE
+};
+
+HANDLE hFile = CreateFileA("salida.txt", GENERIC_WRITE, FILE_SHARE_READ, &sa, CREATE_ALWAYS,
+                           FILE_ATTRIBUTE_NORMAL, nullptr);
+
+STARTUPINFOA si = {
+    .cb = sizeof(STARTUPINFOA),
+    .dwFlags = STARTF_USESTDHANDLES,
+    .hStdInput = GetStdHandle(STD_INPUT_HANDLE),
+    .hStdOutput = hFile,
+    .hStdError = GetStdHandle(STD_ERROR_HANDLE)
+};
+PROCESS_INFORMATION pi = {};
+
+char lpCommandLine[] = "cmd.exe /c dir";
+CreateProcessA(nullptr, lpCommandLine, nullptr, nullptr, TRUE, 0, nullptr, nullptr, &si, &pi);
+
+// El hijo ya tiene su copia del manejador, así que el padre puede cerrar la suya.
+CloseHandle(hFile);
+```
+
+| POSIX | Windows |
+| --- | --- |
+| `open()` | [`CreateFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea) con `bInheritHandle = TRUE` |
+| `dup2()` sobre `STDOUT_FILENO` en el hijo | `STARTF_USESTDHANDLES` y `hStdOutput` en `STARTUPINFO` |
+| `fork()` + `exec()` | [`CreateProcess()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessa) con `bInheritHandles = TRUE` |
+
+El archivo [createprocess-redir.cpp](windows/createprocess-redir.cpp) contiene la versión para Windows del ejemplo anterior, que ejecuta `dir` con su salida estándar redirigida al archivo `salida.txt`.
+
+### Redirección a una tubería
+
 El mismo mecanismo permite redirigir la E/S estándar de un proceso a una tubería, para que otro proceso lea su salida o le envíe su entrada.
 Eso se ve en los ejemplos de tuberías del [capítulo 11](../cap11/tuberías/README.md#redirección-de-la-es-estándar-a-una-tubería).

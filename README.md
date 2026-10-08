@@ -44,6 +44,7 @@ Concretamente los ejemplos incluidos actualmente son:
    * `posix/fork-exec.cpp` — Ejecutar otros programas mediante `fork()` y `exec()`.
    * `posix/fork-redir.cpp` — Redirigir a un archivo la salida estándar de otro programa mediante `fork()`, `exec()` y `dup2()`.
    * `windows/createprocess.cpp` — Ejecutar otros programas en Windows mediante `CreateProcess()`.
+   * `windows/createprocess-redir.cpp` — Redirigir a un archivo la salida estándar de otro programa en Windows mediante `CreateProcess()`.
  * `src/cap11/` — **11. Comunicación mediante paso de mensajes**
    * `mqueue/` — Ejemplo de comunicación entre procesos mediante colas de mensajes POSIX.
    * `signals/` — Ejemplo básico de manejo de señales POSIX.
