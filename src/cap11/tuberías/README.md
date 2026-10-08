@@ -113,7 +113,7 @@ Cuando se cierran todos los descriptores de archivo de escritura de una tubería
 
 ## Redirección de la entrada y salida estándar
 
-La función `dup2()` y la redirección de la E/S estándar de un proceso a un archivo se explican en el [capítulo 9](../../cap09/README.md#redirección-de-la-es-estándar), junto con el ejemplo [`fork-dup2.cpp`](../../cap09/posix/fork-dup2.cpp).
+La función `dup2()` y la redirección de la E/S estándar de un proceso a un archivo se explican en el [capítulo 9](../../cap09/README.md#redirección-de-la-es-estándar), junto con el ejemplo [`fork-redir.cpp`](../../cap09/posix/fork-redir.cpp).
 Aquí se aplica el mismo mecanismo a las tuberías.
 
 ### Redirección de la E/S estándar a una tubería
@@ -167,7 +167,7 @@ std::cin >> input;
 close(pipefd[0]);
 ```
 
-En el archivo [`fork-redir.cpp`](posix/fork-redir.cpp) se muestra un ejemplo de cómo redirigir la salida estándar de un proceso hijo a una tubería y leerla en el proceso padre.
+En el archivo [`fork-pipe-redir.cpp`](posix/fork-pipe-redir.cpp) se muestra un ejemplo de cómo redirigir la salida estándar de un proceso hijo a una tubería y leerla en el proceso padre.
 
 ## En Windows
 
@@ -181,7 +181,7 @@ Eso tiene tres consecuencias que se ven muy bien en los ejemplos:
 
 1. **El hijo no hereda la memoria del padre.** En [`fork-pipe.cpp`](posix/fork-pipe.cpp) el hijo ya tiene dentro el número que escribió el usuario y el descriptor de la tubería, porque es una copia del padre.
    En la versión de Windows hay que pasárselos por la línea de comandos.
-2. **No hay un código «entre medias» donde preparar las cosas.** En POSIX, el código que va del `fork()` al `exec()` se ejecuta ya dentro del hijo, y es ahí donde [`fork-redir.cpp`](posix/fork-redir.cpp) redirige la salida estándar con `dup2()`.
+2. **No hay un código «entre medias» donde preparar las cosas.** En POSIX, el código que va del `fork()` al `exec()` se ejecuta ya dentro del hijo, y es ahí donde [`fork-pipe-redir.cpp`](posix/fork-pipe-redir.cpp) redirige la salida estándar con `dup2()`.
    En Windows todo hay que pedirlo por adelantado, al crear el proceso.
 3. **El hijo puede terminar con `return`.** La regla de terminar el hijo con `_exit()` es para no vaciar por duplicado los búferes heredados del padre.
    Un proceso creado con `CreateProcess()` no hereda ninguno, así que el problema no existe.
@@ -209,7 +209,7 @@ En Windows es al revés: no se hereda nada salvo que se pida, y se pide en tres 
 | `WEXITSTATUS()` | [`GetExitCodeProcess()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getexitcodeprocess) |
 | Fin de archivo: `read()` devuelve 0 | `ReadFile()` falla con `ERROR_BROKEN_PIPE` |
 
-Los ejemplos están en [windows/createprocess-pipe.cpp](windows/createprocess-pipe.cpp) y [windows/createprocess-redir.cpp](windows/createprocess-redir.cpp).
+Los ejemplos están en [windows/createprocess-pipe.cpp](windows/createprocess-pipe.cpp) y [windows/createprocess-pipe-redir.cpp](windows/createprocess-pipe-redir.cpp).
 
 ### Tuberías con nombre
 

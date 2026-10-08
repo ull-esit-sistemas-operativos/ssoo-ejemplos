@@ -1,8 +1,8 @@
-// fork-redir.cpp - Ejemplo del uso de tuberías para redirigir la E/S estándar
+// fork-pipe-redir.cpp - Ejemplo del uso de tuberías para redirigir la E/S estándar
 //
 //  Compilar:
 //
-//      g++ -std=c++23 -o fork-redir fork-redir.cpp
+//      g++ -std=c++23 -o fork-pipe-redir fork-pipe-redir.cpp
 //
 
 #include <array>        // Recomendada para crear arrays de tamaño fijo compatibles con C

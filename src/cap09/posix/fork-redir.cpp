@@ -1,8 +1,8 @@
-// fork-dup2.cpp - Ejemplo del uso de fork(), exec() y dup2() para redirigir la salida de otro programa a un archivo
+// fork-redir.cpp - Ejemplo del uso de fork(), exec() y dup2() para redirigir la salida de otro programa a un archivo
 //
 //  Compilar:
 //
-//      g++ -std=c++23 -o fork-dup2 fork-dup2.cpp
+//      g++ -std=c++23 -o fork-redir fork-redir.cpp
 //
 
 #include <cstdlib>
