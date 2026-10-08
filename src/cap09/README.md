@@ -355,12 +355,27 @@ El archivo [fork-redir.cpp](posix/fork-redir.cpp) contiene un ejemplo completo q
 
 ### En Windows
 
-En Windows no hay `fork()` ni `dup2()`, y `CreateProcess()` hace de una sola vez lo que en POSIX hacen `fork()` y `exec()` juntos.
-Es decir, no hay un código «entre medias», ejecutándose en el hijo, donde hacer la redirección, sino que hay que pedir la redirección por adelantado, al crear el proceso:
+En Windows no se puede duplicar el proceso actual: [`CreateProcess()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessa) hace de una sola vez lo que en POSIX hacen `fork()` y `exec()` juntos, y siempre arranca un programa desde cero.
+Eso tiene varias consecuencias:
 
-1. Se abre el archivo con [`CreateFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea), pasando una `SECURITY_ATTRIBUTES` con `bInheritHandle = TRUE` para que el manejador se pueda heredar.
-2. Se indica en la estructura `STARTUPINFO` la marca `STARTF_USESTDHANDLES` y los manejadores que el hijo usará como entrada, salida y salida de error estándar, en `hStdInput`, `hStdOutput` y `hStdError`.
-3. Se llama a `CreateProcess()` con el parámetro `bInheritHandles` a `TRUE`, sin el cual el hijo no hereda ningún manejador.
+1. **No hay un código «entre medias» donde preparar las cosas.** En POSIX, el código que va del `fork()` al `exec()` se ejecuta ya dentro del hijo, y es ahí donde [fork-redir.cpp](posix/fork-redir.cpp) redirige la salida estándar con `dup2()`.
+   En Windows todo hay que pedirlo por adelantado, al crear el proceso.
+2. **El hijo no hereda la memoria del padre.** Lo que en POSIX el hijo ya tiene porque es una copia del padre, en Windows hay que pasárselo de otra forma; por ejemplo, por la línea de comandos.
+3. **No hace falta terminar el hijo con `_exit()`.** Esa regla es para no vaciar por duplicado los búferes heredados del padre.
+   Un proceso creado con `CreateProcess()` no hereda ninguno, así que el problema no existe.
+
+#### La herencia se pide, no se hereda
+
+En POSIX el hijo hereda todos los descriptores de archivo del padre salvo que se diga lo contrario.
+En Windows es al revés: no se hereda ningún manejador salvo que se pida, y se pide en dos sitios a la vez:
+
+1. Al crear el objeto —por ejemplo, al abrir el archivo con [`CreateFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea)—, pasando una `SECURITY_ATTRIBUTES` con `bInheritHandle = TRUE` para que el manejador se pueda heredar.
+2. Poniendo a `TRUE` el parámetro `bInheritHandles` de `CreateProcess()`, sin el cual el hijo no hereda ningún manejador por mucho que se hayan marcado.
+
+#### Redirección con STARTUPINFO
+
+Como no hay `dup2()`, la redirección se indica en la estructura `STARTUPINFO` con la que se crea el proceso: la marca `STARTF_USESTDHANDLES` y los manejadores que el hijo usará como entrada, salida y salida de error estándar, en `hStdInput`, `hStdOutput` y `hStdError`.
+Hay que rellenar los tres, así que a los que no se quieren redirigir se les pasan los del propio proceso, obtenidos con `GetStdHandle()`.
 
 ```cpp
 SECURITY_ATTRIBUTES sa = {
@@ -388,11 +403,16 @@ CreateProcessA(nullptr, lpCommandLine, nullptr, nullptr, TRUE, 0, nullptr, nullp
 CloseHandle(hFile);
 ```
 
+#### Correspondencia entre las funciones
+
 | POSIX | Windows |
 | --- | --- |
+| `fork()` + `exec()` | [`CreateProcess()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessa) |
 | `open()` | [`CreateFile()`](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea) con `bInheritHandle = TRUE` |
+| Herencia de descriptores en `fork()` | `bInheritHandles = TRUE` en `CreateProcess()` |
 | `dup2()` sobre `STDOUT_FILENO` en el hijo | `STARTF_USESTDHANDLES` y `hStdOutput` en `STARTUPINFO` |
-| `fork()` + `exec()` | [`CreateProcess()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessa) con `bInheritHandles = TRUE` |
+| `wait()` / `waitpid()` | [`WaitForSingleObject()`](https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject) |
+| `WEXITSTATUS()` | [`GetExitCodeProcess()`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getexitcodeprocess) |
 
 El archivo [createprocess-redir.cpp](windows/createprocess-redir.cpp) contiene la versión para Windows del ejemplo anterior, que ejecuta `dir` con su salida estándar redirigida al archivo `salida.txt`.
 
